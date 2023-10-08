@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   deploy-dev:
+    name: Deploy
     runs-on: ubuntu-latest
     enviroment:
       name: dev
@@ -31,15 +32,3 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
-      - name: run dev
-        run: echo Deploy Dev
-
-  deploy-int:
-    runs-on: ubuntu-latest
-    enviroment:
-      name: dev
-      url: "http://int-sistema.agromodesto.com.br/"
-    needs: deploy-dev
-    steps:
-      name: run dev
-      
