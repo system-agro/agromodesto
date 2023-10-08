@@ -4,11 +4,11 @@ on:
     branches:
       - main
 jobs:
-  deploy-dev:
+  deploy-stg:
     name: Deploy
     runs-on: ubuntu-latest
     enviroment:
-      name: dev
+      name: stg
       url: "http://stg-sistema.agromodesto.com.br/"
     needs: build
     steps:
