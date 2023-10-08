@@ -7,7 +7,7 @@ jobs:
   deploy-stg:
     name: Deploy
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: stg
       url: "http://stg-sistema.agromodesto.com.br/"
     needs: build
