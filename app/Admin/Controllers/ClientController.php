@@ -15,7 +15,7 @@ class ClientController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Client';
+    protected $title = 'Cliente';
 
     /**
      * Make a grid builder.
@@ -30,8 +30,8 @@ class ClientController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('email', __('Email'));
         $grid->column('phone', __('Phone'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('created_at', __('Created at'));
+        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -50,8 +50,8 @@ class ClientController extends AdminController
         $show->field('name', __('Name'));
         $show->field('email', __('Email'));
         $show->field('phone', __('Phone'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        // $show->field('created_at', __('Created at'));
+        // $show->field('updated_at', __('Updated at'));
 
         return $show;
     }
