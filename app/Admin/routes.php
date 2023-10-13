@@ -14,5 +14,9 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('clients', ClientController::class);
+    $router->get('/loadClientDat/{database}', 'ClientController@loadClientData')->name('loadClientData');
+    // Route::get('/load-client-data', [ClientController::class, 'loadClientData'])->name('loadClientData');
+
+
 
 });
