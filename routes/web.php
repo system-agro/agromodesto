@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Admin\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+    
 });
+
+Route::get('/loadClientData/{database}', [ClientController::class, 'loadClientData'])->name('loadClientData');
+// Route::get('/loadClientData/{database}', 'ClientController@loadClientData')->name('loadClientData');
+
+// Route::get('/load-client-data', 'ClientController@loadClientData')->name('loadClientData');
+
+// Route::get('/load-client-data', [ClientController::class, 'loadClientData'])->name('loadClientData');
