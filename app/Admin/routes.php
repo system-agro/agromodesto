@@ -2,6 +2,7 @@
 
 use App\Admin\Controllers\CaminhaoController;
 use App\Admin\Controllers\ClientController;
+use App\Admin\Controllers\GadoController;
 use App\Admin\Controllers\MadeirasController;
 use Illuminate\Routing\Router;
 
@@ -18,6 +19,7 @@ Route::group([
     $router->resource('clients', ClientController::class);
     $router->resource('madeiras', MadeirasController::class);
     $router->resource('caminhaos', CaminhaoController::class);
+    $router->resource('gados', GadoController::class);
     $router->get('/loadClientDat/{database}', 'ClientController@loadClientData')->name('loadClientData');
     // Route::get('/load-client-data', [ClientController::class, 'loadClientData'])->name('loadClientData');
 
