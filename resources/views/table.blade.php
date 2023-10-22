@@ -72,8 +72,8 @@
       <!-- Aba de Clientes -->
       <li class="nav-item">
     <a aria-selected="true" class="nav-link active" id="tab1-tab" data-toggle="tab" role="tab" aria-controls="tab1"
-        data-route="{{ route('clients') }}"
-        href="{{ route('clients') }}">Clientes</a>
+        data-route="{{ route('listClient') }}"
+        href="{{ route('listClient') }}">Clientes</a>
 </li>
       <!-- Aba de Fornecedores -->
       <li class="nav-item">

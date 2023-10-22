@@ -20,6 +20,6 @@ Route::group([
     $router->resource('madeiras', MadeirasController::class);
     $router->resource('caminhaos', CaminhaoController::class);
     $router->resource('gados', GadoController::class);
-    $router->get('clients', 'ClientController@listClient')->name('clients');
+    $router->get('clients', 'ClientController@listClient')->name('listClient');
 
 });
