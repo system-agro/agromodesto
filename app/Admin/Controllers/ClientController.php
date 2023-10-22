@@ -25,8 +25,9 @@ class ClientController extends AdminController
 
     public function loadClientData()
     {
-        $clientes = Client::all();
-        return response()->json($clientes);
+        $contacts  = Client::all();
+        return view('table', compact('contacts'));
+        // return response()->json($clientes);
         
     }
     
