@@ -16,13 +16,10 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
-    $router->resource('clients', ClientController::class);
+    // $router->resource('clients', ClientController::class);
     $router->resource('madeiras', MadeirasController::class);
     $router->resource('caminhaos', CaminhaoController::class);
     $router->resource('gados', GadoController::class);
-    $router->get('/loadClientDat/{database}', 'ClientController@loadClientData')->name('loadClientData');
-    // Route::get('/load-client-data', [ClientController::class, 'loadClientData'])->name('loadClientData');
-
-
+    $router->get('clients', 'ClientController@listClient')->name('clients');
 
 });

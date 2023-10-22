@@ -71,10 +71,10 @@
     <ul class="nav nav-tabs" id="customTabs" role="tablist">
       <!-- Aba de Clientes -->
       <li class="nav-item">
-        <a aria-selected="true" class="nav-link active" id="tab1-tab" data-toggle="tab" role="tab" aria-controls="tab1"
-          data-route="{{ route('loadClientData', ['database'=> 'database']) }}"
-          href="{{ route('loadClientData', ['database'=> 'database']) }}">Clientes</a>
-      </li>
+    <a aria-selected="true" class="nav-link active" id="tab1-tab" data-toggle="tab" role="tab" aria-controls="tab1"
+        data-route="{{ route('clients') }}"
+        href="{{ route('clients') }}">Clientes</a>
+</li>
       <!-- Aba de Fornecedores -->
       <li class="nav-item">
         <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2"
@@ -94,7 +94,7 @@
         <!-- Modal -->
         <div id="customModal" class="modal">
           <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
+            <span class="close justify-content-end" id="closeModal">&times;</span>
             <!-- Conteúdo do modal -->
             <!-- Seção de Informação Pessoal -->
             <div class="row p-3">
@@ -105,7 +105,7 @@
                 <input type="text" id="nome" name="nome" class="form-control form-control-lg rounded">
               </div>
               <div class="col-md-6">
-                <label for "sobrenome">Sobrenome:</label>
+                <label for="sobrenome">Sobrenome:</label>
                 <input type="text" id="sobrenome" name="sobrenome" class="form-control form-control-lg rounded">
               </div>
             </div>
@@ -119,7 +119,7 @@
                 <input type="email" id="email" name="email" class="form-control form-control-lg rounded">
               </div>
               <div class="col-md-6">
-                <label for "telefone">Telefone:</label>
+                <label for="telefone">Telefone:</label>
                 <input type="tel" id="telefone" name="telefone" class="form-control form-control-lg rounded">
               </div>
             </div>
@@ -128,11 +128,11 @@
             <div class="row p-3">
               <h2>Endereço</h2>
               <div class="col-md-6">
-                <label for "rua">Rua:</label>
+                <label for="rua">Rua:</label>
                 <input type="text" id="rua" name="rua" class="form-control form-control-lg rounded">
               </div>
               <div class="col-md-6">
-                <label for "numero">Número:</label>
+                <label for="numero">Número:</label>
                 <input type="text" id="numero" name="numero" class="form-control form-control-lg rounded">
               </div>
             </div>
