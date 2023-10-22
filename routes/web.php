@@ -19,7 +19,7 @@ Route::get('/', function () {
     
 });
 
-Route::get('/loadClientData/{database}', [ClientController::class, 'loadClientData'])->name('loadClientData');
+Route::get('/admin/clients', [ClientController::class, 'listClient'])->name('clients');
 // Route::get('/loadClientData/{database}', 'ClientController@loadClientData')->name('loadClientData');
 
 // Route::get('/load-client-data', 'ClientController@loadClientData')->name('loadClientData');

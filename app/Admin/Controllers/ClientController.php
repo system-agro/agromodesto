@@ -23,7 +23,7 @@ class ClientController extends AdminController
      * @return Grid
      */
 
-    public function loadClientData()
+    public function listClient()
     {
         $contacts  = Client::all();
         return view('table', compact('contacts'));
