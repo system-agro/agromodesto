@@ -4,31 +4,6 @@
   <!-- Seus estilos e links para bibliotecas aqui -->
 </head>
 <body>
-  <script>
-    // Função para abrir o modal
-    function openModal() {
-      document.getElementById('customModal').style.display = 'block';
-    }
-
-    function closeModal() {
-      document.getElementById('customModal').style.display = 'none';
-    }
-
-    // Adicionando um event listener ao botão
-    document.getElementById('btnCadastrar').addEventListener('click', openModal);
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    
-    var currentUrl = window.location.href;
-    
-    if (currentUrl.includes('clientes')) {
-      document.getElementById("tab1-tab").classList.add("active");
-      document.getElementById("tab2-tab").classList.remove("active");
-    } else if (currentUrl.includes('fornecedores')) {
-      document.getElementById("tab1-tab").classList.remove("active");
-      document.getElementById("tab2-tab").classList.add("active");
-    }
-  </script>
-
   <style>
     /* Estilos para o modal */
     .modal {
@@ -176,5 +151,30 @@
     </div>
   </div>
   <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
+  <script>
+    // Função para abrir o modal
+    function openModal() {
+      document.getElementById('customModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('customModal').style.display = 'none';
+    }
+
+    // Adicionando um event listener ao botão
+    document.getElementById('btnCadastrar').addEventListener('click', openModal);
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    
+    var currentUrl = window.location.href;
+    
+    if (currentUrl.includes('clientes')) {
+      document.getElementById("tab1-tab").classList.add("active");
+      document.getElementById("tab2-tab").classList.remove("active");
+    } else if (currentUrl.includes('fornecedores')) {
+      document.getElementById("tab1-tab").classList.remove("active");
+      document.getElementById("tab2-tab").classList.add("active");
+    }
+</script>
+
 </body>
 </html>
