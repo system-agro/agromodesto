@@ -1,5 +1,13 @@
+@extends('admin::index')
 
-  <style>
+@section('content')
+
+    @php
+        $body_classes = ''; // Defina as classes do corpo conforme necessário
+        $_user_ = ''
+    @endphp
+    <!-- Seu conteúdo aqui -->
+    <style>
     /* Estilos para o modal */
     .modal {
       display: none;
@@ -147,8 +155,7 @@
   </div>
   <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
   <script>
-  // document.addEventListener('DOMContentLoaded', function () {
-    // Your code here
+    // Função para abrir o modal
     function openModal() {
       document.getElementById('customModal').style.display = 'block';
     }
@@ -157,11 +164,12 @@
       document.getElementById('customModal').style.display = 'none';
     }
 
+    // Adicionando um event listener ao botão
     document.getElementById('btnCadastrar').addEventListener('click', openModal);
     document.getElementById('closeModal').addEventListener('click', closeModal);
-
+    
     var currentUrl = window.location.href;
-
+    
     if (currentUrl.includes('clientes')) {
       document.getElementById("tab1-tab").classList.add("active");
       document.getElementById("tab2-tab").classList.remove("active");
@@ -169,5 +177,8 @@
       document.getElementById("tab1-tab").classList.remove("active");
       document.getElementById("tab2-tab").classList.add("active");
     }
-
 </script>
+
+
+@endsection
+ 
