@@ -35,35 +35,6 @@ class ClientController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Client());
-
-        //     $customTabs = <<<'HTML'
-        //     <ul class="nav nav-tabs" id="customTabs" role="tablist">
-        //         <li class="nav-item">
-        //             <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Clientes</a>
-        //         </li>
-        //         <li class="nav-item">
-        //             <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Fornecedores</a>
-        //         </li>
-        //     </ul>
-        //     <div class="tab-content" id="customTabsContent">
-        //         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-        //             Content for Tab 1
-        //         </div>
-        //         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-        //             Content for Tab 2
-        //         </div>
-        //     </div>
-        // HTML;
-
-        // $grid->tools(function (Grid\Tools $tools) use ($customTabs) {
-        //     $tools->append($customTabs);
-        // });
-
-
-
-
-
-
         $grid->tools(function (Grid\Tools $tools) {
             $tools->append(view('tabs'));
         });

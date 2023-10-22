@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <!-- Seus estilos e links para bibliotecas aqui -->
-</head>
-<body>
+
   <style>
     /* Estilos para o modal */
     .modal {
@@ -152,7 +147,7 @@
   </div>
   <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  // document.addEventListener('DOMContentLoaded', function () {
     // Your code here
     function openModal() {
       document.getElementById('customModal').style.display = 'block';
@@ -174,7 +169,5 @@
       document.getElementById("tab1-tab").classList.remove("active");
       document.getElementById("tab2-tab").classList.add("active");
     }
-  });
+
 </script>
-</body>
-</html>
