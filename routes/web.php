@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\Controllers\FornecedorController;
 use Illuminate\Support\Facades\Route;
 use App\Admin\Controllers\ClientController;
 
@@ -16,7 +17,9 @@ use App\Admin\Controllers\ClientController;
 
 Route::get('/', function () {
     return view('welcome');
-    
+
 });
 
 Route::get('/admin/testeClient', [ClientController::class, 'testeClient'])->name('testeClient');
+Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
+

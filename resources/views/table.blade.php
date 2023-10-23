@@ -56,7 +56,7 @@
         <!-- Aba de Fornecedores -->
         <li class="nav-item">
             <a class="nav-link" id="tab2-tab" data-toggle="tab" role="tab" aria-controls="tab2"
-                aria-selected="false">Fornecedores</a>
+                aria-selected="false" data-route="{{ route('listFornecedor') }}">Fornecedores</a>
         </li>
     </ul>
 
@@ -126,25 +126,6 @@
 
             <!-- Container com fundo branco para a tabela e filtro -->
             <div class="content-container px-3 pb-3" style="background-color: white;">
-                <!-- <table id="contacts-table" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($contacts as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td>{{ $contact->email }}</td>
-                            <td>{{ $contact->phone }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table> -->
-                <!-- Adicione aqui os filtros ou qualquer outro conteúdo que desejar -->
                 @include('components.table', [
                 'columns' => ['Nome', 'Email', 'Telefone'],
                 'data' => $contacts,
@@ -153,31 +134,12 @@
             </div>
         </div>
 
-        <!-- Conteúdo para a aba de Fornecedores -->
-        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-            <!-- Conteúdo para a aba de Fornecedores aqui -->
-            <div class="content-container px-3 pb-3" style="background-color: white;">
-                <table id="contacts-table" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($contacts as $contact)
-                        <tr>
-                            <td>{{ $contact->name }}</td>
-                            <td>{{ $contact->email }}</td>
-                            <!-- <td>{{ $contact->phone }}</td> -->
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <!-- Adicione aqui os filtros ou qualquer outro conteúdo que desejar -->
-            </div>
-        </div>
+          <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+              <!-- Conteúdo para a aba de Fornecedores aqui -->
+              <div class="content-container px-3 pb-3" id="tabs-fon" style="background-color: white;">
+             
+              </div>
+          </div>
     </div>
 </div>
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
@@ -199,6 +161,22 @@
     const buttonTabSupplier = document.getElementById('tab2-tab');
     // Adicione um event listener para a aba Fornecedores
     buttonTabSupplier.addEventListener('click', function () {
+      var route = this.getAttribute('data-route');
+        
+        // Realize a solicitação AJAX usando fetch ou jQuery.ajax
+        // Exemplo usando fetch:
+        fetch(route)
+            .then(response => response.json())
+            .then(data => {
+                // Atualize a tabela com os novos dados (data)
+                if (data.tableComponentContent) {
+                    const tableContainer = document.getElementById('tabs-fon');
+                    tableContainer.innerHTML = data.tableComponentContent;
+                }
+            })
+            .catch(error => {
+                console.error('Ocorreu um erro:', error);
+            });
         // Esconda o conteúdo da aba Clientes
         document.getElementById('tab1').classList.remove('show', 'active');
         // Mostre o conteúdo da aba Fornecedores
