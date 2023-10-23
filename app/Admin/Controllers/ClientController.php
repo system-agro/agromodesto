@@ -23,13 +23,14 @@ class ClientController extends AdminController
      * @return Grid
      */
 
-    public function listClient()
-    {
-        $contacts  = Client::all();
-        return view('table', compact('contacts'));
-        // return response()->json($clientes);
-        
-    }
+     public function listClient()
+     {
+         $contacts = Client::all();
+         $columnMapping = (new Client())->columnMapping;
+     
+         return view('table', compact('contacts', 'columnMapping'));
+     }
+     
     
     public function testeClient()
     {
