@@ -50,8 +50,8 @@
       <!-- Aba de Clientes -->
       <li class="nav-item">
     <a aria-selected="true" class="nav-link active" id="tab1-tab" data-toggle="tab" role="tab" aria-controls="tab1"
-        data-route="{{ route('listClient') }}"
-        href="{{ route('listClient') }}">Clientes</a>
+        data-route="{{ route('testeClient') }}"
+       >Clientes</a>
 </li>
       <!-- Aba de Fornecedores -->
       <li class="nav-item">
@@ -125,7 +125,7 @@
 
         <!-- Container com fundo branco para a tabela e filtro -->
         <div class="content-container px-3 pb-3" style="background-color: white;">
-          <table class="table table-bordered">
+          <table id="contacts-table" class="table table-bordered">
             <thead>
               <tr>
                 <th>Nome</th>
@@ -177,6 +177,30 @@
       document.getElementById("tab1-tab").classList.remove("active");
       document.getElementById("tab2-tab").classList.add("active");
     }
+
+
+    function updateTable(data) {
+      console.log(data)
+    }
+
+
+    document.getElementById('tab1-tab').addEventListener('click', function() {
+        var route = this.getAttribute('data-route');
+        
+        // Realize a solicitação AJAX usando fetch ou jQuery.ajax
+        // Exemplo usando fetch:
+        fetch(route)
+            .then(response => response.json())
+            .then(data => {
+                // Atualize a tabela com os novos dados (data)
+                updateTable(data);
+            })
+            .catch(error => {
+                console.error('Ocorreu um erro:', error);
+            });
+    });
+
+
 </script>
 
 

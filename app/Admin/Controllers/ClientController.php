@@ -31,6 +31,11 @@ class ClientController extends AdminController
         
     }
     
+    public function testeClient()
+    {
+        $contacts = Client::all();
+        return response()->json($contacts);
+    }
 
     protected function grid()
     {
