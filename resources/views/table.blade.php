@@ -4,7 +4,6 @@
 @php
     $body_classes = ''; // Defina as classes do corpo conforme necessário
     $_user_ = '';
-    // $contacts = json_encode($contacts);
 @endphp
 
 <!-- Seu conteúdo aqui -->
@@ -59,6 +58,7 @@
                 aria-selected="false" data-route="{{ route('listFornecedor') }}">Fornecedores</a>
         </li>
     </ul>
+    @include('components.modalCreate')
 
     <!-- Conteúdo das abas -->
     <div class="tab-content" id="customTabsContent">
@@ -66,63 +66,11 @@
         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
             <!-- Botão "Cadastrar +" -->
             <div class="content-container p-3">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#cadastroModal" id="btnCadastrar">Cadastrar
+                <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrar">Cadastrar
                     +</button>
             </div>
 
             <!-- Modal -->
-            <div id="customModal" class="modal">
-                <div class="modal-content">
-                    <span class="close justify-content-end" id="closeModal">&times;</span>
-                    <!-- Conteúdo do modal -->
-                    <!-- Seção de Informação Pessoal -->
-                    <div class="row p-3">
-                        <h2>Informação Pessoal</h2>
-
-                        <div class="col-md-6">
-                            <label for="nome">Nome:</label>
-                            <input type="text" id="nome" name="nome" class="form-control form-control-lg rounded">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="sobrenome">Sobrenome:</label>
-                            <input type="text" id="sobrenome" name="sobrenome" class="form-control form-control-lg rounded">
-                        </div>
-                    </div>
-
-                    <!-- Seção de Contato -->
-                    <div class="row p-3">
-                        <h2>Contato</h2>
-
-                        <div class="col-md-6">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control form-control-lg rounded">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telefone">Telefone:</label>
-                            <input type="tel" id="telefone" name="telefone" class="form-control form-control-lg rounded">
-                        </div>
-                    </div>
-
-                    <!-- Seção de Endereço -->
-                    <div class="row p-3">
-                        <h2>Endereço</h2>
-                        <div class="col-md-6">
-                            <label for="rua">Rua:</label>
-                            <input type="text" id="rua" name="rua" class="form-control form-control-lg rounded">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="numero">Número:</label>
-                            <input type="text" id="numero" name="numero" class="form-control form-control-lg rounded">
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-end p-3">
-                        <div class="col-md-2">
-                            <button id="btnSalvar" class="btn btn-primary" style="width:100%">Salvar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Container com fundo branco para a tabela e filtro -->
             <div class="content-container px-3 pb-3" style="background-color: white;">
@@ -136,9 +84,13 @@
 
           <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
               <!-- Conteúdo para a aba de Fornecedores aqui -->
-              <div class="content-container px-3 pb-3" id="tabs-fon" style="background-color: white;">
+                <div class="content-container p-3">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="addFornecedor" id="btnCadastrar">Cadastrar
+                        +</button>
+                </div>
+                <div class="content-container px-3 pb-3" id="tabs-fon" style="background-color: white;">
              
-              </div>
+                </div>
           </div>
     </div>
 </div>
@@ -152,6 +104,7 @@
     function closeModal() {
         document.getElementById('customModal').style.display = 'none';
     }
+    
 
     // Adicionando um event listener ao botão
     document.getElementById('btnCadastrar').addEventListener('click', openModal);
@@ -161,7 +114,7 @@
     const buttonTabSupplier = document.getElementById('tab2-tab');
     // Adicione um event listener para a aba Fornecedores
     buttonTabSupplier.addEventListener('click', function () {
-      var route = this.getAttribute('data-route');
+        var route = this.getAttribute('data-route');
         
         // Realize a solicitação AJAX usando fetch ou jQuery.ajax
         // Exemplo usando fetch:
