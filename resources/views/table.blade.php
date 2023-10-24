@@ -132,25 +132,23 @@
         // Mostre o conteúdo da aba Fornecedores
         const tabsFornecedor = document.getElementById('tab2')
         tabsFornecedor.classList.add('show', 'active');
-        
-        const container = document.createElement('div');
-        container.className = 'content-container p-3';
+        if (!document.getElementById('btnCadastrarFornecedor')) {
+            const container = document.createElement('div');
+            container.className = 'content-container p-3';
 
-        // Crie o botão
-        const button = document.createElement('button');
-        button.className = 'btn btn-primary';
-        button.dataset.toggle = 'modal';
-        button.dataset.target = 'addCliente';
-        button.id = 'btnCadastrar';
-        button.textContent = 'Cadastrar +';
-
-        // Adicione o botão ao contêiner
-        container.appendChild(button);
-        
-        tabsFornecedor.prepend(container)
-
-
-
+            // Crie o botão
+            const button = document.createElement('button');
+            button.className = 'btn btn-primary';
+            button.dataset.toggle = 'modal';
+            button.dataset.target = 'addCliente';
+            button.id = 'btnCadastrarFornecedor';
+            button.textContent = 'Cadastrar +';
+            button.addEventListener('click', openModal);
+            // Adicione o botão ao contêiner
+            container.appendChild(button);
+            
+            tabsFornecedor.prepend(container)
+        }
         buttonTabClient.classList.remove("active")
         buttonTabSupplier.classList.add("active")
     });
