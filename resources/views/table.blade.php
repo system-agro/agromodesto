@@ -63,35 +63,32 @@
     <!-- Conteúdo das abas -->
     <div class="tab-content" id="customTabsContent">
         <!-- Conteúdo para a aba de Clientes -->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            <!-- Botão "Cadastrar +" -->
-            <div class="content-container p-3">
-                <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrar">Cadastrar
-                    +</button>
-            </div>
-
-            <!-- Modal -->
-
-            <!-- Container com fundo branco para a tabela e filtro -->
-            <div class="content-container px-3 pb-3" style="background-color: white;">
-                @include('components.table', [
-                'columns' => ['Nome', 'Email', 'Telefone'],
-                'data' => $contacts,
-                'columnMapping' => $columnMapping
-                ])
-            </div>
-        </div>
-
-          <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-              <!-- Conteúdo para a aba de Fornecedores aqui -->
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <!-- Botão "Cadastrar +" -->
                 <div class="content-container p-3">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="addFornecedor" id="btnCadastrar">Cadastrar
+                    <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrar">Cadastrar
                         +</button>
                 </div>
-                <div class="content-container px-3 pb-3" id="tabs-fon" style="background-color: white;">
-             
+
+                <!-- Modal -->
+
+                <!-- Container com fundo branco para a tabela e filtro -->
+                <div class="content-container px-3 pb-3" style="background-color: white;">
+                    @include('components.table', [
+                    'columns' => ['Nome', 'Email', 'Telefone'],
+                    'data' => $contacts,
+                    'columnMapping' => $columnMapping
+                    ])
                 </div>
-          </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                <!-- Conteúdo para a aba de Fornecedores aqui -->
+                
+                    <div class="content-container px-3 pb-3" id="tabs-fon" style="background-color: white;">
+                
+                    </div>
+            </div>
     </div>
 </div>
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
@@ -133,7 +130,25 @@
         // Esconda o conteúdo da aba Clientes
         document.getElementById('tab1').classList.remove('show', 'active');
         // Mostre o conteúdo da aba Fornecedores
-        document.getElementById('tab2').classList.add('show', 'active');
+        const tabsFornecedor = document.getElementById('tab2')
+        tabsFornecedor.classList.add('show', 'active');
+        if (!document.getElementById('btnCadastrarFornecedor')) {
+            const container = document.createElement('div');
+            container.className = 'content-container p-3';
+
+            // Crie o botão
+            const button = document.createElement('button');
+            button.className = 'btn btn-primary';
+            button.dataset.toggle = 'modal';
+            button.dataset.target = 'addCliente';
+            button.id = 'btnCadastrarFornecedor';
+            button.textContent = 'Cadastrar +';
+            button.addEventListener('click', openModal);
+            // Adicione o botão ao contêiner
+            container.appendChild(button);
+            
+            tabsFornecedor.prepend(container)
+        }
         buttonTabClient.classList.remove("active")
         buttonTabSupplier.classList.add("active")
     });
