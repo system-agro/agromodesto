@@ -21,5 +21,6 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/testeClient', [ClientController::class, 'testeClient'])->name('testeClient');
+Route::get('/admin/detail/{id}', [ClientController::class, 'detail'])->name('detail');
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 

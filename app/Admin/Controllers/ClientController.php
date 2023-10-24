@@ -71,13 +71,14 @@ class ClientController extends AdminController
     /**
      * Make a show builder.
      *
-     * @param mixed $id
-     * @return Show
+     * @param mixed $id;
      */
     protected function detail($id)
     {
         $show = Client::findOrFail($id);
-        return response()->json($show);
+        // return view('components.modalCreate', compact('contacts', 'columnMapping'));
+        
+        return response()->json($show, 200);
     }
 
     /**
