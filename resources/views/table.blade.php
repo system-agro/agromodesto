@@ -58,8 +58,18 @@
                 aria-selected="false" data-route="{{ route('listFornecedor') }}">Fornecedores</a>
         </li>
     </ul>
-    @include('components.modalCreate')
-
+    @include('components.modalCreate', [
+    "sections" => [
+            [
+                "title" => "Informações Pessoais",
+                "inputs" => ["Nome"]
+            ],
+            [
+                "title" => "Contatos",
+                "inputs" => ["Email", "Telefone"]
+            ]
+        ]
+    ])
     <!-- Conteúdo das abas -->
     <div class="tab-content" id="customTabsContent">
         <!-- Conteúdo para a aba de Clientes -->
@@ -101,7 +111,11 @@
     function closeModal() {
         document.getElementById('customModal').style.display = 'none';
     }
-    
+
+    function visualizarItem(id) {
+        console.log(id)
+        openModal()
+    }
 
     // Adicionando um event listener ao botão
     document.getElementById('btnCadastrar').addEventListener('click', openModal);

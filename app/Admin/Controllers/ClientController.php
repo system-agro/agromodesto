@@ -76,16 +76,8 @@ class ClientController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Client::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
-        $show->field('email', __('Email'));
-        $show->field('phone', __('Phone'));
-        // $show->field('created_at', __('Created at'));
-        // $show->field('updated_at', __('Updated at'));
-
-        return $show;
+        $show = Client::findOrFail($id);
+        return response()->json($show);
     }
 
     /**
