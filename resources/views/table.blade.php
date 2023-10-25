@@ -65,8 +65,8 @@ $_user_ = '';
     <!-- Conteúdo para a aba de Clientes -->
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
       <!-- Botão "Cadastrar +" -->
-      <div class="content-container p-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrar" onclick="openModal('edit')">Cadastrar
+      <div id="container-button-cadastrar" class="content-container p-3">
+        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModal('edit')">Cadastrar
           +</button>
       </div>
 
@@ -96,6 +96,9 @@ $_user_ = '';
 // Função para abrir o modal
 function openModal(mode) {
     const container = document.getElementById("tabs")
+    const contentModal = document.createElement('div');
+    contentModal.className = 'container';
+    contentModal.id = 'contentModal';
     var modalContent = "";
     var temp_mode = mode;
     if(temp_mode === "view"){
@@ -128,7 +131,8 @@ function openModal(mode) {
             "mode" =>  "edit"
         ])`;
     }
-    container.innerHTML += modalContent
+    contentModal.innerHTML += modalContent
+    container.appendChild(contentModal)
     document.getElementById('customModal').style.display = 'block';
     temp_mode = "";
 }
@@ -156,12 +160,34 @@ async function visualizarItem(id) {
   }
 }
 
-
-// Adicionando um event listener ao botão
-// document.getElementById('btnCadastrar').addEventListener('click', openModal);
-
 const buttonTabClient = document.getElementById('tab1-tab');
 const buttonTabSupplier = document.getElementById('tab2-tab');
+
+function addClickEventToButton(button) {
+  button.addEventListener('click', () => {
+    openModal("edit");
+  });
+}
+
+function createDynamicButton() {
+  const container = document.createElement('div');
+  container.className = 'content-container p-3';
+
+  // Crie o botão
+  const button = document.createElement('button');
+  button.className = 'btn btn-primary';
+  button.dataset.toggle = 'modal';
+  button.dataset.target = 'addCliente';
+  button.textContent = 'Cadastrar +';
+  button.addEventListener('click', () => {
+    openModal("edit");
+  });
+
+  // Adicione o botão ao contêiner
+  container.appendChild(button);
+
+  tabsFornecedor.prepend(container);
+}
 
 function selectTabSupplier (){
 
@@ -197,12 +223,14 @@ function selectTabSupplier (){
     button.dataset.target = 'addCliente';
     button.id = 'btnCadastrarFornecedor';
     button.textContent = 'Cadastrar +';
-    button.addEventListener('click', openModal);
+    addClickEventToButton(button);
     // Adicione o botão ao contêiner
     container.appendChild(button);
 
     tabsFornecedor.prepend(container)
   }
+
+
   buttonTabClient.classList.remove("active")
   buttonTabSupplier.classList.add("active")
 }
