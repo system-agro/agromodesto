@@ -76,8 +76,6 @@ class ClientController extends AdminController
     protected function detail($id)
     {
         $show = Client::findOrFail($id);
-        // return view('components.modalCreate', compact('contacts', 'columnMapping'));
-        
         return response()->json($show, 200);
     }
 
