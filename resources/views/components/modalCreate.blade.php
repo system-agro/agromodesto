@@ -7,8 +7,7 @@
       <h2>{{ $section['title'] }}</h2>
       @foreach ($section['inputs'] as $input)
       <div class="col-md-6">
-        @include('components.input-fileds', ['input' => $input, 'mode' => $mode])
-        <!-- <input type="text" id="{{$input}}" name="{{$input}}" class="form-control form-control-lg rounded"> -->
+        @include('components.input-fileds', ['input' => $input, 'mode' => $mode, 'data' => $data])
       </div>
       @endforeach
     </div>

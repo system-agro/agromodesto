@@ -94,13 +94,20 @@ $_user_ = '';
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
 <script>
 // Função para abrir o modal
-function openModal(mode) {
+function openModal(mode, data = {}) {
+    
     const container = document.getElementById("tabs")
     const contentModal = document.createElement('div');
     contentModal.className = 'container';
     contentModal.id = 'contentModal';
     var modalContent = "";
     var temp_mode = mode;
+    const temp_data =  {
+      "Nome": data.name,
+      "Email": data.email,
+      "Telefone": data.phone
+    }
+
     if(temp_mode === "view"){
         modalContent = `@include('components.modalCreate', [
             "sections" => [
@@ -113,9 +120,14 @@ function openModal(mode) {
                 "inputs" => ["Email", "Telefone"]
             ]
             ],
-            "mode" =>  "view"
+            "mode" =>  "view",
+            "data" => [
+              "Nome" => "`+data.name+`",
+              "Email" => "`+data.email+`",
+              "Telefone" => "`+data.phone+`"
+            ]
+
         ])`;
-        console.log(mode)
     }else{
         modalContent = `@include('components.modalCreate', [
             "sections" => [
@@ -128,7 +140,8 @@ function openModal(mode) {
                 "inputs" => ["Email", "Telefone"]
             ]
             ],
-            "mode" =>  "edit"
+            "mode" =>  "edit",
+            "data" => []
         ])`;
     }
     contentModal.innerHTML += modalContent
@@ -150,7 +163,8 @@ async function visualizarItem(id) {
     if (response.ok) {
       const data = await response.json();
       // Manipulate the API data here
-      openModal('view')
+      console.log(data)
+      openModal('view', data)
         
     } else {
       console.error('Error calling the API:', response.status);
