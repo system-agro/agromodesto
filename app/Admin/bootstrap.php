@@ -22,11 +22,11 @@ use OpenAdmin\Admin\Grid;
 
 Grid::init(function (Grid $grid) {
 
-    $grid->enableDblClick();
+    // $grid->enableDblClick();
 
-    $grid->disableActions();
+    // $grid->disableActions();
 
-    $grid->disablePagination();
+    // $grid->disablePagination();
 
     // $grid->disableCreateButton();
 
@@ -34,11 +34,11 @@ Grid::init(function (Grid $grid) {
 
     // $grid->disableRowSelector();
 
-    $grid->disableColumnSelector();
+    // $grid->disableColumnSelector();
 
     // $grid->disableTools();
 
-    $grid->disableExport();
+    // $grid->disableExport();
 
 });
 

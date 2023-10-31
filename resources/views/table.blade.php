@@ -220,6 +220,27 @@ function addClickEventToButton(button) {
   });
 }
 
+function deleteClient(clientId) {
+    // Envie uma solicitação AJAX para excluir o cliente com o ID especificado
+    fetch('delete/' + clientId, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(function(response) {
+        if (response.ok) {
+            alert('Cliente excluído com sucesso');
+            // Atualize a tabela ou a página, conforme necessário
+        } else {
+            alert('Ocorreu um erro ao excluir o cliente');
+        }
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
 function createDynamicButton() {
   const container = document.createElement('div');
   container.className = 'content-container p-3';

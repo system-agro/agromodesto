@@ -94,4 +94,18 @@ class ClientController extends AdminController
 
         return $form;
     }
+
+    public function delete($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['message' => 'Cliente não encontrado'], 404);
+        }
+
+        $client->delete();
+
+        return response()->json(['message' => 'Cliente excluído com sucesso']);
+    }
+
 }
