@@ -14,7 +14,7 @@
           <td>{{ $contact->{$columnMapping[$column]} }}</td>
         @endforeach
         <td class="col-1">
-          <button id="edit" class="btn btn-primary">Editar</button>
+          <button id="edit" class="btn btn-primary" onclick="onEditModal({{ $contact->id }})">Editar</button>
           <button id="view" class="btn btn-success" onclick="visualizarItem({{ $contact->id }})">Visualizar</button>
           <button id="delete" class="btn btn-danger">Excluir</button>
         </td>
