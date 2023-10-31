@@ -1,7 +1,7 @@
 @props(['input', 'mode', 'data'])
 
 @php
-    $value = $mode === 'view' ? $data[$input] : '';
+    $value = $mode === 'view' || $mode === 'edit' ? $data[$input] : '';
     $disabled = $mode === 'view' ? 'disabled' : '';
 @endphp
 

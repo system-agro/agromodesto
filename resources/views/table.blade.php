@@ -66,7 +66,7 @@ $_user_ = '';
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
       <!-- Botão "Cadastrar +" -->
       <div id="container-button-cadastrar" class="content-container p-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModal('edit')">Cadastrar
+        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModal('new')">Cadastrar
           +</button>
       </div>
 
@@ -94,7 +94,7 @@ $_user_ = '';
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
 <script>
 // Função para abrir o modal
-function openModal(mode, data = {}) {
+function openModal(mode = "", data = {}) {
     
     const container = document.getElementById("tabs")
     const contentModal = document.createElement('div');
@@ -128,8 +128,8 @@ function openModal(mode, data = {}) {
             ]
 
         ])`;
-    }else{
-        modalContent = `@include('components.modalCreate', [
+    }else if(temp_mode === "edit"){
+      modalContent = `@include('components.modalCreate', [
             "sections" => [
             [
                 "title" => "Informações Pessoais",
@@ -141,6 +141,26 @@ function openModal(mode, data = {}) {
             ]
             ],
             "mode" =>  "edit",
+            "data" => [
+              "Nome" => "`+data.name+`",
+              "Email" => "`+data.email+`",
+              "Telefone" => "`+data.phone+`"
+            ]
+
+        ])`;
+    }else if(temp_mode === "new"){
+        modalContent = `@include('components.modalCreate', [
+            "sections" => [
+            [
+                "title" => "Informações Pessoais",
+                "inputs" => ["Nome"]
+            ],
+            [
+                "title" => "Contatos",
+                "inputs" => ["Email", "Telefone"]
+            ]
+            ],
+            "mode" =>  "new",
             "data" => []
         ])`;
     }
@@ -174,12 +194,29 @@ async function visualizarItem(id) {
   }
 }
 
+async function onEditModal(id) {
+  try {
+    const response = await fetch(`detail/${id}`);
+    if (response.ok) {
+      const data = await response.json();
+      // Manipulate the API data here
+      console.log(data)
+      openModal('edit', data)
+        
+    } else {
+      console.error('Error calling the API:', response.status);
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
 const buttonTabClient = document.getElementById('tab1-tab');
 const buttonTabSupplier = document.getElementById('tab2-tab');
 
 function addClickEventToButton(button) {
   button.addEventListener('click', () => {
-    openModal("edit");
+    openModal("new");
   });
 }
 
@@ -194,7 +231,7 @@ function createDynamicButton() {
   button.dataset.target = 'addCliente';
   button.textContent = 'Cadastrar +';
   button.addEventListener('click', () => {
-    openModal("edit");
+    openModal("new");
   });
 
   // Adicione o botão ao contêiner
