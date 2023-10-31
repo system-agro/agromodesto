@@ -43,6 +43,11 @@ $_user_ = '';
   text-decoration: none;
   cursor: pointer;
 }
+
+.nav-item {
+  cursor: pointer;
+}
+
 </style>
 
 <div id="tabs">
@@ -73,7 +78,7 @@ $_user_ = '';
       <!-- Modal -->
 
       <!-- Container com fundo branco para a tabela e filtro -->
-      <div class="content-container px-3 pb-3" style="background-color: white;">
+      <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
         'columns' => ['Nome', 'Email', 'Telefone'],
         'data' => $contacts,
@@ -171,7 +176,7 @@ function openModal(mode = "", data = {}) {
 }
 
 function closeModal() {
-    var element = document.getElementById('customModal');
+  var element = document.getElementById('customModal');
   if (element) {
     element.parentNode.removeChild(element);
   }
@@ -243,12 +248,18 @@ function deleteClient(clientId) {
     fetch('delete/' + clientId, {
         method: 'DELETE',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Cache-Control': 'no-cache, private',
+            'Pragma': 'no-cache'
         }
     })
     .then(function(response) {
         if (response.ok) {
           modalSuccess("Cliente excluido com sucesso");
+          setTimeout(function() {
+                location.reload();
+            }, 1000);
+          
         } else {
             alert('Ocorreu um erro ao excluir o cliente');
         }
@@ -257,6 +268,14 @@ function deleteClient(clientId) {
         console.error(error);
     });
 }
+
+function removeTable (){
+  const containerTable = document.getElementById("containerTable");
+  var table = containerTable.querySelector('table');
+  containerTable.removeChild(table);
+}
+
+
 
 function createClient(data) {
     fetch('save', {
@@ -269,7 +288,11 @@ function createClient(data) {
     })
     .then(function(response) {
         if (response.ok) {
+          closeModal()
           modalSuccess("Cliente cadastrado com sucesso");
+          setTimeout(function() {
+                location.reload();
+            }, 1000);
             // Limpe o formulário ou atualize a tabela, conforme necessário
         } else {
             alert('Ocorreu um erro ao criar o cliente');
@@ -326,8 +349,7 @@ function createDynamicButton() {
 
 function selectTabSupplier (){
 
-    var route = buttonTabSupplier.getAttribute('data-route');
-    console.log("teset")
+  var route = buttonTabSupplier.getAttribute('data-route');
   // Realize a solicitação AJAX usando fetch ou jQuery.ajax
   // Exemplo usando fetch:
   fetch(route)
