@@ -25,4 +25,5 @@ Route::get('/admin/detail/{id}', [ClientController::class, 'detail'])->name('det
 Route::post('/admin/save', [ClientController::class, 'save'])->name('save');
 Route::delete('/admin/delete/{id}', [ClientController::class, 'delete'])->name('delete');
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
+Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('listClient');
 
