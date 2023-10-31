@@ -220,6 +220,24 @@ function addClickEventToButton(button) {
   });
 }
 
+function modalSuccess(title){
+  const container = document.getElementById("tabs")
+  const contentModal = document.createElement('div');
+  contentModal.className = 'container';
+  contentModal.id = 'contentModalSuccess';
+  var modalContent = "";
+  modalContent = `@include('components.modalSuccess',[
+    'title' => "`+title+`"
+  ])`
+  contentModal.innerHTML += modalContent
+  container.appendChild(contentModal)
+  document.getElementById('successModal').classList.add('show');
+  document.getElementById('successModal').style.display = 'block';
+  setTimeout(function() {
+    container.removeChild(contentModal);
+  }, 2000);
+}
+
 function deleteClient(clientId) {
     // Envie uma solicitação AJAX para excluir o cliente com o ID especificado
     fetch('delete/' + clientId, {
@@ -230,8 +248,7 @@ function deleteClient(clientId) {
     })
     .then(function(response) {
         if (response.ok) {
-            alert('Cliente excluído com sucesso');
-            // Atualize a tabela ou a página, conforme necessário
+          modalSuccess("Cliente excluido com sucesso");
         } else {
             alert('Ocorreu um erro ao excluir o cliente');
         }
@@ -240,6 +257,52 @@ function deleteClient(clientId) {
         console.error(error);
     });
 }
+
+function createClient(data) {
+    fetch('save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(function(response) {
+        if (response.ok) {
+          modalSuccess("Cliente cadastrado com sucesso");
+            // Limpe o formulário ou atualize a tabela, conforme necessário
+        } else {
+            alert('Ocorreu um erro ao criar o cliente');
+        }
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+function getModalInputValues() {
+    var nome = document.getElementById('inputNome').value;
+    var email = document.getElementById('inputEmail').value;
+    var telefone = document.getElementById('inputTelefone').value;
+
+    // Faça o que desejar com esses valores, como enviar para o servidor ou realizar validações.
+
+    // Exemplo de exibição dos valores no console.
+    console.log('Nome:', nome);
+    console.log('Email:', email);
+    console.log('Telefone:', telefone);
+
+    // Retorne os valores, se necessário.
+    const data = {
+        name:nome,
+        email:email,
+        phone:telefone
+    };
+
+    createClient(data)
+}
+
+
 
 function createDynamicButton() {
   const container = document.createElement('div');

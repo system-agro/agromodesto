@@ -7,5 +7,5 @@
 
 <div>
     <label>{{ $input }}</label>
-    <input type="text" name="{{ $input }}" id="{{ $input }}" class="form-control form-control-lg rounded" value="{{ $value }}" {{ $disabled }}>
+    <input type="text" name="{{ $input }}" id="input{{ $input }}" class="form-control form-control-lg rounded" value="{{ $value }}" {{ $disabled }}>
 </div>
