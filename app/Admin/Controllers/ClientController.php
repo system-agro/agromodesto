@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use \App\Models\Client;
+use Illuminate\Http\Request;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
@@ -23,15 +24,15 @@ class ClientController extends AdminController
      * @return Grid
      */
 
-     public function listClient()
-     {
-         $contacts = Client::all();
-         $columnMapping = (new Client())->columnMapping;
-     
-         return view('table', compact('contacts', 'columnMapping'));
-     }
-     
-    
+    public function listClient()
+    {
+        $contacts = Client::all();
+        $columnMapping = (new Client())->columnMapping;
+
+        return view('table', compact('contacts', 'columnMapping'));
+    }
+
+
     public function testeClient()
     {
         $contacts = Client::all();
@@ -106,6 +107,25 @@ class ClientController extends AdminController
         $client->delete();
 
         return response()->json(['message' => 'Cliente excluído com sucesso']);
+    }
+
+    public function save(Request $request)
+    {
+        // Valide os dados recebidos do formulário, por exemplo:
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+        ]);
+
+        // Crie um novo cliente com os dados validados
+        $client = new Client();
+        $client->name = $validatedData['name'];
+        $client->email = $validatedData['email'];
+        $client->phone = $validatedData['phone'];
+        $client->save();
+
+        return response()->json(['message' => 'Cliente criado com sucesso']);
     }
 
 }

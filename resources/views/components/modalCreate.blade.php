@@ -16,7 +16,7 @@
     @if ($mode !== 'view')
     <div class="row justify-content-end p-3">
       <div class="col-md-2">
-        <button id="btnSalvar" class="btn btn-primary" style="width:100%">Salvar</button>
+        <button id="btnSalvar" class="btn btn-primary" style="width:100%" onclick="getModalInputValues()">Salvar</button>
       </div>
     </div>
     @endif
