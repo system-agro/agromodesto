@@ -17,10 +17,10 @@
     <div class="row justify-content-end p-3">
       <div class="col-md-2">
         @if ($mode === 'edit')
-        <button id="btnSalvar" class="btn btn-primary" style="width:100%" onclick="updateClient()">Atualizar</button>
+        <button id="btnSalvar" class="btn btn-primary" style="width:100%" onclick="update()">Atualizar</button>
         @else
         <button id="btnSalvar" class="btn btn-primary" style="width:100%"
-          onclick="createClient()">Salvar</button>
+          onclick="create()">Salvar</button>
         @endif
       </div>
     </div>

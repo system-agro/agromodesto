@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use \App\Models\Gado;
+use Illuminate\Http\Request;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
@@ -36,6 +37,13 @@ class GadoController extends AdminController
         $grid->column('updated_at', __('Updated at'));
 
         return $grid;
+    }
+    public function listGados()
+    {
+        $contacts = Gado::all();
+        $columnMapping = (new Gado())->columnMapping;
+
+        return view('pages.gados', compact('contacts', 'columnMapping'));
     }
 
     /**
@@ -76,5 +84,28 @@ class GadoController extends AdminController
         $form->text('valor_frete', __('Valor frete'));
 
         return $form;
+    }
+
+    public function save(Request $request)
+    {
+        // Valide os dados recebidos do formulário, por exemplo:
+        $validatedData = $request->validate([
+            'cliente' => 'required',
+            'data_venda' => 'required',
+            'valor_venda' => 'required',
+            'comissao' => 'required',
+            'valor_frete' => 'required',
+        ]);
+
+        // Crie um novo cliente com os dados validados
+        $gado = new Gado();
+        $gado->cliente = $validatedData['cliente'];
+        $gado->data_venda = $validatedData['data_venda'];
+        $gado->valor_venda = $validatedData['valor_venda'];
+        $gado->comissao = $validatedData['comissao'];
+        $gado->valor_frete = $validatedData['valor_frete'];
+        $gado->save();
+
+        return response()->json(['message' => 'Registro de venda de gado criado com sucesso']);
     }
 }
