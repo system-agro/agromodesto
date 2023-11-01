@@ -1,6 +1,7 @@
 <?php
 
 use App\Admin\Controllers\FornecedorController;
+use App\Admin\Controllers\GadoController;
 use Illuminate\Support\Facades\Route;
 use App\Admin\Controllers\ClientController;
 
@@ -27,4 +28,7 @@ Route::post('/admin/client/save', [ClientController::class, 'save'])->name('save
 Route::delete('/admin/client/delete/{id}', [ClientController::class, 'delete'])->name('delete');
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('listClient');
+Route::post('/admin/gado/save', [GadoController::class, 'save'])->name('save');
+
+// Route::get('/admin/gados', [GadoController::class, 'listGados'])->name('listGados');
 

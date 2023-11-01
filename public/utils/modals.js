@@ -27,7 +27,7 @@ function modalSuccess(title) {
 function openModalAction(mode = "", data = {}) {
   const container = document.getElementById("tabs");
   const contentModal = createContentModalElement();
-  const modalContent = getModalContentForModeClient(mode, data);
+  const modalContent = getModalContentForMode(mode, data);
 
   contentModal.innerHTML += modalContent;
   container.appendChild(contentModal);

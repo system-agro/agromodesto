@@ -121,7 +121,7 @@ const tabsConfig = {
 };
 
 
-function getModalContentForModeClient(mode, data) {
+function getModalContentForMode(mode, data) {
     switch (mode) {
         case "view":
             return `@include('components.modalCreate', [
@@ -162,7 +162,7 @@ function getModalContentForModeClient(mode, data) {
                     "Telefone" => "` + data.phone + `"
                 ]
             ])`;
-            return modalContent.replace('onclick="updateClient()"', 'onclick="updateClient(' + data.id + ')"');
+            return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
 
         case "new":
             return `@include('components.modalCreate', [
@@ -251,7 +251,7 @@ async function deleteClient(clientId) {
   }
 }
 
-async function createClient() {
+async function create() {
   try {
     const data = getModalInputValues();
     await createItem('client', data); // usando a função createItem
@@ -268,7 +268,7 @@ async function createClient() {
   }
 }
 
-async function updateClient(clientId) {
+async function update(clientId) {
   try {
     const data = getModalInputValues();
     await updateItem('client', clientId, data); // usando a função updateItem
