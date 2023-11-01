@@ -21,10 +21,10 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/testeClient', [ClientController::class, 'testeClient'])->name('testeClient');
-Route::get('/admin/detail/{id}', [ClientController::class, 'detail'])->name('detail');
-Route::put('/admin/updateClient/{id}', [ClientController::class, 'updateClient'])->name('updateClient');
-Route::post('/admin/save', [ClientController::class, 'save'])->name('save');
-Route::delete('/admin/delete/{id}', [ClientController::class, 'delete'])->name('delete');
+Route::get('/admin/client/detail/{id}', [ClientController::class, 'detail'])->name('detail');
+Route::put('/admin/client/update/{id}', [ClientController::class, 'updateClient'])->name('updateClient');
+Route::post('/admin/client/save', [ClientController::class, 'save'])->name('save');
+Route::delete('/admin/client/delete/{id}', [ClientController::class, 'delete'])->name('delete');
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('listClient');
 

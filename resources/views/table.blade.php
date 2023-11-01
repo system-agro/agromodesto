@@ -4,8 +4,22 @@
 @php
 $body_classes = ''; // Defina as classes do corpo conforme necessário
 $_user_ = '';
+$tabConfig = [
+            [
+                'title' => 'Clientes',
+                'id' => 'tabClient',
+                'routeName' => 'testeClient',
+            ],
+            [
+                'title' => 'Fornecedores',
+                'id' => 'tabSupplier',
+                'routeName' => 'listFornecedor',
+            ],
+            // ... Outras configurações de abas conforme necessário
+        ];
 @endphp
-
+<script src="{{ asset('js/operationAjax.js')}}"></script>
+<script src="{{ asset('utils/modals.js')}}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -63,15 +77,16 @@ $_user_ = '';
         data-route="{{ route('listFornecedor') }}" onclick="selectTabSupplier()">Fornecedores</a>
     </li>
   </ul>
-  
 
+  
+  @include('components.modalSuccess', ['title' => ''])
   <!-- Conteúdo das abas -->
   <div class="tab-content" id="customTabsContent">
     <!-- Conteúdo para a aba de Clientes -->
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
       <!-- Botão "Cadastrar +" -->
       <div id="container-button-cadastrar" class="content-container p-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModal('new')">Cadastrar
+        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModalAction('new')">Cadastrar
           +</button>
       </div>
 
@@ -99,102 +114,96 @@ $_user_ = '';
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
 <script>
 // Função para abrir o modal
-function openModal(mode = "", data = {}) {
-    
-    const container = document.getElementById("tabs")
-    const contentModal = document.createElement('div');
-    contentModal.className = 'container';
-    contentModal.id = 'contentModal';
-    var modalContent = "";
-    var temp_mode = mode;
-    const temp_data =  {
-      "Nome": data.name,
-      "Email": data.email,
-      "Telefone": data.phone
+
+const tabsConfig = {
+    tabClient: {
+        label: "Clientes",
+        route: "{{ route('testeClient') }}",
+        tabId: "tab1-tab",
+        ariaControls: "tab1"
+    },
+    tabSupplier: {
+        label: "Fornecedores",
+        route: "{{ route('listFornecedor') }}",
+        tabId: "tab2-tab",
+        ariaControls: "tab2"
     }
+    // ... Você pode adicionar mais abas conforme necessário.
+};
 
-    if(temp_mode === "view"){
-        modalContent = `@include('components.modalCreate', [
-            "sections" => [
-            [
-                "title" => "Informações Pessoais",
-                "inputs" => ["Nome"]
-            ],
-            [
-                "title" => "Contatos",
-                "inputs" => ["Email", "Telefone"]
-            ]
-            ],
-            "mode" =>  "view",
-            "data" => [
-              "Nome" => "`+data.name+`",
-              "Email" => "`+data.email+`",
-              "Telefone" => "`+data.phone+`"
-            ]
 
-        ])`;
-    }else if(temp_mode === "edit"){
-      modalContent = `@include('components.modalCreate', [
-            "sections" => [
-            [
-                "title" => "Informações Pessoais",
-                "inputs" => ["Nome"]
-            ],
-            [
-                "title" => "Contatos",
-                "inputs" => ["Email", "Telefone"]
-            ]
-            ],
-            "mode" =>  "edit",
-            "data" => [
-              "Nome" => "`+data.name+`",
-              "Email" => "`+data.email+`",
-              "Telefone" => "`+data.phone+`"
-            ]
+function getModalContentForModeClient(mode, data) {
+    switch (mode) {
+        case "view":
+            return `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Informações Pessoais",
+                        "inputs" => ["Nome"]
+                    ],
+                    [
+                        "title" => "Contatos",
+                        "inputs" => ["Email", "Telefone"]
+                    ]
+                ],
+                "mode" =>  "view",
+                "data" => [
+                    "Nome" => "` + data.name + `",
+                    "Email" => "` + data.email + `",
+                    "Telefone" => "` + data.phone + `"
+                ]
+            ])`;
 
-        ])`;
-        modalContent = modalContent.replace('onclick="updateClient()"', 'onclick="updateClient(' + data.id + ')"');
-        console.log(modalContent)
-    }else if(temp_mode === "new"){
-        modalContent = `@include('components.modalCreate', [
-            "sections" => [
-            [
-                "title" => "Informações Pessoais",
-                "inputs" => ["Nome"]
-            ],
-            [
-                "title" => "Contatos",
-                "inputs" => ["Email", "Telefone"]
-            ]
-            ],
-            "mode" =>  "new",
-            "data" => []
-        ])`;
+        case "edit":
+            let modalContent = `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Informações Pessoais",
+                        "inputs" => ["Nome"]
+                    ],
+                    [
+                        "title" => "Contatos",
+                        "inputs" => ["Email", "Telefone"]
+                    ]
+                ],
+                "mode" =>  "edit",
+                "data" => [
+                    "Nome" => "` + data.name + `",
+                    "Email" => "` + data.email + `",
+                    "Telefone" => "` + data.phone + `"
+                ]
+            ])`;
+            return modalContent.replace('onclick="updateClient()"', 'onclick="updateClient(' + data.id + ')"');
+
+        case "new":
+            return `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Informações Pessoais",
+                        "inputs" => ["Nome"]
+                    ],
+                    [
+                        "title" => "Contatos",
+                        "inputs" => ["Email", "Telefone"]
+                    ]
+                ],
+                "mode" =>  "new",
+                "data" => []
+            ])`;
+
+        default:
+            return "";
     }
-    contentModal.innerHTML += modalContent
-    container.appendChild(contentModal)
-    document.getElementById('customModal').style.display = 'block';
-    temp_mode = "";
-}
-
-function closeModal() {
-  var element = document.getElementById('customModal');
-  if (element) {
-    element.parentNode.removeChild(element);
-  }
 }
 
 async function visualizarItem(id) {
   try {
-    const response = await fetch(`detail/${id}`);
-    if (response.ok) {
-      const data = await response.json();
+    const data = await retrieveItem('client', id); // usando a função retrieveItem
+    if (data) {
       // Manipulate the API data here
-      console.log(data)
-      openModal('view', data)
-        
+      openModalAction('view', data, );
     } else {
-      console.error('Error calling the API:', response.status);
+      console.error('Error calling the API');
     }
   } catch (error) {
     console.error('An error occurred:', error);
@@ -203,151 +212,33 @@ async function visualizarItem(id) {
 
 async function onEditModal(id) {
   try {
-    const response = await fetch(`detail/${id}`);
-    if (response.ok) {
-      const data = await response.json();
+    const data = await retrieveItem('client', id); // usando a função retrieveItem
+    if (data) {
       // Manipulate the API data here
-      openModal('edit', data)
-        
+      openModalAction('edit', data);
     } else {
-      console.error('Error calling the API:', response.status);
+      console.error('Error calling the API');
     }
   } catch (error) {
     console.error('An error occurred:', error);
   }
 }
 
+
 const buttonTabClient = document.getElementById('tab1-tab');
 const buttonTabSupplier = document.getElementById('tab2-tab');
 
 function addClickEventToButton(button) {
   button.addEventListener('click', () => {
-    openModal("new");
+    openModalAction("new");
   });
 }
-
-function modalSuccess(title){
-  const container = document.getElementById("tabs")
-  const contentModal = document.createElement('div');
-  contentModal.className = 'container';
-  contentModal.id = 'contentModalSuccess';
-  var modalContent = "";
-  modalContent = `@include('components.modalSuccess',[
-    'title' => "`+title+`"
-  ])`
-  contentModal.innerHTML += modalContent
-  container.appendChild(contentModal)
-  document.getElementById('successModal').classList.add('show');
-  document.getElementById('successModal').style.display = 'block';
-  setTimeout(function() {
-    container.removeChild(contentModal);
-  }, 2000);
-}
-
-function deleteClient(clientId) {
-    // Envie uma solicitação AJAX para excluir o cliente com o ID especificado
-    fetch('delete/' + clientId, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Cache-Control': 'no-cache, private',
-            'Pragma': 'no-cache'
-        }
-    })
-    .then(function(response) {
-        if (response.ok) {
-          modalSuccess("Cliente excluido com sucesso");
-          setTimeout(function() {
-                location.reload();
-            }, 1000);
-          
-        } else {
-            alert('Ocorreu um erro ao excluir o cliente');
-        }
-    })
-    .catch(function(error) {
-        console.error(error);
-    });
-}
-
-function removeTable (){
-  const containerTable = document.getElementById("containerTable");
-  var table = containerTable.querySelector('table');
-  containerTable.removeChild(table);
-}
-
-
-
-function createClient() {
-  const data = getModalInputValues();
-  fetch('save', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(function(response) {
-        if (response.ok) {
-          closeModal()
-          modalSuccess("Cliente cadastrado com sucesso");
-          setTimeout(function() {
-                location.reload();
-            }, 1000);
-            // Limpe o formulário ou atualize a tabela, conforme necessário
-        } else {
-            alert('Ocorreu um erro ao criar o cliente');
-        }
-    })
-    .catch(function(error) {
-        console.error(error);
-    });
-}
-
-function updateClient(clientId) {
-  const data = getModalInputValues();
-  console.log(data)
-  console.log(clientId)
-  fetch('updateClient/' + clientId, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(function(response) {
-        if (response.ok) {
-            closeModal();
-            modalSuccess("Cliente atualizado com sucesso");
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
-            // Refresh the form or the table as needed
-        } else {
-            alert('Ocorreu um erro ao atualizar o cliente');
-        }
-    })
-    .catch(function(error) {
-        console.error(error);
-    });
-}
-
 
 function getModalInputValues() {
     var nome = document.getElementById('inputNome').value;
     var email = document.getElementById('inputEmail').value;
     var telefone = document.getElementById('inputTelefone').value;
-
-    // Faça o que desejar com esses valores, como enviar para o servidor ou realizar validações.
-
-    // Exemplo de exibição dos valores no console.
-    console.log('Nome:', nome);
-    console.log('Email:', email);
-    console.log('Telefone:', telefone);
-
-    // Retorne os valores, se necessário.
+    
     const data = {
         name:nome,
         email:email,
@@ -355,10 +246,57 @@ function getModalInputValues() {
     };
 
     return data
-    // createClient(data)
 }
 
+async function deleteClient(clientId) {
+  try {
+    await deleteItem('client', clientId); // usando a função deleteItem
 
+    modalSuccess("Cliente excluido com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao excluir o cliente');
+  }
+}
+
+async function createClient() {
+  try {
+    const data = getModalInputValues();
+    await createItem('client', data); // usando a função createItem
+    closeModal();
+    modalSuccess("Cliente cadastrado com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+    // Limpe o formulário ou atualize a tabela, conforme necessário
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao criar o cliente');
+  }
+}
+
+async function updateClient(clientId) {
+  try {
+    const data = getModalInputValues();
+    await updateItem('client', clientId, data); // usando a função updateItem
+
+    closeModal();
+    modalSuccess("Cliente atualizado com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+    // Refresh the form or the table as needed
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao atualizar o cliente');
+  }
+}
 
 function createDynamicButton() {
   const container = document.createElement('div');
@@ -371,7 +309,7 @@ function createDynamicButton() {
   button.dataset.target = 'addCliente';
   button.textContent = 'Cadastrar +';
   button.addEventListener('click', () => {
-    openModal("new");
+    openModalAction("new");
   });
 
   // Adicione o botão ao contêiner
