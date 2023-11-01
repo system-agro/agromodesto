@@ -47,28 +47,6 @@ class GadoController extends AdminController
     }
 
     /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
-    {
-        $show = new Show(Gado::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('cliente', __('Cliente'));
-        $show->field('data_venda', __('Data venda'));
-        $show->field('valor_venda', __('Valor venda'));
-        $show->field('comissao', __('Comissao'));
-        $show->field('valor_frete', __('Valor frete'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
-        return $show;
-    }
-
-    /**
      * Make a form builder.
      *
      * @return Form
@@ -108,4 +86,53 @@ class GadoController extends AdminController
 
         return response()->json(['message' => 'Registro de venda de gado criado com sucesso']);
     }
+
+    protected function detail($id)
+    {
+        $show = Gado::findOrFail($id);
+        return response()->json($show, 200);
+    }
+
+    public function updateReport(Request $request, $id)
+    {
+        // Find the gado by ID
+        $gado = Gado::find($id);
+
+        // Check if gado exists
+        if (!$gado) {
+            return response()->json(['message' => 'Gado não encontrado'], 404);
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'cliente' => 'required',
+            'data_venda' => 'required',
+            'valor_venda' => 'required',
+            'comissao' => 'required',
+            'valor_frete' => 'required',
+        ]);
+
+        // Update the gado details with validated data
+        $gado->cliente = $validatedData['cliente'];
+        $gado->data_venda = $validatedData['data_venda'];
+        $gado->valor_venda = $validatedData['valor_venda'];
+        $gado->comissao = $validatedData['comissao'];
+        $gado->valor_frete = $validatedData['valor_frete'];
+        $gado->save();
+
+        return response()->json(['message' => 'Gado atualizado com sucesso']);
+    }
+    public function delete($id)
+    {
+        $gado = Gado::find($id);
+
+        if (!$gado) {
+            return response()->json(['message' => 'Cliente não encontrado'], 404);
+        }
+
+        $gado->delete();
+
+        return response()->json(['message' => 'Cliente excluído com sucesso']);
+    }
+
 }

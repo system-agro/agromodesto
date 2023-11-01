@@ -99,46 +99,51 @@ $tabConfig = [
 // Adicione um event listener para a aba Clientes
 function getModalContentForMode(mode, data) {
     switch (mode) {
-        case "view":
-            return `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Informações Pessoais",
-                        "inputs" => ["Nome"]
-                    ],
-                    [
-                        "title" => "Contatos",
-                        "inputs" => ["Email", "Telefone"]
-                    ]
-                ],
-                "mode" =>  "view",
-                "data" => [
-                    "Nome" => "` + data.name + `",
-                    "Email" => "` + data.email + `",
-                    "Telefone" => "` + data.phone + `"
-                ]
-            ])`;
+            case "view":
+              return `@include('components.modalCreate', [
+                  "sections" => [
+                      [
+                          "title" => "Informações do cliente",
+                          "inputs" => ["Nome"]
+                      ],
+                      [
+                          "title" => "Detalhes da Venda",
+                          "inputs" => ["Data Venda", "Valor Venda", "Comissão", "Valor Frente"]
+                      ]
+                  ],
+                  "mode" => "view",
+                  "data" => [
+                      "Nome" => "` + data.cliente + `",
+                      "Data Venda" => "` + data.data_venda + `",
+                      "Valor Venda" => "` + data.valor_venda + `",
+                      "Comissão" => "` + data.comissao + `",
+                      "Valor Frente" => "` + data.valor_frete + `"
+                  ]
+              ])`;
 
-        case "edit":
-            let modalContent = `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Informações Pessoais",
-                        "inputs" => ["Nome"]
-                    ],
-                    [
-                        "title" => "Contatos",
-                        "inputs" => ["Email", "Telefone"]
-                    ]
-                ],
-                "mode" =>  "edit",
-                "data" => [
-                    "Nome" => "` + data.name + `",
-                    "Email" => "` + data.email + `",
-                    "Telefone" => "` + data.phone + `"
-                ]
-            ])`;
-            return modalContent.replace('onclick="updateClient()"', 'onclick="updateClient(' + data.id + ')"');
+
+            case "edit":
+              let modalContent = `@include('components.modalCreate', [
+                  "sections" => [
+                      [
+                          "title" => "Informações do cliente",
+                          "inputs" => ["Nome"]
+                      ],
+                      [
+                          "title" => "Detalhes da Venda",
+                          "inputs" => ["Data Venda", "Valor Venda", "Comissão", "Valor Frente"]
+                      ]
+                  ],
+                  "mode" => "edit",
+                  "data" => [
+                      "Nome" => "` + data.cliente + `",
+                      "Data Venda" => "` + data.data_venda + `",
+                      "Valor Venda" => "` + data.valor_venda + `",
+                      "Comissão" => "` + data.comissao + `",
+                      "Valor Frente" => "` + data.valor_frete + `"
+                  ]
+              ])`;
+              return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
 
         case "new":
             return `@include('components.modalCreate', [
@@ -186,7 +191,7 @@ async function create() {
     const data = getModalInputValues();
     await createItem('gado', data); // usando a função createItem
     closeModal();
-    modalSuccess("Cliente cadastrado com sucesso");
+    modalSuccess("Relatorio de venda de gado gerado com sucesso");
     setTimeout(function() {
         location.reload();
     }, 1000);
@@ -194,7 +199,67 @@ async function create() {
 
   } catch (error) {
     console.error('An error occurred:', error);
-    alert('Ocorreu um erro ao criar o cliente');
+    alert('Ocorreu um erro ao criar o relatorio');
+  }
+}
+
+async function visualizarItem(id) {
+  try {
+    const data = await retrieveItem('gado', id); // usando a função retrieveItem
+    if (data) {
+      // Manipulate the API data here
+      openModalAction('view', data, );
+    } else {
+      console.error('Error calling the API');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+async function update(relatorioId) {
+  try {
+    const data = getModalInputValues();
+    await updateItem('gado', relatorioId, data); // usando a função updateItem
+    closeModal();
+    modalSuccess("Relatorio atualizado com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+    // Refresh the form or the table as needed
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao atualizar o relatorio');
+  }
+}
+
+async function onEditModal(id) {
+  try {
+    const data = await retrieveItem('gado', id); // usando a função retrieveItem
+    if (data) {
+      // Manipulate the API data here
+      openModalAction('edit', data);
+    } else {
+      console.error('Error calling the API');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+async function deleteData(clientId) {
+  try {
+    await deleteItem('gado', clientId); // usando a função deleteItem
+
+    modalSuccess("Relatorio excluido com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
+
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao excluir o cliente');
   }
 }
 
