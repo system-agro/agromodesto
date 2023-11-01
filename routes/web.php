@@ -29,6 +29,12 @@ Route::delete('/admin/client/delete/{id}', [ClientController::class, 'delete'])-
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('listClient');
 Route::post('/admin/gado/save', [GadoController::class, 'save'])->name('save');
+Route::put('/admin/gado/update/{id}', [GadoController::class, 'updateReport'])->name('updateReport');
+Route::get('/admin/gado/detail/{id}', [GadoController::class, 'detail'])->name('detail');
+Route::delete('/admin/gado/delete/{id}', [GadoController::class, 'delete'])->name('delete');
+
+
+
 
 // Route::get('/admin/gados', [GadoController::class, 'listGados'])->name('listGados');
 

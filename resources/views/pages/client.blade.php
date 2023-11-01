@@ -236,7 +236,7 @@ function getModalInputValues() {
     return data
 }
 
-async function deleteClient(clientId) {
+async function deleteData(clientId) {
   try {
     await deleteItem('client', clientId); // usando a função deleteItem
 
