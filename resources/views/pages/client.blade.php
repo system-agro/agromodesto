@@ -5,18 +5,20 @@
 $body_classes = ''; // Defina as classes do corpo conforme necessário
 $_user_ = '';
 $tabConfig = [
-            [
-                'title' => 'Clientes',
-                'id' => 'tabClient',
-                'routeName' => 'testeClient',
-            ],
-            [
-                'title' => 'Fornecedores',
-                'id' => 'tabSupplier',
-                'routeName' => 'listFornecedor',
-            ],
-            // ... Outras configurações de abas conforme necessário
-        ];
+    [
+        'title' => 'Clientes',
+        'id' => 'tabClient',
+        'routeName' => 'testeClient',
+        'onClickFunction' => 'selectTabClient()',
+        'content' => view('components.table', ['columns' => ['Nome', 'Email', 'Telefone'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
+    ],
+    [
+        'title' => 'Fornecedores',
+        'id' => 'tabSupplier',
+        'routeName' => 'listFornecedor',
+        'onClickFunction' => 'selectTabSupplier()'
+    ],
+];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
@@ -65,20 +67,7 @@ $tabConfig = [
 </style>
 
 <div id="tabs">
-  <ul class="nav nav-tabs" id="customTabs" role="tablist">
-    <!-- Aba de Clientes -->
-    <li class="nav-item">
-      <a aria-selected="true" class="nav-link active" id="tab1-tab" data-toggle="tab" role="tab" aria-controls="tab1"
-        data-route="{{ route('testeClient') }}" onclick="selectTabClient()">Clientes</a>
-    </li>
-    <!-- Aba de Fornecedores -->
-    <li class="nav-item">
-      <a class="nav-link" id="tab2-tab" data-toggle="tab" role="tab" aria-controls="tab2" aria-selected="false"
-        data-route="{{ route('listFornecedor') }}" onclick="selectTabSupplier()">Fornecedores</a>
-    </li>
-  </ul>
-
-  
+  @include('components.tabs',  ['tabsConfig' => $tabConfig])
   @include('components.modalSuccess', ['title' => ''])
   <!-- Conteúdo das abas -->
   <div class="tab-content" id="customTabsContent">
@@ -225,8 +214,7 @@ async function onEditModal(id) {
 }
 
 
-const buttonTabClient = document.getElementById('tab1-tab');
-const buttonTabSupplier = document.getElementById('tab2-tab');
+
 
 function addClickEventToButton(button) {
   button.addEventListener('click', () => {
@@ -318,59 +306,74 @@ function createDynamicButton() {
   tabsFornecedor.prepend(container);
 }
 
-function selectTabSupplier (){
 
-  var route = buttonTabSupplier.getAttribute('data-route');
-  // Realize a solicitação AJAX usando fetch ou jQuery.ajax
-  // Exemplo usando fetch:
-  fetch(route)
-    .then(response => response.json())
-    .then(data => {
-      // Atualize a tabela com os novos dados (data)
-      if (data.tableComponentContent) {
-        const tableContainer = document.getElementById('tabs-fon');
-        tableContainer.innerHTML = data.tableComponentContent;
-      }
-    })
-    .catch(error => {
-      console.error('Ocorreu um erro:', error);
-    });
-  // Esconda o conteúdo da aba Clientes
-  document.getElementById('tab1').classList.remove('show', 'active');
-  // Mostre o conteúdo da aba Fornecedores
-  const tabsFornecedor = document.getElementById('tab2')
-  tabsFornecedor.classList.add('show', 'active');
-  if (!document.getElementById('btnCadastrarFornecedor')) {
-    const container = document.createElement('div');
-    container.className = 'content-container p-3';
+// Adicione um event listener para a aba Fornecedores
 
-    // Crie o botão
-    const button = document.createElement('button');
-    button.className = 'btn btn-primary';
-    button.dataset.toggle = 'modal';
-    button.dataset.target = 'addCliente';
-    button.id = 'btnCadastrarFornecedor';
-    button.textContent = 'Cadastrar +';
-    addClickEventToButton(button);
-    // Adicione o botão ao contêiner
-    container.appendChild(button);
 
-    tabsFornecedor.prepend(container)
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  const buttonTabClient = document.getElementById('tabClient-tab');
+  const buttonTabSupplier = document.getElementById('tabSupplier-tab');
+
+  function selectTabSupplier (event){
+    const route = event.target.getAttribute('data-route');
+    // Realize a solicitação AJAX usando fetch ou jQuery.ajax
+    // Exemplo usando fetch:
+    fetch(route)
+      .then(response => response.json())
+      .then(data => {
+        // Atualize a tabela com os novos dados (data)
+        if (data.tableComponentContent) {
+          const tableContainer = document.getElementById('tabs-fon');
+          tableContainer.innerHTML = data.tableComponentContent;
+        }
+      })
+      .catch(error => {
+        console.error('Ocorreu um erro:', error);
+      });
+    // Esconda o conteúdo da aba Clientes
+    document.getElementById('tab1').classList.remove('show', 'active');
+    // Mostre o conteúdo da aba Fornecedores
+    const tabsFornecedor = document.getElementById('tab2')
+    tabsFornecedor.classList.add('show', 'active');
+    if (!document.getElementById('btnCadastrarFornecedor')) {
+      const container = document.createElement('div');
+      container.className = 'content-container p-3';
+
+      // Crie o botão
+      const button = document.createElement('button');
+      button.className = 'btn btn-primary';
+      button.dataset.toggle = 'modal';
+      button.dataset.target = 'addCliente';
+      button.id = 'btnCadastrarFornecedor';
+      button.textContent = 'Cadastrar +';
+      addClickEventToButton(button);
+      // Adicione o botão ao contêiner
+      container.appendChild(button);
+
+      tabsFornecedor.prepend(container)
+    }
+
+
+    buttonTabClient.classList.remove("active")
+    buttonTabSupplier.classList.add("active")
   }
 
 
-  buttonTabClient.classList.remove("active")
-  buttonTabSupplier.classList.add("active")
-}
-// Adicione um event listener para a aba Fornecedores
-
-function selectTabClient(){
+  function selectTabClient(event){
     document.getElementById('tab2').classList.remove('show', 'active');
   // Mostre o conteúdo da aba Clientes
     document.getElementById('tab1').classList.add('show', 'active');
     buttonTabSupplier.classList.remove("active")
     buttonTabClient.classList.add("active")
-}
+  }
+
+  // Para cada tab, adicione o event listener correspondente
+  document.getElementById("tabClient-tab").addEventListener("click", (event) => selectTabClient(event));
+  document.getElementById("tabSupplier-tab").addEventListener("click", (event) => selectTabSupplier(event));
+
+});
 // Adicione um event listener para a aba Clientes
 
 </script>

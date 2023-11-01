@@ -29,7 +29,7 @@ class ClientController extends AdminController
         $contacts = Client::all();
         $columnMapping = (new Client())->columnMapping;
 
-        return view('table', compact('contacts', 'columnMapping'));
+        return view('pages.client', compact('contacts', 'columnMapping'));
     }
 
 
