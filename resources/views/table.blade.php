@@ -153,6 +153,8 @@ function openModal(mode = "", data = {}) {
             ]
 
         ])`;
+        modalContent = modalContent.replace('onclick="updateClient()"', 'onclick="updateClient(' + data.id + ')"');
+        console.log(modalContent)
     }else if(temp_mode === "new"){
         modalContent = `@include('components.modalCreate', [
             "sections" => [
@@ -205,7 +207,6 @@ async function onEditModal(id) {
     if (response.ok) {
       const data = await response.json();
       // Manipulate the API data here
-      console.log(data)
       openModal('edit', data)
         
     } else {
@@ -277,8 +278,9 @@ function removeTable (){
 
 
 
-function createClient(data) {
-    fetch('save', {
+function createClient() {
+  const data = getModalInputValues();
+  fetch('save', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -303,6 +305,36 @@ function createClient(data) {
     });
 }
 
+function updateClient(clientId) {
+  const data = getModalInputValues();
+  console.log(data)
+  console.log(clientId)
+  fetch('updateClient/' + clientId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(function(response) {
+        if (response.ok) {
+            closeModal();
+            modalSuccess("Cliente atualizado com sucesso");
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
+            // Refresh the form or the table as needed
+        } else {
+            alert('Ocorreu um erro ao atualizar o cliente');
+        }
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+
 function getModalInputValues() {
     var nome = document.getElementById('inputNome').value;
     var email = document.getElementById('inputEmail').value;
@@ -322,7 +354,8 @@ function getModalInputValues() {
         phone:telefone
     };
 
-    createClient(data)
+    return data
+    // createClient(data)
 }
 
 

@@ -1,6 +1,6 @@
 <div id="customModal" class="modal">
-  <div class="modal-content"> <span class="close justify-content-end" id="closeModal" onclick="closeModal()">&times;</span>
-    <!-- Conteúdo do modal -->
+  <div class="modal-content"> <span class="close justify-content-end" id="closeModal"
+      onclick="closeModal()">&times;</span> <!-- Conteúdo do modal -->
     <!-- Seção de Informação Pessoal -->
     @foreach ($sections as $section)
     <div class="row p-3">
@@ -16,7 +16,12 @@
     @if ($mode !== 'view')
     <div class="row justify-content-end p-3">
       <div class="col-md-2">
-        <button id="btnSalvar" class="btn btn-primary" style="width:100%" onclick="getModalInputValues()">Salvar</button>
+        @if ($mode === 'edit')
+        <button id="btnSalvar" class="btn btn-primary" style="width:100%" onclick="updateClient()">Atualizar</button>
+        @else
+        <button id="btnSalvar" class="btn btn-primary" style="width:100%"
+          onclick="createClient()">Salvar</button>
+        @endif
       </div>
     </div>
     @endif
