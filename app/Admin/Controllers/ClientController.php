@@ -128,4 +128,30 @@ class ClientController extends AdminController
         return response()->json(['message' => 'Cliente criado com sucesso']);
     }
 
+    public function updateClient(Request $request, $id)
+    {
+        // Find the client by ID
+        $client = Client::find($id);
+
+        // Check if client exists
+        if (!$client) {
+            return response()->json(['message' => 'Cliente não encontrado'], 404);
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+        ]);
+
+        // Update the client details with validated data
+        $client->name = $validatedData['name'];
+        $client->email = $validatedData['email'];
+        $client->phone = $validatedData['phone'];
+        $client->save();
+
+        return response()->json(['message' => 'Cliente atualizado com sucesso']);
+    }
+
 }
