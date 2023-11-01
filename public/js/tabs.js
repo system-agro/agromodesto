@@ -19,18 +19,7 @@
 // });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const tab1 = document.getElementById('tab3-tab');
-
-  tab1.addEventListener('click', function () {
-    const route = tab1.getAttribute('data-route');
-
-    axios.get(route)
-      .then(response => {
-        const data = response.data;
-        // Aqui, você pode processar os dados dos clientes
-        console.log(data);
-      });
-  });
+  console.log("teste")
 });
 
 
