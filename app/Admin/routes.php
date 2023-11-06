@@ -18,11 +18,12 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     // $router->resource('clients', ClientController::class);
-    $router->resource('madeiras', MadeirasController::class);
+    // $router->resource('madeiras', MadeirasController::class);
     $router->resource('caminhaos', CaminhaoController::class);
     // $router->resource('gados', GadoController::class);
     $router->get('clients', 'ClientController@listClient')->name('listClient');
     $router->get('fornecedor', 'FornecedorController@listFornecedor')->name('listFornecedor');
     $router->get('gados', 'GadoController@listGados')->name('listGados');
+    $router->get('madeiras', 'MadeirasController@listMadeira')->name('listMadeira');
 
 });

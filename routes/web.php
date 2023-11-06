@@ -2,6 +2,7 @@
 
 use App\Admin\Controllers\FornecedorController;
 use App\Admin\Controllers\GadoController;
+use App\Admin\Controllers\MadeirasController;
 use Illuminate\Support\Facades\Route;
 use App\Admin\Controllers\ClientController;
 
@@ -32,6 +33,12 @@ Route::post('/admin/gado/save', [GadoController::class, 'save'])->name('save');
 Route::put('/admin/gado/update/{id}', [GadoController::class, 'updateReport'])->name('updateReport');
 Route::get('/admin/gado/detail/{id}', [GadoController::class, 'detail'])->name('detail');
 Route::delete('/admin/gado/delete/{id}', [GadoController::class, 'delete'])->name('delete');
+
+Route::post('/admin/madeira/save', [MadeirasController::class, 'save'])->name('save');
+Route::put('/admin/madeira/update/{id}', [MadeirasController::class, 'updateReport'])->name('updateReport');
+Route::get('/admin/madeira/detail/{id}', [MadeirasController::class, 'detail'])->name('detail');
+Route::delete('/admin/madeira/delete/{id}', [MadeirasController::class, 'delete'])->name('delete');
+Route::delete('/admin/listMadeira', [MadeirasController::class, 'listMadeira'])->name('listMadeira');
 
 
 

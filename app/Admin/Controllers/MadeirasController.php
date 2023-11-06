@@ -7,6 +7,8 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
+use Illuminate\Http\Request;
+
 
 class MadeirasController extends AdminController
 {
@@ -16,63 +18,101 @@ class MadeirasController extends AdminController
      * @var string
      */
     protected $title = 'Madeiras';
-
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
-    protected function grid()
+    public function listMadeira()
     {
-        $grid = new Grid(new Madeiras());
+        $contacts = Madeiras::all();
+        $columnMapping = (new Madeiras())->columnMapping;
 
-        $grid->column('id', __('Id'));
-        $grid->column('tipo_madeira', __('Tipo madeira'));
-        $grid->column('data_venda', __('Data venda'));
-        $grid->column('valor_compra', __('Valor compra'));
-        $grid->column('quantida_compra', __('Quantida compra'));
-        $grid->column('valor_venda', __('Valor venda'));
-        $grid->column('frete', __('Frete'));
-        $grid->column('icms', __('Icms'));
-        $grid->column('lucro', __('Lucro'));
-        $grid->column('cliente', __('Cliente'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        return view('pages.madeiras', compact('contacts', 'columnMapping'));
+    }
+    public function save(Request $request)
+    {
+        // Valide os dados recebidos do formulário para madeira
+        $validatedData = $request->validate([
+            'tipo_madeira' => 'required',
+            'data_venda' => 'required',
+            'valor_compra' => 'required',
+            'quantida_compra' => 'required',
+            'valor_venda' => 'required',
+            'frete' => 'required',
+            'icms' => 'required',
+            'lucro' => 'required',
+            'cliente' => 'required',
+        ]);
 
-        return $grid;
+        // Crie um novo registro de venda de madeira com os dados validados
+        $madeira = new Madeiras(); // Substitua 'Madeira' pelo nome real do seu modelo
+        $madeira->tipo_madeira = $validatedData['tipo_madeira'];
+        $madeira->data_venda = $validatedData['data_venda'];
+        $madeira->valor_compra = $validatedData['valor_compra'];
+        $madeira->quantida_compra = $validatedData['quantida_compra'];
+        $madeira->valor_venda = $validatedData['valor_venda'];
+        $madeira->frete = $validatedData['frete'];
+        $madeira->icms = $validatedData['icms'];
+        $madeira->lucro = $validatedData['lucro'];
+        $madeira->cliente = $validatedData['cliente'];
+        $madeira->save();
+
+        return response()->json(['message' => 'Registro de venda de madeira criado com sucesso']);
     }
 
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
     protected function detail($id)
     {
-        $show = new Show(Madeiras::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('tipo_madeira', __('Tipo madeira'));
-        $show->field('data_venda', __('Data venda'));
-        $show->field('valor_compra', __('Valor compra'));
-        $show->field('quantida_compra', __('Quantida compra'));
-        $show->field('valor_venda', __('Valor venda'));
-        $show->field('frete', __('Frete'));
-        $show->field('icms', __('Icms'));
-        $show->field('lucro', __('Lucro'));
-        $show->field('cliente', __('Cliente'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
-        return $show;
+        $show = Madeiras::findOrFail($id);
+        return response()->json($show, 200);
     }
 
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
+    public function updateReport(Request $request, $id)
+    {
+        // Find the madeira by ID
+        $madeira = Madeiras::find($id);
+
+        // Check if madeira exists
+        if (!$madeira) {
+            return response()->json(['message' => 'Madeira não encontrada'], 404);
+        }
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'tipo_madeira' => 'required',
+            'data_venda' => 'required',
+            'valor_compra' => 'required',
+            'quantida_compra' => 'required',
+            'valor_venda' => 'required',
+            'frete' => 'required',
+            'icms' => 'required',
+            'lucro' => 'required',
+            'cliente' => 'required',
+        ]);
+
+        // Update the madeira details with validated data
+        $madeira->tipo_madeira = $validatedData['tipo_madeira'];
+        $madeira->data_venda = $validatedData['data_venda'];
+        $madeira->valor_compra = $validatedData['valor_compra'];
+        $madeira->quantida_compra = $validatedData['quantida_compra'];
+        $madeira->valor_venda = $validatedData['valor_venda'];
+        $madeira->frete = $validatedData['frete'];
+        $madeira->icms = $validatedData['icms'];
+        $madeira->lucro = $validatedData['lucro'];
+        $madeira->cliente = $validatedData['cliente'];
+        $madeira->save();
+
+        return response()->json(['message' => 'Relatório de madeira atualizado com sucesso']);
+    }
+
+    public function delete($id)
+    {
+        $madeira = Madeiras::find($id);
+
+        if (!$madeira) {
+            return response()->json(['message' => 'Relatorio não encontrado'], 404);
+        }
+
+        $madeira->delete();
+
+        return response()->json(['message' => 'Relatorio excluído com sucesso']);
+    }
+
     protected function form()
     {
         $form = new Form(new Madeiras());
@@ -89,4 +129,5 @@ class MadeirasController extends AdminController
 
         return $form;
     }
+
 }
