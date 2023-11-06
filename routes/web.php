@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\Controllers\CaminhaoController;
 use App\Admin\Controllers\FornecedorController;
 use App\Admin\Controllers\GadoController;
 use App\Admin\Controllers\MadeirasController;
@@ -38,7 +39,14 @@ Route::post('/admin/madeira/save', [MadeirasController::class, 'save'])->name('s
 Route::put('/admin/madeira/update/{id}', [MadeirasController::class, 'updateReport'])->name('updateReport');
 Route::get('/admin/madeira/detail/{id}', [MadeirasController::class, 'detail'])->name('detail');
 Route::delete('/admin/madeira/delete/{id}', [MadeirasController::class, 'delete'])->name('delete');
-Route::delete('/admin/listMadeira', [MadeirasController::class, 'listMadeira'])->name('listMadeira');
+Route::get('/admin/listMadeira', [MadeirasController::class, 'listMadeira'])->name('listMadeira');
+
+Route::post('/admin/caminhaos/save', [CaminhaoController::class, 'save'])->name('save');
+Route::put('/admin/caminhaos/update/{id}', [CaminhaoController::class, 'updateReport'])->name('updateReport');
+Route::get('/admin/caminhaos/detail/{id}', [CaminhaoController::class, 'detail'])->name('detail');
+Route::delete('/admin/caminhaos/delete/{id}', [CaminhaoController::class, 'delete'])->name('delete');
+Route::get('/admin/listCaminhoes', [CaminhaoController::class, 'listCaminhoes'])->name('listCaminhoes');
+
 
 
 
