@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use \App\Models\Madeiras;
+use Barryvdh\DomPDF\Facade\Pdf;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
@@ -130,4 +131,10 @@ class MadeirasController extends AdminController
         return $form;
     }
 
+    public function generatePDF()
+    {
+        $data = ['title' => 'Laravel PDF Example', 'content' => 'This is a demo content...'];
+        $pdf = Pdf::loadView('templates.pdf', $data);
+        return $pdf->download('your_pdf_file.pdf');
+    }
 }

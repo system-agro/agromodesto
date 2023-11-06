@@ -270,5 +270,48 @@ async function deleteData(clientId) {
   }
 }
 
+async function downloadInvoice() {
+    var invoiceId = '123'; // Substitua pelo ID real da fatura
+    var url = `/invoices/${invoiceId}/download`; // Substitua pela URL correta conforme definida em suas rotas do Laravel
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET', // ou 'POST' se for necessário
+            headers: {
+                // Se for um método POST, você precisa enviar CSRF token e definir o 'Content-Type'
+                'X-Requested-With': 'XMLHttpRequest',
+                // 'X-CSRF-TOKEN': csrfToken, // Descomente e defina isso se for necessário
+                // 'Content-Type': 'application/json', // Descomente e ajuste conforme necessário
+            },
+            // body: JSON.stringify(data), // Descomente e defina isso se for necessário enviar dados no corpo da requisição
+        });
+
+        if (response.ok) {
+            // Se o servidor responder com um arquivo para download,
+            // você pode pegar o blob e criar um link para download
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = downloadUrl;
+            a.download = `invoice-${invoiceId}.pdf`; // Nome do arquivo para download
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(downloadUrl);
+            a.remove();
+        } else {
+            // Trate erros de resposta, como exibir uma mensagem para o usuário
+            console.error('Download failed:', response.statusText);
+        }
+    } catch (error) {
+        console.error('There was an error with the fetch operation:', error);
+    }
+}
+
+function downloadPDF() {
+    window.location.href = 'download'; // Substitua pela URL completa se necessário
+}
+
+
 </script>
 @endsection
