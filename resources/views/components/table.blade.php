@@ -17,6 +17,7 @@
           <button id="edit" class="btn btn-primary" onclick="onEditModal({{ $contact->id }})">Editar</button>
           <button id="view" class="btn btn-success" onclick="visualizarItem({{ $contact->id }})">Visualizar</button>
           <button id="delete" class="btn btn-danger" onclick="deleteData({{ $contact->id }})">Excluir</button>
+          <button id="delete" class="btn btn-light" onclick="downloadPDF()">Relatorio</button>
         </td>
       </tr>
     @endforeach
