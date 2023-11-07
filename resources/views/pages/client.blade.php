@@ -211,11 +211,19 @@ function getModalInputValues() {
     var nome = document.getElementById('inputNome').value;
     var email = document.getElementById('inputEmail').value;
     var telefone = document.getElementById('inputTelefone').value;
+    var documento = document.getElementById('inputCPF/CNPJ').value;
+    var estado = document.getElementById('inputEstado').value;
+    var cidade = document.getElementById('inputCidade').value;
+    var bairro = document.getElementById('inputBairro').value;
     
     const data = {
         name:nome,
         email:email,
-        phone:telefone
+        phone:telefone,
+        documento:documento,
+        estado:estado,
+        cidade:cidade,
+        bairro,bairro
     };
 
     return data
