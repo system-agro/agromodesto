@@ -17,7 +17,7 @@ class Gado extends Model
         'Valor Venda' => 'valor_venda',
         'Comissão' => 'comissao',
         'Valor Frete' => 'valor_frete',
-        'Lucro' => ''
+        'Lucro' => 'lucro'
 
         // Adicione outros mapeamentos conforme necessário
     ];

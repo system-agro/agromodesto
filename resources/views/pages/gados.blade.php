@@ -146,7 +146,8 @@ function getModalInputValues() {
         data_venda:date,
         valor_venda:venda,
         comissao:comissao,
-        valor_frete:frete
+        valor_frete:frete,
+        lucro:lucro
     };
 
     return data
@@ -159,9 +160,9 @@ async function create() {
     await createItem('gado', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    // setTimeout(function() {
-    //     location.reload();
-    // }, 1000);
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {
