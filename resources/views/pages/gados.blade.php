@@ -138,6 +138,8 @@ function getModalInputValues() {
     var venda = document.getElementById('inputValorVenda').value;
     var comissao = document.getElementById('inputComissão').value;
     var frete = document.getElementById('inputValorFrente').value;
+
+    var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete))
     
     const data = {
         cliente:cliente,
@@ -157,9 +159,9 @@ async function create() {
     await createItem('gado', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    // setTimeout(function() {
+    //     location.reload();
+    // }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {

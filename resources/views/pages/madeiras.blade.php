@@ -156,13 +156,18 @@ function getModalInputValues() {
     var frete = document.getElementById('inputFrete').value;
     var icms = document.getElementById('inputICMS').value;
     var cliente = document.getElementById('inputCliente').value;
+
+
+    var valorIcms = (parseFloat(icms) / 100) * parseFloat(valorVenda);
+    var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
+
     const data = {
         tipo_madeira: tipoMadeira,
         data_venda: dataVenda,
         valor_venda: valorVenda,
         frete: frete,
         icms: icms,
-        lucro: "500",
+        lucro: lucro,
         cliente: cliente,
     };
 

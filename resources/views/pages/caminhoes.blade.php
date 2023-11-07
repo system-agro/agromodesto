@@ -142,7 +142,11 @@ function getModalInputValues() {
     var kmInicial = document.getElementById('inputKmInicial').value;
     var valorFrete = document.getElementById('inputValorFrete').value;
     var valorManutencao = document.getElementById('inputValorManutencao').value;
-    
+    var quantidadeCombustivel = document.getElementById('inputQuantidadeCombustivel').value;
+
+    var valorTotalCombustivel = parseFloat(quantidadeCombustivel) * parseFloat(valorCombustivel);
+    var lucro = parseFloat(valorFrete) - (valorTotalCombustivel + parseFloat(valorManutencao));
+
     const data = {
         placa: placa,
         data_frete: dataFrete,
