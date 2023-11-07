@@ -21,7 +21,7 @@ class Madeiras extends Model
         'ICMS' => 'icms',
         'Lucro' => 'lucro',
         'Cliente' => 'cliente',
-        'Quantidade Venda' => ''
+        'Quantidade Venda' => 'quantidade_venda'
 
         // Adicione outros mapeamentos conforme necessário
     ];
