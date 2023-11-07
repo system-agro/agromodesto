@@ -153,7 +153,7 @@ function getModalInputValues() {
         valor_combustivel: valorCombustivel,
         km_inicial: kmInicial,
         valor_frete: valorFrete,
-        valor_manutencao: valorManutencao
+        valor_manutencao: valorManutencao,
         lucro:lucro,
         quantidade_litro_combustivel:quantidadeCombustivel
     };
