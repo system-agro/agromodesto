@@ -116,6 +116,10 @@ class ClientController extends AdminController
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
+            'documento' => 'required',
+            'estado' => 'required',
+            'cidade' => 'required',
+            'bairro' => 'required',
         ]);
 
         // Crie um novo cliente com os dados validados
@@ -123,6 +127,10 @@ class ClientController extends AdminController
         $client->name = $validatedData['name'];
         $client->email = $validatedData['email'];
         $client->phone = $validatedData['phone'];
+        $client->documento = $validatedData['documento'];
+        $client->estado = $validatedData['estado'];
+        $client->cidade = $validatedData['cidade'];
+        $client->bairro = $validatedData['bairro'];
         $client->save();
 
         return response()->json(['message' => 'Cliente criado com sucesso']);
@@ -143,12 +151,20 @@ class ClientController extends AdminController
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
+            'documento' => 'required',
+            'estado' => 'required',
+            'cidade' => 'required',
+            'bairro' => 'required',
         ]);
 
         // Update the client details with validated data
         $client->name = $validatedData['name'];
         $client->email = $validatedData['email'];
         $client->phone = $validatedData['phone'];
+        $client->documento = $validatedData['documento'];
+        $client->estado = $validatedData['estado'];
+        $client->cidade = $validatedData['cidade'];
+        $client->bairro = $validatedData['bairro'];
         $client->save();
 
         return response()->json(['message' => 'Cliente atualizado com sucesso']);

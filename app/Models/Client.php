@@ -15,6 +15,10 @@ class Client extends Model
         'Nome' => 'name',
         'Email' => 'email',
         'Telefone' => 'phone',
+        'Documento' => 'docuemento',
+        'Estado' => 'estado',
+        'Cidade' => 'cidade',
+        'Bairro' => 'bairro',
         // Adicione outros mapeamentos conforme necessário
     ];
     
