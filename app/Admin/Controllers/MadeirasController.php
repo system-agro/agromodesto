@@ -31,6 +31,7 @@ class MadeirasController extends AdminController
             'tipo_madeira' => 'required',
             'data_venda' => 'required',
             'valor_venda' => 'required',
+            'quantidade_venda' => 'required',
             'frete' => 'required',
             'icms' => 'required',
             'lucro' => 'required',
@@ -42,6 +43,7 @@ class MadeirasController extends AdminController
         $madeira->tipo_madeira = $validatedData['tipo_madeira'];
         $madeira->data_venda = $validatedData['data_venda'];
         $madeira->valor_venda = $validatedData['valor_venda'];
+        $madeira->quantidade_venda = $validatedData['quantidade_venda'];
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
         $madeira->lucro = $validatedData['lucro'];
@@ -72,6 +74,7 @@ class MadeirasController extends AdminController
             'tipo_madeira' => 'required',
             'data_venda' => 'required',
             'valor_venda' => 'required',
+            'quantidade_venda' => 'required',
             'frete' => 'required',
             'icms' => 'required',
             'lucro' => 'required',
@@ -82,6 +85,7 @@ class MadeirasController extends AdminController
         $madeira->tipo_madeira = $validatedData['tipo_madeira'];
         $madeira->data_venda = $validatedData['data_venda'];
         $madeira->valor_venda = $validatedData['valor_venda'];
+        $madeira->quantidade_venda = $validatedData['quantidade_venda'];
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
         $madeira->lucro = $validatedData['lucro'];

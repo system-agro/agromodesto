@@ -89,7 +89,7 @@ function getModalContentForMode(mode, data) {
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
                     "Cliente" => "` + data.cliente + `",
-                    "Quantidade Venda" => ""
+                    "Quantidade Venda" => "`+ data.quantidade_venda +`"
                 ]
             ])`;
 
@@ -117,7 +117,7 @@ function getModalContentForMode(mode, data) {
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
                     "Cliente" => "` + data.cliente + `",
-                    "Quantidade Venda" => ""
+                    "Quantidade Venda" => "`+ data.quantidade_venda +`"
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -156,6 +156,7 @@ function getModalInputValues() {
     var frete = document.getElementById('inputFrete').value;
     var icms = document.getElementById('inputICMS').value;
     var cliente = document.getElementById('inputCliente').value;
+    var quantidadeVenda = document.getElementById("inputQuantidadeVenda").value
 
 
     var valorIcms = (parseFloat(icms) / 100) * parseFloat(valorVenda);
@@ -169,6 +170,7 @@ function getModalInputValues() {
         icms: icms,
         lucro: lucro,
         cliente: cliente,
+        quantidade_venda: quantidadeVenda
     };
 
     return data;
