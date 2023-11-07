@@ -72,6 +72,8 @@ class CaminhaoController extends AdminController
             'km_inicial' => 'required',
             'valor_frete' => 'required',
             'valor_manutencao' => 'required',
+            'quantidade_litro_combustivel' => 'required',
+            'lucro'=> 'required',
             // Adicione outras validações conforme necessário
         ]);
     
@@ -83,6 +85,8 @@ class CaminhaoController extends AdminController
         $caminhao->km_inicial = $validatedData['km_inicial'];
         $caminhao->valor_frete = $validatedData['valor_frete'];
         $caminhao->valor_manutencao = $validatedData['valor_manutencao'];
+        $caminhao->quantidade_litro_combustivel = $validatedData['quantidade_litro_combustivel'];
+        $caminhao->lucro = $validatedData['lucro'];
         // Adicione outras atribuições conforme necessário
         $caminhao->save();
     
@@ -104,16 +108,19 @@ class CaminhaoController extends AdminController
             'km_inicial' => 'required',
             'valor_frete' => 'required',
             'valor_manutencao' => 'required',
+            'quantidade_litro_combustivel' => 'required',
+            'lucro'=> 'required',
+            // Adicione outras validações conforme necessário
         ]);
 
-        $caminhao = new Caminhao();
         $caminhao->placa = $validatedData['placa'];
         $caminhao->data_frete = $validatedData['data_frete'];
         $caminhao->valor_combustivel = $validatedData['valor_combustivel'];
         $caminhao->km_inicial = $validatedData['km_inicial'];
         $caminhao->valor_frete = $validatedData['valor_frete'];
         $caminhao->valor_manutencao = $validatedData['valor_manutencao'];
-
+        $caminhao->quantidade_litro_combustivel = $validatedData['quantidade_litro_combustivel'];
+        $caminhao->lucro = $validatedData['lucro'];
         $caminhao->save();
 
         return response()->json(['message' => 'Caminhao atualizado com sucesso']);

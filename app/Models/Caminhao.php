@@ -17,7 +17,8 @@ class Caminhao extends Model
         'Km Inicial' => 'km_inicial',
         'Valor Frete' => 'valor_frete',
         'Valor Manutencao' => 'valor_manutencao',
-        'Lucro' => ''
+        'Lucro' => 'lucro',
+        'Quantidade Combutivel' => 'quantidade_litro_combustivel'
         // Adicione outros mapeamentos conforme necessário
     ];
     
