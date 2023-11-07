@@ -6,8 +6,6 @@ use \App\Models\Madeiras;
 use Barryvdh\DomPDF\Facade\Pdf;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
-use OpenAdmin\Admin\Grid;
-use OpenAdmin\Admin\Show;
 use Illuminate\Http\Request;
 
 
@@ -32,8 +30,6 @@ class MadeirasController extends AdminController
         $validatedData = $request->validate([
             'tipo_madeira' => 'required',
             'data_venda' => 'required',
-            'valor_compra' => 'required',
-            'quantida_compra' => 'required',
             'valor_venda' => 'required',
             'frete' => 'required',
             'icms' => 'required',
@@ -45,8 +41,6 @@ class MadeirasController extends AdminController
         $madeira = new Madeiras(); // Substitua 'Madeira' pelo nome real do seu modelo
         $madeira->tipo_madeira = $validatedData['tipo_madeira'];
         $madeira->data_venda = $validatedData['data_venda'];
-        $madeira->valor_compra = $validatedData['valor_compra'];
-        $madeira->quantida_compra = $validatedData['quantida_compra'];
         $madeira->valor_venda = $validatedData['valor_venda'];
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
@@ -77,8 +71,6 @@ class MadeirasController extends AdminController
         $validatedData = $request->validate([
             'tipo_madeira' => 'required',
             'data_venda' => 'required',
-            'valor_compra' => 'required',
-            'quantida_compra' => 'required',
             'valor_venda' => 'required',
             'frete' => 'required',
             'icms' => 'required',
@@ -89,8 +81,6 @@ class MadeirasController extends AdminController
         // Update the madeira details with validated data
         $madeira->tipo_madeira = $validatedData['tipo_madeira'];
         $madeira->data_venda = $validatedData['data_venda'];
-        $madeira->valor_compra = $validatedData['valor_compra'];
-        $madeira->quantida_compra = $validatedData['quantida_compra'];
         $madeira->valor_venda = $validatedData['valor_venda'];
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
@@ -120,8 +110,6 @@ class MadeirasController extends AdminController
 
         $form->text('tipo_madeira', __('Tipo madeira'));
         $form->date('data_venda', __('Data venda'))->default(date('Y-m-d'));
-        $form->text('valor_compra', __('Valor compra'));
-        $form->text('quantida_compra', __('Quantida compra'));
         $form->text('valor_venda', __('Valor venda'));
         $form->text('frete', __('Frete'));
         $form->text('icms', __('Icms'));

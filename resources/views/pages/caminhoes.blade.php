@@ -42,7 +42,7 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Placa', 'Data Frete', 'Valor Frete'],
+        'columns' => ['Placa', 'Data Frete', 'Valor Frete', 'Lucro'],
         'data' => $contacts,
         'columnMapping' => $columnMapping
         ])
@@ -73,7 +73,7 @@ function getModalContentForMode(mode, data) {
                     ],
                     [
                         "title" => "Custos Operacionais",
-                        "inputs" => ["Valor Combustivel", "Valor Frete", "Valor Manutencao"]
+                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
                     ]
                 ],
                 "mode" => "view",
@@ -83,7 +83,8 @@ function getModalContentForMode(mode, data) {
                     "Km Inicial" => "` + data.km_inicial + `",
                     "Valor Combustivel" => "` + data.valor_combustivel + `",
                     "Valor Frete" => "` + data.valor_frete + `",
-                    "Valor Manutencao" => "` + data.valor_manutencao + `"
+                    "Valor Manutencao" => "` + data.valor_manutencao + `",
+                    "Quantidade Combustivel" => ""
                 ]
             ])`;
 
@@ -96,7 +97,7 @@ function getModalContentForMode(mode, data) {
                     ],
                     [
                         "title" => "Custos Operacionais",
-                        "inputs" => ["Valor Combustivel", "Valor Frete", "Valor Manutencao"]
+                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
                     ]
                 ],
                 "mode" => "edit",
@@ -106,7 +107,8 @@ function getModalContentForMode(mode, data) {
                     "Km Inicial" => "` + data.km_inicial + `",
                     "Valor Combustivel" => "` + data.valor_combustivel + `",
                     "Valor Frete" => "` + data.valor_frete + `",
-                    "Valor Manutencao" => "` + data.valor_manutencao + `"
+                    "Valor Manutencao" => "` + data.valor_manutencao + `",
+                    "Quantidade Combustivel" => ""
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -120,7 +122,7 @@ function getModalContentForMode(mode, data) {
                     ],
                     [
                         "title" => "Custos Operacionais",
-                        "inputs" => ["Valor Combustivel", "Valor Frete", "Valor Manutencao"]
+                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
                     ]
                 ],
                 "mode" => "new",

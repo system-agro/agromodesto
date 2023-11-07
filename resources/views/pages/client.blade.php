@@ -93,18 +93,26 @@ function getModalContentForMode(mode, data) {
                 "sections" => [
                     [
                         "title" => "Informações Pessoais",
-                        "inputs" => ["Nome"]
+                        "inputs" => ["Nome", "CPF/CNPJ"]
                     ],
                     [
                         "title" => "Contatos",
                         "inputs" => ["Email", "Telefone"]
-                    ]
+                    ],
+                    [
+                        "title" => "Endereço",
+                        "inputs" => ["Estado", "Cidade", "Bairro"]
+                    ],
                 ],
                 "mode" =>  "view",
                 "data" => [
                     "Nome" => "` + data.name + `",
+                    "CPF/CNPJ" => "",
                     "Email" => "` + data.email + `",
-                    "Telefone" => "` + data.phone + `"
+                    "Telefone" => "` + data.phone + `",
+                    "Estado" => "",
+                    "Cidade" => "",
+                    "Bairro" => ""
                 ]
             ])`;
 
@@ -113,18 +121,26 @@ function getModalContentForMode(mode, data) {
                 "sections" => [
                     [
                         "title" => "Informações Pessoais",
-                        "inputs" => ["Nome"]
+                        "inputs" => ["Nome", "CPF/CNPJ"]
                     ],
                     [
                         "title" => "Contatos",
                         "inputs" => ["Email", "Telefone"]
-                    ]
+                    ],
+                    [
+                        "title" => "Endereço",
+                        "inputs" => ["Estado", "Cidade", "Bairro"]
+                    ],
                 ],
                 "mode" =>  "edit",
                 "data" => [
                     "Nome" => "` + data.name + `",
+                    "CPF/CNPJ" => "",
                     "Email" => "` + data.email + `",
-                    "Telefone" => "` + data.phone + `"
+                    "Telefone" => "` + data.phone + `",
+                    "Estado" => "",
+                    "Cidade" => "",
+                    "Bairro" => ""
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -134,12 +150,16 @@ function getModalContentForMode(mode, data) {
                 "sections" => [
                     [
                         "title" => "Informações Pessoais",
-                        "inputs" => ["Nome"]
+                        "inputs" => ["Nome", "CPF/CNPJ"]
                     ],
                     [
                         "title" => "Contatos",
                         "inputs" => ["Email", "Telefone"]
-                    ]
+                    ],
+                    [
+                        "title" => "Endereço",
+                        "inputs" => ["Estado", "Cidade", "Bairro"]
+                    ],
                 ],
                 "mode" =>  "new",
                 "data" => []
