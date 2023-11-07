@@ -73,6 +73,7 @@ class GadoController extends AdminController
             'valor_venda' => 'required',
             'comissao' => 'required',
             'valor_frete' => 'required',
+            "lucro" => "required"
         ]);
 
         // Crie um novo cliente com os dados validados
@@ -82,6 +83,7 @@ class GadoController extends AdminController
         $gado->valor_venda = $validatedData['valor_venda'];
         $gado->comissao = $validatedData['comissao'];
         $gado->valor_frete = $validatedData['valor_frete'];
+        $gado->lucro = $validatedData['lucro'];
         $gado->save();
 
         return response()->json(['message' => 'Registro de venda de gado criado com sucesso']);
