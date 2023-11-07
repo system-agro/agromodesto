@@ -43,7 +43,7 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Lucro'],
+        'columns' => ['Cliente', 'Tipo Madeira','Data Venda', 'Valor Venda', 'Quantidade Venda','Lucro'],
         'data' => $contacts,
         'columnMapping' => $columnMapping
         ])
@@ -68,17 +68,13 @@ function getModalContentForMode(mode, data) {
         case "view":
             return `@include('components.modalCreate', [
                 "sections" => [
-                    [
+                   [
                         "title" => "Tipo de Madeira",
                         "inputs" => ["Tipo Madeira"]
                     ],
                     [
-                        "title" => "Informações da Compra",
-                        "inputs" => ["Data Venda", "Valor Compra", "Quantidade Compra"]
-                    ],
-                    [
                         "title" => "Informações da Venda",
-                        "inputs" => ["Valor Venda", "Frete", "ICMS", "Lucro"]
+                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
                     ],
                     [
                         "title" => "Dados do Cliente",
@@ -89,13 +85,11 @@ function getModalContentForMode(mode, data) {
                 "data" => [
                     "Tipo Madeira" => "` + data.tipo_madeira + `",
                     "Data Venda" => "` + data.data_venda + `",
-                    "Valor Compra" => "` + data.valor_compra + `",
-                    "Quantidade Compra" => "` + data.quantida_compra + `",
                     "Valor Venda" => "` + data.valor_venda + `",
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
-                    "Lucro" => "` + data.lucro + `",
-                    "Cliente" => "` + data.cliente + `"
+                    "Cliente" => "` + data.cliente + `",
+                    "Quantidade Venda" => ""
                 ]
             ])`;
 
@@ -107,12 +101,8 @@ function getModalContentForMode(mode, data) {
                         "inputs" => ["Tipo Madeira"]
                     ],
                     [
-                        "title" => "Informações da Compra",
-                        "inputs" => ["Data Venda", "Valor Compra", "Quantidade Compra"]
-                    ],
-                    [
                         "title" => "Informações da Venda",
-                        "inputs" => ["Valor Venda", "Frete", "ICMS", "Lucro"]
+                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
                     ],
                     [
                         "title" => "Dados do Cliente",
@@ -123,13 +113,11 @@ function getModalContentForMode(mode, data) {
                 "data" => [
                     "Tipo Madeira" => "` + data.tipo_madeira + `",
                     "Data Venda" => "` + data.data_venda + `",
-                    "Valor Compra" => "` + data.valor_compra + `",
-                    "Quantidade Compra" => "` + data.quantida_compra + `",
                     "Valor Venda" => "` + data.valor_venda + `",
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
-                    "Lucro" => "` + data.lucro + `",
-                    "Cliente" => "` + data.cliente + `"
+                    "Cliente" => "` + data.cliente + `",
+                    "Quantidade Venda" => ""
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -142,12 +130,8 @@ function getModalContentForMode(mode, data) {
                         "inputs" => ["Tipo Madeira"]
                     ],
                     [
-                        "title" => "Informações da Compra",
-                        "inputs" => ["Data Venda", "Valor Compra", "Quantidade Compra"]
-                    ],
-                    [
                         "title" => "Informações da Venda",
-                        "inputs" => ["Valor Venda", "Frete", "ICMS", "Lucro"]
+                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
                     ],
                     [
                         "title" => "Dados do Cliente",
@@ -168,24 +152,18 @@ function getModalInputValues() {
     
     var tipoMadeira = document.getElementById('inputTipoMadeira').value;
     var dataVenda = document.getElementById('inputDataVenda').value;
-    var valorCompra = document.getElementById('inputValorCompra').value;
-    var quantidadeCompra = document.getElementById('inputQuantidadeCompra').value;
     var valorVenda = document.getElementById('inputValorVenda').value;
     var frete = document.getElementById('inputFrete').value;
     var icms = document.getElementById('inputICMS').value;
-    var lucro = document.getElementById('inputLucro').value;
     var cliente = document.getElementById('inputCliente').value;
-    
     const data = {
         tipo_madeira: tipoMadeira,
         data_venda: dataVenda,
-        valor_compra: valorCompra,
-        quantida_compra: quantidadeCompra,
         valor_venda: valorVenda,
         frete: frete,
         icms: icms,
-        lucro: lucro,
-        cliente: cliente
+        lucro: "500",
+        cliente: cliente,
     };
 
     return data;

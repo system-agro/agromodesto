@@ -42,7 +42,7 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissão', 'Valor Frete'],
+        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissão', 'Valor Frete', 'Lucro'],
         'data' => $contacts,
         'columnMapping' => $columnMapping
         ])

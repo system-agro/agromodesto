@@ -15,7 +15,7 @@
   background-color: #fefefe;
   padding: 10px;
   border: 1px solid #888;
-  width: 70%; /* Adjust as per requirement */
+  width: 65%; /* Adjust as per requirement */
   font-size: 10px;
   box-sizing: border-box;
 

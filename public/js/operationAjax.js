@@ -4,6 +4,7 @@ async function fetchData(endpoint, method = 'GET', data = null) {
   let config = {
     method: method,
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-CSRF-TOKEN': '{{ csrf_token() }}'
     }
