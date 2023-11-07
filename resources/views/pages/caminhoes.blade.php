@@ -84,7 +84,7 @@ function getModalContentForMode(mode, data) {
                     "Valor Combustivel" => "` + data.valor_combustivel + `",
                     "Valor Frete" => "` + data.valor_frete + `",
                     "Valor Manutencao" => "` + data.valor_manutencao + `",
-                    "Quantidade Combustivel" => ""
+                    "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
                 ]
             ])`;
 
@@ -108,7 +108,7 @@ function getModalContentForMode(mode, data) {
                     "Valor Combustivel" => "` + data.valor_combustivel + `",
                     "Valor Frete" => "` + data.valor_frete + `",
                     "Valor Manutencao" => "` + data.valor_manutencao + `",
-                    "Quantidade Combustivel" => ""
+                    "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
