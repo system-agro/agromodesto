@@ -154,6 +154,8 @@ function getModalInputValues() {
         km_inicial: kmInicial,
         valor_frete: valorFrete,
         valor_manutencao: valorManutencao
+        lucro:lucro,
+        quantidade_litro_combustivel:quantidadeCombustivel
     };
 
     return data;
