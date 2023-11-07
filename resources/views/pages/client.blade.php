@@ -107,12 +107,12 @@ function getModalContentForMode(mode, data) {
                 "mode" =>  "view",
                 "data" => [
                     "Nome" => "` + data.name + `",
-                    "CPF/CNPJ" => "",
+                    "CPF/CNPJ" => "`+ data.documento +`",
                     "Email" => "` + data.email + `",
                     "Telefone" => "` + data.phone + `",
-                    "Estado" => "",
-                    "Cidade" => "",
-                    "Bairro" => ""
+                    "Estado" => "`+ data.estado + `",
+                    "Cidade" => "` + data.cidade + `",
+                    "Bairro" => "` + data.bairro +`"
                 ]
             ])`;
 
@@ -135,12 +135,12 @@ function getModalContentForMode(mode, data) {
                 "mode" =>  "edit",
                 "data" => [
                     "Nome" => "` + data.name + `",
-                    "CPF/CNPJ" => "",
+                    "CPF/CNPJ" => "`+ data.documento +`",
                     "Email" => "` + data.email + `",
                     "Telefone" => "` + data.phone + `",
-                    "Estado" => "",
-                    "Cidade" => "",
-                    "Bairro" => ""
+                    "Estado" => "`+ data.estado + `",
+                    "Cidade" => "` + data.cidade + `",
+                    "Bairro" => "` + data.bairro +`"
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -223,7 +223,7 @@ function getModalInputValues() {
         documento:documento,
         estado:estado,
         cidade:cidade,
-        bairro,bairro
+        bairro:bairro
     };
 
     return data
