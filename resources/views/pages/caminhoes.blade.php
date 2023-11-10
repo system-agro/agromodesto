@@ -13,8 +13,12 @@ $tabConfig = [
     ],
 ];
 @endphp
+
 <script src="{{ asset('js/operationAjax.js')}}"></script>
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
+
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -23,7 +27,6 @@ $tabConfig = [
 }
 
 </style>
-
 <div id="tabs">
   @include('components.tabs',  ['tabsConfig' => $tabConfig])
   @include('components.modalSuccess', ['title' => ''])
@@ -60,44 +63,66 @@ $tabConfig = [
 </div>
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
 <script>
+
+function initializeInputMasks() {
+  // Esta função irá inicializar a máscara de entrada para todos os campos que têm o atributo 'data-mask'
+  Inputmask().mask(document.querySelectorAll("input"));
+}
 // Função para abrir o modal
 // Adicione um event listener para a aba Clientes
 function getModalContentForMode(mode, data) {
     switch (mode) {
-        case "view":
-            return `@include('components.modalCreate', [
-                "sections" => [
+      case "view":
+        return `@include('components.modalCreate', [
+            "sections" => [
                     [
                         "title" => "Detalhes do Caminhão",
-                        "inputs" => ["Placa", "Data Frete", "Km Inicial"]
+                        "inputs" => [
+                            ["name" => "Placa", "mask" => "AAA-9999"],
+                            ["name" => "Data Frete", "mask" => "datetime"],
+                            ["name" => "Km Inicial", "mask" => null]
+                        ]
                     ],
                     [
                         "title" => "Custos Operacionais",
-                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
+                        "inputs" => [
+                            ["name" => "Quantidade Combustível", "mask" => null],
+                            ["name" => "Valor Combustível", "mask" => "currency"],
+                            ["name" => "Valor Frete", "mask" => "currency"],
+                            ["name" => "Valor Manutenção", "mask" => "currency"]
+                        ]
                     ]
                 ],
-                "mode" => "view",
-                "data" => [
-                    "Placa" => "` + data.placa + `",
-                    "Data Frete" => "` + data.data_frete + `",
-                    "Km Inicial" => "` + data.km_inicial + `",
-                    "Valor Combustivel" => "` + data.valor_combustivel + `",
-                    "Valor Frete" => "` + data.valor_frete + `",
-                    "Valor Manutencao" => "` + data.valor_manutencao + `",
-                    "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
-                ]
-            ])`;
-
-        case "edit":
+            "mode" => "view",
+            "data" => [
+                "Placa" => "` + data.placa + `",
+                "Data Frete" => "` + data.data_frete + `",
+                "Km Inicial" => "` + data.km_inicial + `",
+                "Valor Combustivel" => "` + data.valor_combustivel + `",
+                "Valor Frete" => "` + data.valor_frete + `",
+                "Valor Manutencao" => "` + data.valor_manutencao + `",
+                "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
+            ]
+          ])`;
+          case "edit":
             let modalContent = `@include('components.modalCreate', [
                 "sections" => [
                     [
                         "title" => "Detalhes do Caminhão",
-                        "inputs" => ["Placa", "Data Frete", "Km Inicial"]
+                        "inputs" => [
+                            ["name" => "Placa", "mask" => "AAA-9999"],
+                            ["name" => "Data Frete", "mask" => "datetime"],
+                            ["name" => "Km Inicial", "mask" => null]
+                        ]
                     ],
                     [
                         "title" => "Custos Operacionais",
-                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
+                        "inputs" => [
+                            ["name" => "Quantidade Combustível", "mask" => null],
+                            ["name" => "Valor Combustível", "mask" => "currency"],
+                            ["name" => "Valor Frete", "mask" => "currency"],
+                            ["name" => "Valor Manutenção", "mask" => "currency"]
+                        ]
                     ]
                 ],
                 "mode" => "edit",
@@ -112,56 +137,61 @@ function getModalContentForMode(mode, data) {
                 ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
-
-        case "new":
-            return `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Detalhes do Caminhão",
-                        "inputs" => ["Placa", "Data Frete", "Km Inicial"]
-                    ],
-                    [
-                        "title" => "Custos Operacionais",
-                        "inputs" => ["Quantidade Combustivel","Valor Combustivel", "Valor Frete", "Valor Manutencao"]
-                    ]
-                ],
-                "mode" => "new",
-                "data" => []
-            ])`;
-
-        default:
+          case "new":
+              return `@include('components.modalCreate', [
+                  "sections" => [
+                      [
+                          "title" => "Detalhes do Caminhão",
+                          "inputs" => [
+                              ["name" => "Placa", "mask" => "AAA-****"],
+                              ["name" => "Data Frete", "mask" => "datetime"],
+                              ["name" => "Km Inicial", "mask" => null]
+                          ]
+                      ],
+                      [
+                          "title" => "Custos Operacionais",
+                          "inputs" => [
+                              ["name" => "Quantidade Combustivel", "mask" => null],
+                              ["name" => "Valor Combustivel", "mask" => "currency"],
+                              ["name" => "Valor Frete", "mask" => "currency"],
+                              ["name" => "Valor Manutencao", "mask" => "currency"]
+                          ]
+                      ]
+                  ],
+                  "mode" => "new",
+                  "data" => []
+              ])`;
+          default:
             return "";
     }
 }
 
 
 function getModalInputValues() {
-    var placa = document.getElementById('inputPlaca').value;
-    var dataFrete = document.getElementById('inputDataFrete').value;
-    var valorCombustivel = document.getElementById('inputValorCombustivel').value;
-    var kmInicial = document.getElementById('inputKmInicial').value;
-    var valorFrete = document.getElementById('inputValorFrete').value;
-    var valorManutencao = document.getElementById('inputValorManutencao').value;
-    var quantidadeCombustivel = document.getElementById('inputQuantidadeCombustivel').value;
+  var placa = unmaskValue(document.getElementById('inputPlaca'));
+  var dataFrete = formatDateToISO(document.getElementById('inputDataFrete').value);
+  var kmInicial = document.getElementById('inputKmInicial').value;
+  var quantidadeCombustivel = parseFloat(document.getElementById('inputQuantidadeCombustivel').value);
+  var valorFrete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
+  var valorManutencao = unmaskCurrencyValue(document.getElementById('inputValorManutencao').value);
+  var valorCombustivel = unmaskCurrencyValue(document.getElementById('inputValorCombustivel').value);
+  
+  var valorTotalCombustivel = parseFloat(quantidadeCombustivel) * parseFloat(valorCombustivel);
+  var lucro = parseFloat((valorFrete - (valorTotalCombustivel + valorManutencao))).toFixed(2);
 
-    var valorTotalCombustivel = parseFloat(quantidadeCombustivel) * parseFloat(valorCombustivel);
-    var lucro = parseFloat(valorFrete) - (valorTotalCombustivel + parseFloat(valorManutencao));
+  const data = {
+      placa: placa,
+      data_frete: dataFrete,
+      valor_combustivel: valorCombustivel,
+      km_inicial: kmInicial,
+      valor_frete: valorFrete,
+      valor_manutencao: valorManutencao,
+      lucro: parseFloat(lucro),
+      quantidade_litro_combustivel: quantidadeCombustivel
+  };
 
-    const data = {
-        placa: placa,
-        data_frete: dataFrete,
-        valor_combustivel: valorCombustivel,
-        km_inicial: kmInicial,
-        valor_frete: valorFrete,
-        valor_manutencao: valorManutencao,
-        lucro:lucro,
-        quantidade_litro_combustivel:quantidadeCombustivel
-    };
-
-    return data;
+  return data;
 }
-
-
 
 
 async function create() {
