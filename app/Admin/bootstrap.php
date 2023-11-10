@@ -1,4 +1,5 @@
 <?php
+use OpenAdmin\Admin\Admin;
 
 /**
  * Open-admin - admin builder based on Laravel.
@@ -17,6 +18,12 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
+
+
+Admin::js('https://code.jquery.com/jquery-3.6.0.min.js');
+Admin::js('https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js');
+
+
 use OpenAdmin\Admin\Grid;
 
 

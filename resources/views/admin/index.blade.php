@@ -7,6 +7,8 @@
 
     <title>{{ Admin::title() }}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    
+
 
     @if(!is_null($favicon = Admin::favicon()))
     <link rel="shortcut icon" href="{{$favicon}}">
@@ -27,7 +29,6 @@
         </div>
     @endif
     <div class="wrapper">
-
         @include('admin::partials.header')
         @include('admin::partials.sidebar')
         <main id="main" class="p-4">
@@ -51,7 +52,7 @@
     @endif
 
     <button id="totop" title="Go to top" style="display: none;"><i class="icon-chevron-up"></i></button>
-
+    
     <script>
         function LA() {}
         LA.token = "{{ csrf_token() }}";

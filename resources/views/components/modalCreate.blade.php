@@ -42,20 +42,29 @@
 }
 
 </style>
+
 <div id="customModal" class="modal">
   <div class="modal-content"> <span class="close justify-content-end" id="closeModal"
       onclick="closeModal()">&times;</span> <!-- Conteúdo do modal -->
     <!-- Seção de Informação Pessoal -->
-    @foreach ($sections as $section)
-    <div class="row p-2">
-      <h4>{{ $section['title'] }}</h4>
-      @foreach ($section['inputs'] as $input)
-      <div class="col-md-3">
-        @include('components.input-fileds', ['input' => $input, 'mode' => $mode, 'data' => $data])
-      </div>
-      @endforeach
-    </div>
-    @endforeach
+    @if(is_array($sections) || is_object($sections))
+        @foreach ($sections as $section)
+            <div class="row p-2">
+                <h4>{{ $section['title'] }}</h4>
+                @foreach ($section['inputs'] as $input)
+                <div class="col-md-3">
+                    {{-- 'mask' is fetched from the input array, so it's available here --}}
+                    @include('components.input-fileds', [
+                        'input' => $input,
+                        'mode' => $mode,
+                        'data' => $data[$input['name']] ?? '',
+                        'mask' => $input['mask'] ?? ''
+                    ])
+                </div>
+                @endforeach
+            </div>
+        @endforeach
+    @endif
     <!-- Seção de Contato -->
     @if ($mode !== 'view')
     <div class="row justify-content-end p-3">

@@ -1,3 +1,5 @@
+
+
 function modalSuccess(title) {
   const modalElement = document.getElementById('successModal');
 
@@ -13,7 +15,7 @@ function modalSuccess(title) {
     modalElement.classList.add('show');
 
     // Esconda o modal depois de algum tempo
-    setTimeout(function() {
+    setTimeout(function () {
       modalElement.style.display = 'none';
       modalElement.classList.remove('show');
     }, 2000);
@@ -21,6 +23,52 @@ function modalSuccess(title) {
     console.error('Modal element not found!');
   }
 }
+
+function formatDateToBR(dateTimeString) {
+  // Separa a data e a hora
+  const [datePart] = dateTimeString.split(' '); // Isso descarta o tempo
+  // Extrai os componentes da data
+  const [year, month, day] = datePart.split('-');
+  // Retorna a data no formato dd/mm/yyyy
+  return `${day}/${month}/${year}`;
+}
+
+
+function applyInputMasks() {
+  const masks = document.querySelectorAll('input[data-mask]');
+  masks.forEach(input => {
+    const mask = input.getAttribute('data-mask');
+    // Verifique se a máscara é 'currency' e aplique a configuração de moeda
+    if (mask === 'currency') {
+      Inputmask('currency', {
+        radixPoint: ",",
+        groupSeparator: ".",
+        digits: 2,
+        autoGroup: true,
+        prefix: 'R$ ',
+        rightAlign: false, // Normalmente para inputs de moeda não se alinha a direita
+        unmaskAsNumber: true,
+        removeMaskOnSubmit: true,
+        // Adiciona a opção clearMaskOnLostFocus se você não quiser que o usuário veja zeros quando o input não estiver focado
+        clearMaskOnLostFocus: false
+      }).mask(input);
+    } else if (mask === 'datetime') {
+      const currentValue = input.value;
+      input.value = formatDateToBR(currentValue);
+      Inputmask("datetime", {
+        inputFormat: "dd/mm/yyyy",
+        outputFormat: "dd/mm/yyyy",
+        // outras configurações conforme necessário
+      }).mask(input);
+    } else {
+      // Se não for 'currency', aplica a máscara genérica
+      Inputmask(mask).mask(input);
+    }
+  });
+}
+
+
+
 
 
 
@@ -32,6 +80,8 @@ function openModalAction(mode = "", data = {}) {
   contentModal.innerHTML += modalContent;
   container.appendChild(contentModal);
   document.getElementById('customModal').style.display = 'block';
+
+  applyInputMasks()
 }
 
 function createContentModalElement() {
