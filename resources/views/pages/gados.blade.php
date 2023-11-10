@@ -14,7 +14,9 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -66,14 +68,21 @@ function getModalContentForMode(mode, data) {
     switch (mode) {
             case "view":
               return `@include('components.modalCreate', [
-                  "sections" => [
+                "sections" => [
                       [
                           "title" => "Informações do cliente",
-                          "inputs" => ["Nome"]
+                          "inputs" => [
+                              ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
+                          ]
                       ],
                       [
                           "title" => "Detalhes da Venda",
-                          "inputs" => ["Data Venda", "Valor Venda", "Comissão", "Valor Frente"]
+                          "inputs" => [
+                              ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
+                              ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
+                              ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                              ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                          ]
                       ]
                   ],
                   "mode" => "view",
@@ -82,21 +91,28 @@ function getModalContentForMode(mode, data) {
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissão" => "` + data.comissao + `",
-                      "Valor Frente" => "` + data.valor_frete + `"
+                      "Valor Frete" => "` + data.valor_frete + `"
                   ]
               ])`;
 
 
             case "edit":
               let modalContent = `@include('components.modalCreate', [
-                  "sections" => [
+                "sections" => [
                       [
                           "title" => "Informações do cliente",
-                          "inputs" => ["Nome"]
+                          "inputs" => [
+                              ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
+                          ]
                       ],
                       [
                           "title" => "Detalhes da Venda",
-                          "inputs" => ["Data Venda", "Valor Venda", "Comissão", "Valor Frente"]
+                          "inputs" => [
+                              ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
+                              ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
+                              ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                              ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                          ]
                       ]
                   ],
                   "mode" => "edit",
@@ -105,21 +121,28 @@ function getModalContentForMode(mode, data) {
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissão" => "` + data.comissao + `",
-                      "Valor Frente" => "` + data.valor_frete + `"
+                      "Valor Frete" => "` + data.valor_frete + `"
                   ]
               ])`;
               return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
 
         case "new":
             return `@include('components.modalCreate', [
-                "sections" => [
+              "sections" => [
                     [
                         "title" => "Informações do cliente",
-                        "inputs" => ["Nome"]
+                        "inputs" => [
+                            ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
+                        ]
                     ],
                     [
                         "title" => "Detalhes da Venda",
-                        "inputs" => ["Data Venda", "Valor Venda", "Comissão", "Valor Frente"]
+                        "inputs" => [
+                            ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
+                            ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
+                            ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                            ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                        ]
                     ]
                 ],
                 "mode" =>  "new",
@@ -134,10 +157,10 @@ function getModalContentForMode(mode, data) {
 function getModalInputValues() {
     
     var cliente = document.getElementById('inputNome').value;
-    var date = document.getElementById('inputDataVenda').value;
-    var venda = document.getElementById('inputValorVenda').value;
-    var comissao = document.getElementById('inputComissão').value;
-    var frete = document.getElementById('inputValorFrente').value;
+    var date = formatDateToISO(document.getElementById('inputDataVenda').value);
+    var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
+    var comissao = unmaskCurrencyValue(document.getElementById('inputComissão').value);
+    var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
 
     var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete))
     
