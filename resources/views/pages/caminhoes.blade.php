@@ -86,10 +86,10 @@ function getModalContentForMode(mode, data) {
                     [
                         "title" => "Custos Operacionais",
                         "inputs" => [
-                            ["name" => "Quantidade Combustível", "mask" => null],
-                            ["name" => "Valor Combustível", "mask" => "currency"],
+                            ["name" => "Quantidade Combustivel", "mask" => null],
+                            ["name" => "Valor Combustivel", "mask" => "currency"],
                             ["name" => "Valor Frete", "mask" => "currency"],
-                            ["name" => "Valor Manutenção", "mask" => "currency"]
+                            ["name" => "Valor Manutencao", "mask" => "currency"]
                         ]
                     ]
                 ],
@@ -106,35 +106,35 @@ function getModalContentForMode(mode, data) {
           ])`;
           case "edit":
             let modalContent = `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Detalhes do Caminhão",
-                        "inputs" => [
-                            ["name" => "Placa", "mask" => "AAA-9999"],
-                            ["name" => "Data Frete", "mask" => "datetime"],
-                            ["name" => "Km Inicial", "mask" => null]
+                  "sections" => [
+                        [
+                            "title" => "Detalhes do Caminhão",
+                            "inputs" => [
+                                ["name" => "Placa", "mask" => "AAA-9999"],
+                                ["name" => "Data Frete", "mask" => "datetime"],
+                                ["name" => "Km Inicial", "mask" => null]
+                            ]
+                        ],
+                        [
+                            "title" => "Custos Operacionais",
+                            "inputs" => [
+                                ["name" => "Quantidade Combustivel", "mask" => null],
+                                ["name" => "Valor Combustivel", "mask" => "currency"],
+                                ["name" => "Valor Frete", "mask" => "currency"],
+                                ["name" => "Valor Manutencao", "mask" => "currency"]
+                            ]
                         ]
                     ],
-                    [
-                        "title" => "Custos Operacionais",
-                        "inputs" => [
-                            ["name" => "Quantidade Combustível", "mask" => null],
-                            ["name" => "Valor Combustível", "mask" => "currency"],
-                            ["name" => "Valor Frete", "mask" => "currency"],
-                            ["name" => "Valor Manutenção", "mask" => "currency"]
-                        ]
-                    ]
-                ],
-                "mode" => "edit",
-                "data" => [
-                    "Placa" => "` + data.placa + `",
-                    "Data Frete" => "` + data.data_frete + `",
-                    "Km Inicial" => "` + data.km_inicial + `",
-                    "Valor Combustivel" => "` + data.valor_combustivel + `",
-                    "Valor Frete" => "` + data.valor_frete + `",
-                    "Valor Manutencao" => "` + data.valor_manutencao + `",
-                    "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
-                ]
+                  "mode" => "edit",
+                  "data" => [
+                      "Placa" => "` + data.placa + `",
+                      "Data Frete" => "` + data.data_frete + `",
+                      "Km Inicial" => "` + data.km_inicial + `",
+                      "Valor Combustivel" => "` + data.valor_combustivel + `",
+                      "Valor Frete" => "` + data.valor_frete + `",
+                      "Valor Manutencao" => "` + data.valor_manutencao + `",
+                      "Quantidade Combustivel" => "`+ data.quantidade_litro_combustivel +`"
+                  ]
             ])`;
             return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
           case "new":
