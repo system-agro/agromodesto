@@ -21,7 +21,9 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -90,19 +92,29 @@ function getModalContentForMode(mode, data) {
     switch (mode) {
         case "view":
             return `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Informações Pessoais",
-                        "inputs" => ["Nome", "CPF/CNPJ"]
-                    ],
-                    [
-                        "title" => "Contatos",
-                        "inputs" => ["Email", "Telefone"]
-                    ],
-                    [
-                        "title" => "Endereço",
-                        "inputs" => ["Estado", "Cidade", "Bairro"]
-                    ],
+              "sections" => [
+                  [
+                      "title" => "Informações Pessoais",
+                      "inputs" => [
+                          ["name" => "Nome", "mask" => null],
+                          ["name" => "CPF/CNPJ", "mask" => "cpf_cnpj"]  // Aqui você pode especificar uma máscara para CPF ou CNPJ se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Contatos",
+                      "inputs" => [
+                          ["name" => "Email", "mask" => "email"],
+                          ["name" => "Telefone", "mask" => "phone"]  // Aqui você pode especificar uma máscara para telefone se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Endereço",
+                      "inputs" => [
+                          ["name" => "Estado", "mask" => null],
+                          ["name" => "Cidade", "mask" => null],
+                          ["name" => "Bairro", "mask" => null]
+                      ]
+                  ],
                 ],
                 "mode" =>  "view",
                 "data" => [
@@ -118,19 +130,29 @@ function getModalContentForMode(mode, data) {
 
         case "edit":
             let modalContent = `@include('components.modalCreate', [
-                "sections" => [
-                    [
-                        "title" => "Informações Pessoais",
-                        "inputs" => ["Nome", "CPF/CNPJ"]
-                    ],
-                    [
-                        "title" => "Contatos",
-                        "inputs" => ["Email", "Telefone"]
-                    ],
-                    [
-                        "title" => "Endereço",
-                        "inputs" => ["Estado", "Cidade", "Bairro"]
-                    ],
+              "sections" => [
+                  [
+                      "title" => "Informações Pessoais",
+                      "inputs" => [
+                          ["name" => "Nome", "mask" => null],
+                          ["name" => "CPF/CNPJ", "mask" => "cpf_cnpj"]  // Aqui você pode especificar uma máscara para CPF ou CNPJ se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Contatos",
+                      "inputs" => [
+                          ["name" => "Email", "mask" => "email"],
+                          ["name" => "Telefone", "mask" => "phone"]  // Aqui você pode especificar uma máscara para telefone se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Endereço",
+                      "inputs" => [
+                          ["name" => "Estado", "mask" => null],
+                          ["name" => "Cidade", "mask" => null],
+                          ["name" => "Bairro", "mask" => null]
+                      ]
+                  ],
                 ],
                 "mode" =>  "edit",
                 "data" => [
@@ -148,18 +170,28 @@ function getModalContentForMode(mode, data) {
         case "new":
             return `@include('components.modalCreate', [
                 "sections" => [
-                    [
-                        "title" => "Informações Pessoais",
-                        "inputs" => ["Nome", "CPF/CNPJ"]
-                    ],
-                    [
-                        "title" => "Contatos",
-                        "inputs" => ["Email", "Telefone"]
-                    ],
-                    [
-                        "title" => "Endereço",
-                        "inputs" => ["Estado", "Cidade", "Bairro"]
-                    ],
+                  [
+                      "title" => "Informações Pessoais",
+                      "inputs" => [
+                          ["name" => "Nome", "mask" => null],
+                          ["name" => "CPF/CNPJ", "mask" => "cpf_cnpj"]  // Aqui você pode especificar uma máscara para CPF ou CNPJ se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Contatos",
+                      "inputs" => [
+                          ["name" => "Email", "mask" => "email"],
+                          ["name" => "Telefone", "mask" => "phone"]  // Aqui você pode especificar uma máscara para telefone se necessário
+                      ]
+                  ],
+                  [
+                      "title" => "Endereço",
+                      "inputs" => [
+                          ["name" => "Estado", "mask" => null],
+                          ["name" => "Cidade", "mask" => null],
+                          ["name" => "Bairro", "mask" => null]
+                      ]
+                  ],
                 ],
                 "mode" =>  "new",
                 "data" => []
@@ -199,8 +231,6 @@ async function onEditModal(id) {
 }
 
 
-
-
 function addClickEventToButton(button) {
   button.addEventListener('click', () => {
     openModalAction("new");
@@ -209,12 +239,13 @@ function addClickEventToButton(button) {
 
 function getModalInputValues() {
     var nome = document.getElementById('inputNome').value;
-    var email = document.getElementById('inputEmail').value;
-    var telefone = document.getElementById('inputTelefone').value;
-    var documento = document.getElementById('inputCPF/CNPJ').value;
+    var email = unmaskValue(document.getElementById('inputEmail'));
+    var telefone = removeSpecialCharacters(document.getElementById('inputTelefone').value);
+    var documento = removeSpecialCharacters(document.getElementById('inputCPF/CNPJ').value);
     var estado = document.getElementById('inputEstado').value;
     var cidade = document.getElementById('inputCidade').value;
     var bairro = document.getElementById('inputBairro').value;
+
     
     const data = {
         name:nome,
@@ -225,6 +256,7 @@ function getModalInputValues() {
         cidade:cidade,
         bairro:bairro
     };
+    console.log(data)
 
     return data
 }
@@ -247,6 +279,7 @@ async function deleteData(clientId) {
 async function create() {
   try {
     const data = getModalInputValues();
+    console.log(data)
     await createItem('client', data); // usando a função createItem
     closeModal();
     modalSuccess("Cliente cadastrado com sucesso");
