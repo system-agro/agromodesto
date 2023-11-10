@@ -14,7 +14,9 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -67,18 +69,28 @@ function getModalContentForMode(mode, data) {
     switch (mode) {
         case "view":
             return `@include('components.modalCreate', [
-                "sections" => [
-                   [
+              "sections" => [
+                    [
                         "title" => "Tipo de Madeira",
-                        "inputs" => ["Tipo Madeira"]
+                        "inputs" => [
+                            ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                        ]
                     ],
                     [
                         "title" => "Informações da Venda",
-                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
+                        "inputs" => [
+                            ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
+                            ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
+                            ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
+                            ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                            ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
+                        ]
                     ],
                     [
                         "title" => "Dados do Cliente",
-                        "inputs" => ["Cliente"]
+                        "inputs" => [
+                            ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
+                        ]
                     ]
                 ],
                 "mode" => "view",
@@ -98,15 +110,25 @@ function getModalContentForMode(mode, data) {
               "sections" => [
                     [
                         "title" => "Tipo de Madeira",
-                        "inputs" => ["Tipo Madeira"]
+                        "inputs" => [
+                            ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                        ]
                     ],
                     [
                         "title" => "Informações da Venda",
-                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
+                        "inputs" => [
+                            ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
+                            ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
+                            ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
+                            ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                            ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
+                        ]
                     ],
                     [
                         "title" => "Dados do Cliente",
-                        "inputs" => ["Cliente"]
+                        "inputs" => [
+                            ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
+                        ]
                     ]
                 ],
                 "mode" => "edit",
@@ -125,19 +147,29 @@ function getModalContentForMode(mode, data) {
         case "new":
             return `@include('components.modalCreate', [
               "sections" => [
-                    [
-                        "title" => "Tipo de Madeira",
-                        "inputs" => ["Tipo Madeira"]
-                    ],
-                    [
-                        "title" => "Informações da Venda",
-                        "inputs" => ["Quantidade Venda", "Valor Venda" ,"Frete", "ICMS", "Data Venda"]
-                    ],
-                    [
-                        "title" => "Dados do Cliente",
-                        "inputs" => ["Cliente"]
-                    ]
-                ],
+                      [
+                          "title" => "Tipo de Madeira",
+                          "inputs" => [
+                              ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                          ]
+                      ],
+                      [
+                          "title" => "Informações da Venda",
+                          "inputs" => [
+                              ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
+                              ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
+                              ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
+                              ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                              ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
+                          ]
+                      ],
+                      [
+                          "title" => "Dados do Cliente",
+                          "inputs" => [
+                              ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
+                          ]
+                      ]
+                  ],
                 "mode" => "new",
                 "data" => []
             ])`;
@@ -151,16 +183,18 @@ function getModalContentForMode(mode, data) {
 function getModalInputValues() {
     
     var tipoMadeira = document.getElementById('inputTipoMadeira').value;
-    var dataVenda = document.getElementById('inputDataVenda').value;
-    var valorVenda = document.getElementById('inputValorVenda').value;
-    var frete = document.getElementById('inputFrete').value;
-    var icms = document.getElementById('inputICMS').value;
+    var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
+    var valorVenda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
+    var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
+    var icms = unmaskValue(document.getElementById('inputICMS'));
     var cliente = document.getElementById('inputCliente').value;
-    var quantidadeVenda = document.getElementById("inputQuantidadeVenda").value
+    var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"))
 
 
     var valorIcms = (parseFloat(icms) / 100) * parseFloat(valorVenda);
     var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
+
+    console.log(lucro)
 
     const data = {
         tipo_madeira: tipoMadeira,
