@@ -60,6 +60,18 @@ function applyInputMasks() {
         outputFormat: "dd/mm/yyyy",
         // outras configurações conforme necessário
       }).mask(input);
+    } else if (mask === 'cpf_cnpj') {
+      Inputmask({
+        mask: ['999.999.999-99', '99.999.999/9999-99'],
+        keepStatic: true, // Mantém a máscara estática enquanto é possível
+        // outras configurações conforme necessário
+      }).mask(input);
+    } else if (mask === "phone") {
+      Inputmask({
+        mask: ['(99)9999-9999', '(99)99999-9999'],
+        keepStatic: true, // Mantém a máscara estática enquanto é possível
+        // outras configurações conforme necessário
+      }).mask(input);
     } else {
       // Se não for 'currency', aplica a máscara genérica
       Inputmask(mask).mask(input);

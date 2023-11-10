@@ -88,3 +88,7 @@ function unmaskValue(element) {
     return element.value;
   }
 }
+
+function removeSpecialCharacters(str) {
+  return str.replace(/[^\w\s]/gi, '');
+}
