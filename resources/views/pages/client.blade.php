@@ -23,6 +23,7 @@ $tabConfig = [
 <script src="{{ asset('js/operationAjax.js')}}"></script>
 <script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
@@ -71,21 +72,7 @@ $tabConfig = [
 <script>
 // Função para abrir o modal
 
-const tabsConfig = {
-    tabClient: {
-        label: "Clientes",
-        route: "{{ route('testeClient') }}",
-        tabId: "tab1-tab",
-        ariaControls: "tab1"
-    },
-    tabSupplier: {
-        label: "Fornecedores",
-        route: "{{ route('listFornecedor') }}",
-        tabId: "tab2-tab",
-        ariaControls: "tab2"
-    }
-    // ... Você pode adicionar mais abas conforme necessário.
-};
+var tabConfig = @json($tabConfig);
 
 
 function getModalContentForMode(mode, data) {
@@ -276,23 +263,110 @@ async function deleteData(clientId) {
   }
 }
 
-async function create() {
-  try {
-    const data = getModalInputValues();
-    console.log(data)
-    await createItem('client', data); // usando a função createItem
-    closeModal();
-    modalSuccess("Cliente cadastrado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
-    // Limpe o formulário ou atualize a tabela, conforme necessário
+var tableBody = '';
+document.addEventListener("DOMContentLoaded", ()=>{
+  tableBody = document.querySelector('.table tbody'); 
+})
 
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('Ocorreu um erro ao criar o cliente');
+
+    // Função para adicionar uma nova linha à tabela de clientes
+// function addRowToClientSideTable(data) {
+//     var contact = data.client;
+//     var columnMapping = data.columnMapping;
+//     const columns = ['Nome', 'Email', 'Telefone']
+
+//     // document.addEventListener('DOMContentLoaded', (event) => {
+//           // Seu código para adicionar uma linha à tabela aqui
+//       // var tableBody = document.querySelector('.table tbody');
+//       // Crie uma nova linha e colunas para os dados do contato
+//       var row = document.createElement('tr');
+//       row.setAttribute('data-id', contact.id);
+
+//       columns.forEach(function(column) {
+//         var td = document.createElement('td');
+//         var columnKey = columnMapping[column];
+//         td.textContent = contact[columnKey];
+//         row.appendChild(td);
+//       });
+
+//       // Adicione as ações
+//       var actionsTd = document.createElement('td');
+//       actionsTd.className = 'col-1';
+//       actionsTd.innerHTML = `
+//           <button id="edit-${contact.id}" class="btn btn-primary" onclick="onEditModal(${contact.id})">Editar</button>
+//           <button id="view-${contact.id}" class="btn btn-success" onclick="visualizarItem(${contact.id})">Visualizar</button>
+//           <button id="delete-${contact.id}" class="btn btn-danger" onclick="deleteData(${contact.id})">Excluir</button>
+//           <button id="relatorio-${contact.id}" class="btn btn-light" onclick="downloadPDF(${contact.id})">Relatorio</button>
+//       `;
+
+//       row.appendChild(actionsTd);
+
+//       // Adicione a nova linha ao corpo da tabela
+//       tableBody.appendChild(row);
+//     // });
+
+//     // Encontre a tabela e o corpo da tabela no DOM
+    
+// }
+
+function getActiveTabId() {
+  // Seleciona a aba ativa com base na classe 'active' no link dentro do contêiner #tabs
+  var activeTabLink = document.querySelector('#customTabs .nav-link.active');
+  var id = ""
+  // Verifica se encontrou a aba ativa e retorna o ID e a rota correspondente
+  if (activeTabLink) {
+    id = activeTabLink.id.replace('-tab', '')
+    return id ;
+  } else {
+    return null;
   }
 }
+
+function getRouter () {
+  var tabActive = getActiveTabId();
+  return tabActive === "tabClient" ? "client" : "fornecedor";
+}
+
+
+
+// async function create() {
+//     const data = getModalInputValues();
+//     var router = getRouter(); 
+//     const data_temp = await createItem(router, data); // usando a função createItem
+
+//     var columnsView = router === "client" ?  ['Nome', 'Email', 'Telefone'] : ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro']
+
+//     addRowToClientSideTable(data_temp, columnsView)
+//     closeModal();
+//     console.log(data_temp)
+//     modalSuccess("Cliente cadastrado com sucesso"); 
+// }
+
+async function create() {
+    try {
+        const data = getModalInputValues();
+        var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+        const data_temp = await createItem(router, data); // usando a função createItem
+
+        var columnsView = router === "client" ?  ['Nome', 'Email', 'Telefone'] : ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
+
+        // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
+        if (data_temp) {
+            addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
+            closeModal();
+            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
+        } else {
+            // Se data_temp for null ou undefined, algo deu errado com a criação do item
+            throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
+        }
+    } catch (error) {
+        console.error('Erro ao criar item:', error);
+        // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
+    }
+}
+
+
+
 
 async function update(clientId) {
   try {
@@ -332,6 +406,19 @@ function createDynamicButton() {
   tabsFornecedor.prepend(container);
 }
 
+function loadTabContent(selectedTabButton) {
+    const route = selectedTabButton.getAttribute('data-route');
+    fetch(route)
+      .then(response => response.json())
+      .then(data => {
+        if (data.tableComponentContent) {
+          const tableContainer = document.getElementById('tabs-fon');
+          tableContainer.innerHTML = data.tableComponentContent;
+          // addCadastrarButton(selectedTabButton.id);
+        }
+      })
+      .catch(error => console.error('Ocorreu um erro:', error));
+  }
 
 // Adicione um event listener para a aba Fornecedores
 
@@ -346,18 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const route = event.target.getAttribute('data-route');
     // Realize a solicitação AJAX usando fetch ou jQuery.ajax
     // Exemplo usando fetch:
-    fetch(route)
-      .then(response => response.json())
-      .then(data => {
-        // Atualize a tabela com os novos dados (data)
-        if (data.tableComponentContent) {
-          const tableContainer = document.getElementById('tabs-fon');
-          tableContainer.innerHTML = data.tableComponentContent;
-        }
-      })
-      .catch(error => {
-        console.error('Ocorreu um erro:', error);
-      });
+    loadTabContent(event.target)
     // Esconda o conteúdo da aba Clientes
     document.getElementById('tab1').classList.remove('show', 'active');
     // Mostre o conteúdo da aba Fornecedores
