@@ -44,3 +44,28 @@ function addRowToActiveTabTable(data, columns, columnMapping) {
   // Adicione a nova linha ao corpo da tabela na aba ativa
   tableBody.appendChild(row);
 }
+
+function removeRowFromActiveTabTable(contactId) {
+  // Primeiro, encontre a aba ativa
+  var activeTabPane = document.querySelector('.tab-pane.active');
+  if (!activeTabPane) {
+    console.error('Não foi possível encontrar uma aba ativa.');
+    return;
+  }
+
+  // Dentro da aba ativa, encontre o corpo da tabela
+  var tableBody = activeTabPane.querySelector('.table tbody');
+  if (!tableBody) {
+    console.error('Não foi possível encontrar o corpo da tabela na aba ativa.');
+    return;
+  }
+
+  // Encontre a linha (tr) com o data-id correspondente ao id do contato
+  var rowToRemove = tableBody.querySelector(`tr[data-id="${contactId}"]`);
+  if (rowToRemove) {
+    tableBody.removeChild(rowToRemove);
+  } else {
+    console.error('Não foi possível encontrar a linha para remover.');
+  }
+}
+

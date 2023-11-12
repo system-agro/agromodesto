@@ -39,25 +39,6 @@ class FornecedorController extends AdminController
 
         return $grid;
     }
-
-    // public function listFornecedor()
-    // {
-    //     $contacts = Fornecedor::all();
-    //     $columnMapping = (new Fornecedor())->columnMapping;
-
-    //     $data = [
-    //         "contacts" => $contacts,
-    //         "columnMapping" => $columnMapping
-    //     ];
-
-    //     $tableComponentContent = view('components.table', $data)->render()->getContent();
-
-    //     return response()->json(['tableComponentContent' => $tableComponentContent]);
-    // }
-
-   
-
-
     public function listFornecedor()
     {
         $columns = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
@@ -83,7 +64,7 @@ class FornecedorController extends AdminController
             'bairro' => 'required',
         ]);
 
-    
+
 
         // Crie um novo cliente com os dados validados
         $fornecedor = new Fornecedor();
@@ -95,39 +76,66 @@ class FornecedorController extends AdminController
         $fornecedor->district = $validatedData['cidade'];
         $fornecedor->save();
 
-        $response = $fornecedor; 
+        $response = $fornecedor;
 
         $columnMapping = (new Fornecedor())->columnMapping;
 
         return response()->json(compact('response', 'columnMapping'));
     }
 
-
-
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
-    protected function detail($id)
+    public function detail($id)
     {
-        $show = new Show(Fornecedor::findOrFail($id));
-
-        $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
-        $show->field('document', __('Document'));
-        $show->field('phone', __('Phone'));
-        $show->field('email', __('Email'));
-        $show->field('state', __('State'));
-        $show->field('district', __('District'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-
-        return $show;
+        try {
+            $fornecedor = Fornecedor::findOrFail($id);
+            return response()->json($fornecedor, 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Fornecedor não encontrado.']);
+        }
     }
 
- 
+    public function delete($id)
+    {
+        try {
+            $fornecedor = Fornecedor::findOrFail($id);
+            $fornecedor->delete();
+            return response()->json(['success' => true, 'message' => 'Fornecedor excluído com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Erro ao excluir fornecedor.']);
+        }
+    }
+
+    public function updateFornecedor(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'documento' => 'required',
+            'estado' => 'required',
+            'cidade' => 'required',
+            'bairro' => 'required',
+        ]);
+
+        try {
+            $fornecedor = Fornecedor::findOrFail($id);
+            $fornecedor->name = $validatedData['name'];
+            $fornecedor->email = $validatedData['email'];
+            $fornecedor->phone = $validatedData['phone'];
+            $fornecedor->document = $validatedData['documento'];
+            $fornecedor->state = $validatedData['estado'];
+            $fornecedor->city = $validatedData['cidade']; // Ajuste se necessário
+            $fornecedor->district = $validatedData['bairro']; // Ajuste se necessário
+            $fornecedor->save();
+
+            return response()->json(['success' => true, 'message' => 'Fornecedor atualizado com sucesso.', 'fornecedor' => $fornecedor]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Fornecedor não encontrado para atualização.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Erro ao atualizar fornecedor.']);
+        }
+    }
+
+
 
     /**
      * Make a form builder.
