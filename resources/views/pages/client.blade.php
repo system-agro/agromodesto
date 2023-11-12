@@ -248,66 +248,8 @@ function getModalInputValues() {
     return data
 }
 
-async function deleteData(clientId) {
-  try {
-    await deleteItem('client', clientId); // usando a função deleteItem
-
-    modalSuccess("Cliente excluido com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
-
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('Ocorreu um erro ao excluir o cliente');
-  }
-}
-
-var tableBody = '';
-document.addEventListener("DOMContentLoaded", ()=>{
-  tableBody = document.querySelector('.table tbody'); 
-})
 
 
-    // Função para adicionar uma nova linha à tabela de clientes
-// function addRowToClientSideTable(data) {
-//     var contact = data.client;
-//     var columnMapping = data.columnMapping;
-//     const columns = ['Nome', 'Email', 'Telefone']
-
-//     // document.addEventListener('DOMContentLoaded', (event) => {
-//           // Seu código para adicionar uma linha à tabela aqui
-//       // var tableBody = document.querySelector('.table tbody');
-//       // Crie uma nova linha e colunas para os dados do contato
-//       var row = document.createElement('tr');
-//       row.setAttribute('data-id', contact.id);
-
-//       columns.forEach(function(column) {
-//         var td = document.createElement('td');
-//         var columnKey = columnMapping[column];
-//         td.textContent = contact[columnKey];
-//         row.appendChild(td);
-//       });
-
-//       // Adicione as ações
-//       var actionsTd = document.createElement('td');
-//       actionsTd.className = 'col-1';
-//       actionsTd.innerHTML = `
-//           <button id="edit-${contact.id}" class="btn btn-primary" onclick="onEditModal(${contact.id})">Editar</button>
-//           <button id="view-${contact.id}" class="btn btn-success" onclick="visualizarItem(${contact.id})">Visualizar</button>
-//           <button id="delete-${contact.id}" class="btn btn-danger" onclick="deleteData(${contact.id})">Excluir</button>
-//           <button id="relatorio-${contact.id}" class="btn btn-light" onclick="downloadPDF(${contact.id})">Relatorio</button>
-//       `;
-
-//       row.appendChild(actionsTd);
-
-//       // Adicione a nova linha ao corpo da tabela
-//       tableBody.appendChild(row);
-//     // });
-
-//     // Encontre a tabela e o corpo da tabela no DOM
-    
-// }
 
 function getActiveTabId() {
   // Seleciona a aba ativa com base na classe 'active' no link dentro do contêiner #tabs
@@ -327,21 +269,6 @@ function getRouter () {
   return tabActive === "tabClient" ? "client" : "fornecedor";
 }
 
-
-
-// async function create() {
-//     const data = getModalInputValues();
-//     var router = getRouter(); 
-//     const data_temp = await createItem(router, data); // usando a função createItem
-
-//     var columnsView = router === "client" ?  ['Nome', 'Email', 'Telefone'] : ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro']
-
-//     addRowToClientSideTable(data_temp, columnsView)
-//     closeModal();
-//     console.log(data_temp)
-//     modalSuccess("Cliente cadastrado com sucesso"); 
-// }
-
 async function create() {
     try {
         const data = getModalInputValues();
@@ -354,6 +281,7 @@ async function create() {
         if (data_temp) {
             addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
             closeModal();
+            
             modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
         } else {
             // Se data_temp for null ou undefined, algo deu errado com a criação do item
@@ -365,7 +293,22 @@ async function create() {
     }
 }
 
+async function deleteData(contactId) {
+  try {
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    await deleteItem(router, contactId); // usando a função deleteItem
+    modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " excluido com sucesso"); // Torna a primeira letra maiúscula
+    removeRowFromActiveTabTable(contactId)
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Ocorreu um erro ao excluir o cliente');
+  }
+}
 
+var tableBody = '';
+document.addEventListener("DOMContentLoaded", ()=>{
+  tableBody = document.querySelector('.table tbody'); 
+})
 
 
 async function update(clientId) {

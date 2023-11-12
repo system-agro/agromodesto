@@ -32,6 +32,10 @@ Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('
 
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 Route::post('/admin/fornecedor/save', [FornecedorController::class,  'save'])->name('save');
+Route::get('/admin/fornecedor/detail/{id}', [FornecedorController::class , 'detail'])->name('detail');
+Route::delete('/admin/fornecedor/delete/{id}', [FornecedorController::class, 'delete'])->name('delete');
+Route::put('/admin/fornecedor/update/{id}', [FornecedorController::class, 'updateFornecedor'])->name('updateFornecedor');
+
 
 Route::post('/admin/gado/save', [GadoController::class, 'save'])->name('save');
 Route::put('/admin/gado/update/{id}', [GadoController::class, 'updateReport'])->name('updateReport');
@@ -51,7 +55,4 @@ Route::delete('/admin/caminhaos/delete/{id}', [CaminhaoController::class, 'delet
 Route::get('/admin/listCaminhoes', [CaminhaoController::class, 'listCaminhoes'])->name('listCaminhoes');
 
 Route::get('/admin/download/{id}', [MadeirasController::class, 'generatePDF'])->name('generatePDF');
-
-
-// Route::get('/admin/gados', [GadoController::class, 'listGados'])->name('listGados');
 
