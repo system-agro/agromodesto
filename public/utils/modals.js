@@ -79,11 +79,6 @@ function applyInputMasks() {
   });
 }
 
-
-
-
-
-
 function openModalAction(mode = "", data = {}) {
   const container = document.getElementById("tabs");
   const contentModal = createContentModalElement();

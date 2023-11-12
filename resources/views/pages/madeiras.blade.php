@@ -327,8 +327,8 @@ async function downloadInvoice() {
     }
 }
 
-function downloadPDF() {
-    window.location.href = 'download'; // Substitua pela URL completa se necessário
+function downloadPDF(id) {
+    window.location.href =  `download/${id}`; // Substitua pela URL completa se necessário
 }
 
 
