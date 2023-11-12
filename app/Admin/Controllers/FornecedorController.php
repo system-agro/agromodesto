@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use \App\Models\Fornecedor;
+use Illuminate\Http\Request;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
@@ -54,6 +55,9 @@ class FornecedorController extends AdminController
     //     return response()->json(['tableComponentContent' => $tableComponentContent]);
     // }
 
+   
+
+
     public function listFornecedor()
     {
         $columns = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
@@ -64,6 +68,38 @@ class FornecedorController extends AdminController
         $tableComponentContent = view('components.table', compact('columns', 'columnMapping', 'data'))->render();
 
         return response()->json(['tableComponentContent' => $tableComponentContent]);
+    }
+
+    public function save(Request $request)
+    {
+        // Valide os dados recebidos do formulário, por exemplo:
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'documento' => 'required',
+            'estado' => 'required',
+            'cidade' => 'required',
+            'bairro' => 'required',
+        ]);
+
+    
+
+        // Crie um novo cliente com os dados validados
+        $fornecedor = new Fornecedor();
+        $fornecedor->name = $validatedData['name'];
+        $fornecedor->email = $validatedData['email'];
+        $fornecedor->phone = $validatedData['phone'];
+        $fornecedor->document = $validatedData['documento'];
+        $fornecedor->state = $validatedData['estado'];
+        $fornecedor->district = $validatedData['cidade'];
+        $fornecedor->save();
+
+        $response = $fornecedor; 
+
+        $columnMapping = (new Fornecedor())->columnMapping;
+
+        return response()->json(compact('response', 'columnMapping'));
     }
 
 
@@ -90,6 +126,8 @@ class FornecedorController extends AdminController
 
         return $show;
     }
+
+ 
 
     /**
      * Make a form builder.
