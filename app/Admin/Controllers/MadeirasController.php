@@ -123,10 +123,10 @@ class MadeirasController extends AdminController
         return $form;
     }
 
-    public function generatePDF()
+    public function generatePDF($id)
     {
-        $data = ['title' => 'Laravel PDF Example', 'content' => 'This is a demo content...'];
-        $pdf = Pdf::loadView('templates.pdf', $data);
+        $madeira = Madeiras::findOrFail($id);
+        $pdf = PDF::loadView('templates.pdf', ['madeira' => $madeira]);
         return $pdf->download('your_pdf_file.pdf');
     }
 }

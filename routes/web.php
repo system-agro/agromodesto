@@ -47,7 +47,7 @@ Route::get('/admin/caminhaos/detail/{id}', [CaminhaoController::class, 'detail']
 Route::delete('/admin/caminhaos/delete/{id}', [CaminhaoController::class, 'delete'])->name('delete');
 Route::get('/admin/listCaminhoes', [CaminhaoController::class, 'listCaminhoes'])->name('listCaminhoes');
 
-Route::get('/admin/download', [MadeirasController::class, 'generatePDF'])->name('generatePDF');
+Route::get('/admin/download/{id}', [MadeirasController::class, 'generatePDF'])->name('generatePDF');
 
 
 // Route::get('/admin/gados', [GadoController::class, 'listGados'])->name('listGados');
