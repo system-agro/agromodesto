@@ -11,7 +11,7 @@
     @foreach($data as $contact)
       <tr data-id="{{ $contact->id }}">
         @foreach($columns as $column) 
-          <td>{{ $contact->{$columnMapping[$column]} }}</td>
+          <td data-column="{{$column}}">{{ $contact->{$columnMapping[$column]} }}</td>
         @endforeach
         <td class="col-1">
           <button id="edit" class="btn btn-primary" onclick="onEditModal({{ $contact->id }})">Editar</button>

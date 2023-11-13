@@ -69,3 +69,39 @@ function removeRowFromActiveTabTable(contactId) {
   }
 }
 
+function updateRowInActiveTabTable(updatedData, columnMapping) {
+  var activeTabPane = document.querySelector('.tab-pane.active');
+  if (!activeTabPane) {
+    console.error('Não foi possível encontrar uma aba ativa.');
+    return;
+  }
+
+  var tableBody = activeTabPane.querySelector('.table tbody');
+  if (!tableBody) {
+    console.error('Não foi possível encontrar o corpo da tabela na aba ativa.');
+    return;
+  }
+
+  console.log(updatedData)
+  var rowToUpdate = tableBody.querySelector(`tr[data-id="${updatedData.id}"]`);
+  if (!rowToUpdate) {
+    console.error('Não foi possível encontrar a linha para atualizar.');
+    return;
+  }
+
+  // Obtem todas as células (td) da linha que estão associadas a uma coluna
+  var cellsToUpdate = rowToUpdate.querySelectorAll('td[data-column]');
+  
+  cellsToUpdate.forEach(function(cell) {
+    var columnName = cell.getAttribute('data-column');
+    var property = columnMapping[columnName];
+    if (property && updatedData.hasOwnProperty(property)) {
+      cell.textContent = updatedData[property];
+    } else {
+      console.error(`Não foi possível encontrar a propriedade para a coluna: ${columnName}`);
+    }
+  });
+}
+
+
+
