@@ -170,7 +170,10 @@ class ClientController extends AdminController
         $client->bairro = $validatedData['bairro'];
         $client->save();
 
-        return response()->json(['message' => 'Cliente atualizado com sucesso']);
+        $columnMapping = (new Client())->columnMapping;
+
+
+        return response()->json(['message' => 'Cliente atualizado com sucesso', 'data'=> $client, 'columnMapping'=> $columnMapping]);
     }
 
 }

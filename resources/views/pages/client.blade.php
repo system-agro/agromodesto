@@ -189,33 +189,9 @@ function getModalContentForMode(mode, data) {
     }
 }
 
-async function visualizarItem(id) {
-  try {
-    const data = await retrieveItem('client', id); // usando a função retrieveItem
-    if (data) {
-      // Manipulate the API data here
-      openModalAction('view', data, );
-    } else {
-      console.error('Error calling the API');
-    }
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
-}
 
-async function onEditModal(id) {
-  try {
-    const data = await retrieveItem('client', id); // usando a função retrieveItem
-    if (data) {
-      // Manipulate the API data here
-      openModalAction('edit', data);
-    } else {
-      console.error('Error calling the API');
-    }
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
-}
+
+
 
 
 function addClickEventToButton(button) {
@@ -293,6 +269,21 @@ async function create() {
     }
 }
 
+async function onEditModal(id) {
+  try {
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    const data = await retrieveItem(router, id); // usando a função retrieveItem
+    if (data) {
+      // Manipulate the API data here
+      openModalAction('edit', data);
+    } else {
+      console.error('Error calling the API');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
 async function deleteData(contactId) {
   try {
     var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
@@ -305,23 +296,36 @@ async function deleteData(contactId) {
   }
 }
 
+async function visualizarItem(id) {
+  try {
+    var router = getRouter();
+    const data = await retrieveItem(router, id); // usando a função retrieveItem
+    if (data) {
+      // Manipulate the API data here
+      openModalAction('view', data, );
+    } else {
+      console.error('Error calling the API');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
 var tableBody = '';
 document.addEventListener("DOMContentLoaded", ()=>{
   tableBody = document.querySelector('.table tbody'); 
 })
 
 
-async function update(clientId) {
+async function update(contactId) {
   try {
     const data = getModalInputValues();
-    await updateItem('client', clientId, data); // usando a função updateItem
-
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    const response = await updateItem(router, contactId, data); // usando a função updateItem
     closeModal();
     modalSuccess("Cliente atualizado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
-    // Refresh the form or the table as needed
+    console.log(response)
+    updateRowInActiveTabTable(response?.data, response?.columnMapping)
 
   } catch (error) {
     console.error('An error occurred:', error);

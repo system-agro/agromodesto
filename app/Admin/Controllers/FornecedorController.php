@@ -41,7 +41,7 @@ class FornecedorController extends AdminController
     }
     public function listFornecedor()
     {
-        $columns = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
+        $columns = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Cidade'];
         $data = Fornecedor::all();
         $columnMapping = (new Fornecedor())->columnMapping;
 
@@ -61,7 +61,6 @@ class FornecedorController extends AdminController
             'documento' => 'required',
             'estado' => 'required',
             'cidade' => 'required',
-            'bairro' => 'required',
         ]);
 
 
@@ -71,9 +70,10 @@ class FornecedorController extends AdminController
         $fornecedor->name = $validatedData['name'];
         $fornecedor->email = $validatedData['email'];
         $fornecedor->phone = $validatedData['phone'];
-        $fornecedor->document = $validatedData['documento'];
-        $fornecedor->state = $validatedData['estado'];
-        $fornecedor->district = $validatedData['cidade'];
+        $fornecedor->documento = $validatedData['documento'];
+        $fornecedor->estado = $validatedData['estado'];
+        $fornecedor->cidade = $validatedData['cidade'];
+        
         $fornecedor->save();
 
         $response = $fornecedor;
@@ -106,6 +106,15 @@ class FornecedorController extends AdminController
 
     public function updateFornecedor(Request $request, $id)
     {
+        // Find the client by ID
+        $fornecedor = Fornecedor::find($id);
+
+        // Check if client exists
+        if (!$fornecedor) {
+            return response()->json(['message' => 'Cliente não encontrado'], 404);
+        }
+
+        // Validate the request data
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -113,26 +122,21 @@ class FornecedorController extends AdminController
             'documento' => 'required',
             'estado' => 'required',
             'cidade' => 'required',
-            'bairro' => 'required',
         ]);
 
-        try {
-            $fornecedor = Fornecedor::findOrFail($id);
-            $fornecedor->name = $validatedData['name'];
-            $fornecedor->email = $validatedData['email'];
-            $fornecedor->phone = $validatedData['phone'];
-            $fornecedor->document = $validatedData['documento'];
-            $fornecedor->state = $validatedData['estado'];
-            $fornecedor->city = $validatedData['cidade']; // Ajuste se necessário
-            $fornecedor->district = $validatedData['bairro']; // Ajuste se necessário
-            $fornecedor->save();
+        // Update the client details with validated data
+        $fornecedor->name = $validatedData['name'];
+        $fornecedor->email = $validatedData['email'];
+        $fornecedor->phone = $validatedData['phone'];
+        $fornecedor->documento = $validatedData['documento'];
+        $fornecedor->estado = $validatedData['estado'];
+        $fornecedor->cidade = $validatedData['cidade'];
+        $fornecedor->save();
 
-            return response()->json(['success' => true, 'message' => 'Fornecedor atualizado com sucesso.', 'fornecedor' => $fornecedor]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Fornecedor não encontrado para atualização.']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Erro ao atualizar fornecedor.']);
-        }
+        $columnMapping = (new Fornecedor())->columnMapping;
+
+
+        return response()->json(['message' => 'Fornecedor atualizado com sucesso', 'data'=> $fornecedor, 'columnMapping'=> $columnMapping]);
     }
 
 

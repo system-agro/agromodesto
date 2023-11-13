@@ -15,9 +15,9 @@ class Fornecedor extends Model
         'Nome' => 'name',
         'Email' => 'email',
         'Telefone' => 'phone',
-        'Documento' => 'document',
-        'Estado' => 'state',
-        'Bairro' => 'district'
+        'Documento' => 'docuemento',
+        'Estado' => 'estado',
+        'Cidade' => 'cidade',
         // Adicione outros mapeamentos conforme necessário
     ];
 
