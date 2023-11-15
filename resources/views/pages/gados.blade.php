@@ -6,16 +6,24 @@ $body_classes = ''; // Defina as classes do corpo conforme necessário
 $_user_ = '';
 $tabConfig = [
     [
-        'title' => 'Vendas Gado',
-        'id' => 'gados',
-        'routeName' => 'listFornecedor',
-        'onClickFunction' => '()=>{}'
+        'title' => 'Gados',
+        'id' => 'tabGado',
+        'routeName' => 'listGados',
+        'onClickFunction' => 'selectTabGado()',
+        'content' => view('components.table', ['columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissão', 'Valor Frete', 'Lucro'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
+    ],
+    [
+        'title' => 'Controle de Natalidade',
+        'id' => 'tabNatalidade',
+        'routeName' => 'listNatalidade',
+        'onClickFunction' => 'selectTabNatalidade()',
     ],
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
 <script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
+<script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
@@ -25,7 +33,6 @@ $tabConfig = [
 }
 
 </style>
-
 <div id="tabs">
   @include('components.tabs',  ['tabsConfig' => $tabConfig])
   @include('components.modalSuccess', ['title' => ''])
@@ -62,9 +69,102 @@ $tabConfig = [
 </div>
 <!-- Seu código HTML aqui, incluindo o botão "Cadastrar +" e o modal -->
 <script>
-// Função para abrir o modal
-// Adicione um event listener para a aba Clientes
-function getModalContentForMode(mode, data) {
+
+
+function getActiveTabId() {
+  // Seleciona a aba ativa com base na classe 'active' no link dentro do contêiner #tabs
+  var activeTabLink = document.querySelector('#customTabs .nav-link.active');
+  var id = ""
+  // Verifica se encontrou a aba ativa e retorna o ID e a rota correspondente
+  if (activeTabLink) {
+    id = activeTabLink.id.replace('-tab', '')
+    return id ;
+  } else {
+    return null;
+  }
+}
+
+function getRouter () {
+  var tabActive = getActiveTabId();
+  return tabActive === "tabGado" ? "gado" : "natalidade";
+}
+
+function getModalContentForNatalidade(mode, data) {
+    switch (mode) {
+        case "view":
+            return `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Detalhes da Natalidade",
+                        "inputs" => [
+                            ["name" => "Numeração", "mask" => null],
+                            ["name" => "Tipo", "mask" => null],
+                            ["name" => "Condição", "mask" => null],
+                            ["name" => "Data da Inseminação", "mask" => "datetime"],
+                            ["name" => "Data da Gestação", "mask" => "datetime"]
+                        ]
+                    ]
+                ],
+                "mode" => "view",
+                "data" => [
+                    "Numeracao" => "` + data.numeracao + `",
+                    "Tipo" => "` + data.tipo + `",
+                    "Condicao" => "` + data.condicao + `",
+                    "Data Inseminacao" => "` + data.data_inseminacao + `",
+                    "Data Gestacao" => "` + data.data_gestacao + `"
+                ]
+            ])`;
+
+        case "edit":
+            let modalContent = `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Detalhes da Natalidade",
+                        "inputs" => [
+                            ["name" => "Numeração", "mask" => null],
+                            ["name" => "Tipo", "mask" => null],
+                            ["name" => "Condição", "mask" => null],
+                            ["name" => "Data da Inseminação", "mask" => "datetime"],
+                            ["name" => "Data da Gestação", "mask" => "datetime"]
+                        ]
+                    ]
+                ],
+                "mode" => "edit",
+                "data" => [
+                    "Numeração" => "` + data.numeracao + `",
+                    "Tipo" => "` + data.tipo + `",
+                    "Condição" => "` + data.condicao + `",
+                    "Data Inseminacao" => "` + data.data_inseminacao + `",
+                    "Data Gestacao" => "` + data.data_gestacao + `"
+                ]
+            ])`;
+            return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
+
+        case "new":
+            return `@include('components.modalCreate', [
+                "sections" => [
+                    [
+                        "title" => "Detalhes da Natalidade",
+                        "inputs" => [
+                            ["name" => "Numeracao Animal", "mask" => null],
+                            ["name" => "Tipo Animal", "mask" => null],
+                            ["name" => "Gestante", "mask" => null],
+                            ["name" => "Data Inseminacao", "mask" => "datetime"],
+                            ["name" => "Data Gestacao", "mask" => "datetime"]
+                        ]
+                    ]
+                ],
+                "mode" => "new",
+                "data" => []
+            ])`;
+
+        default:
+            return "";
+    }
+}
+
+
+function getModalContentForGado(mode, data) {
     switch (mode) {
             case "view":
               return `@include('components.modalCreate', [
@@ -154,45 +254,81 @@ function getModalContentForMode(mode, data) {
     }
 }
 
+function getModalContentForMode(mode, data){
+  var tabActive = getActiveTabId()
+  return tabActive === 'tabGado' ? getModalContentForGado(mode, data) : getModalContentForNatalidade(mode, data);
+}
+
 function getModalInputValues() {
-    
-    var cliente = document.getElementById('inputNome').value;
-    var date = formatDateToISO(document.getElementById('inputDataVenda').value);
-    var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
-    var comissao = unmaskCurrencyValue(document.getElementById('inputComissão').value);
-    var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
+    var tabActive = getActiveTabId();
+    var data = {}
 
-    var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete))
-    
-    const data = {
-        cliente:cliente,
-        data_venda:date,
-        valor_venda:venda,
-        comissao:comissao,
-        valor_frete:frete,
-        lucro:lucro
-    };
+    if (tabActive === 'tabGado') {
+        var cliente = document.getElementById('inputNome').value;
+        var date = formatDateToISO(document.getElementById('inputDataVenda').value);
+        var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
+        var comissao = unmaskCurrencyValue(document.getElementById('inputComissão').value);
+        var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
 
-    return data
+        var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete));
+
+        data = {
+            cliente: cliente,
+            data_venda: date,
+            valor_venda: venda,
+            comissao: comissao,
+            valor_frete: frete,
+            lucro: lucro
+        };
+    } else if (tabActive === 'tabNatalidade') {
+        var numeracaoAnimal = parseInt(document.getElementById('inputNumeracaoAnimal').value);
+        var tipoAnimal = document.getElementById('inputTipoAnimal').value;
+        var gestante = false;
+        var dataInseminacao = formatDateToISO(document.getElementById('inputDataInseminacao').value);
+        var dataGestacao = formatDateToISO(document.getElementById('inputDataGestacao').value);
+
+        data = {
+            numeracao_animal: numeracaoAnimal,
+            tipo_animal: tipoAnimal,
+            gestante: gestante,
+            data_inceminacao: dataInseminacao,
+            data_gestaccao: dataGestacao
+        };
+    }
+
+    return data;
 }
 
 
 async function create() {
-  try {
-    const data = getModalInputValues();
-    await createItem('gado', data); // usando a função createItem
-    closeModal();
-    modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
-    // Limpe o formulário ou atualize a tabela, conforme necessário
+    try {
+        const data = getModalInputValues();
+        var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+        const data_temp = await createItem(router, data); // usando a função createItem
 
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('Ocorreu um erro ao criar o relatorio');
-  }
+        var columnsView;
+        if (router === "gado") {
+            columnsView = ['Cliente', 'Data da Venda', 'Valor da Venda', 'Comissão', 'Valor do Frete', 'Lucro'];
+        } else if (router === "natalidade") {
+            columnsView = ['Numeração', 'Tipo', 'Condição', 'Data da Inseminação', 'Data da Gestação'];
+        }
+
+        // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
+        if (data_temp) {
+            addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
+            closeModal();
+
+            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
+        } else {
+            // Se data_temp for null ou undefined, algo deu errado com a criação do item
+            throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
+        }
+    } catch (error) {
+        console.error('Erro ao criar item:', error);
+        // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
+    }
 }
+
 
 async function visualizarItem(id) {
   try {
@@ -227,7 +363,8 @@ async function update(relatorioId) {
 
 async function onEditModal(id) {
   try {
-    const data = await retrieveItem('gado', id); // usando a função retrieveItem
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    const data = await retrieveItem(router, id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
       openModalAction('edit', data);
@@ -239,20 +376,111 @@ async function onEditModal(id) {
   }
 }
 
-async function deleteData(clientId) {
+async function deleteData(contactId) {
   try {
-    await deleteItem('gado', clientId); // usando a função deleteItem
-
-    modalSuccess("Relatorio excluido com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
-
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    await deleteItem(router, contactId); // usando a função deleteItem
+    modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " excluido com sucesso"); // Torna a primeira letra maiúscula
+    removeRowFromActiveTabTable(contactId)
   } catch (error) {
     console.error('An error occurred:', error);
     alert('Ocorreu um erro ao excluir o cliente');
   }
 }
+
+
+function createDynamicButton() {
+  const container = document.createElement('div');
+  container.className = 'content-container p-3';
+
+  // Crie o botão
+  const button = document.createElement('button');
+  button.className = 'btn btn-primary';
+  button.dataset.toggle = 'modal';
+  button.dataset.target = 'addCliente';
+  button.textContent = 'Cadastrar +';
+  button.addEventListener('click', () => {
+    openModalAction("new");
+  });
+
+  // Adicione o botão ao contêiner
+  container.appendChild(button);
+
+  tabsFornecedor.prepend(container);
+}
+
+function addClickEventToButton(button) {
+  button.addEventListener('click', () => {
+    openModalAction("new");
+  });
+}
+
+function loadTabContent(selectedTabButton) {
+    const route = selectedTabButton.getAttribute('data-route');
+    fetch(route)
+      .then(response => response.json())
+      .then(data => {
+        if (data.tableComponentContent) {
+          const tableContainer = document.getElementById('tabs-fon');
+          tableContainer.innerHTML = data.tableComponentContent;
+          // addCadastrarButton(selectedTabButton.id);
+        }
+      })
+      .catch(error => console.error('Ocorreu um erro:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  const buttonTabClient = document.getElementById('tabGado-tab');
+  const buttonTabSupplier = document.getElementById('tabNatalidade-tab');
+
+  function selectTabNatalidade (event){
+    const route = event.target.getAttribute('data-route');
+    // Realize a solicitação AJAX usando fetch ou jQuery.ajax
+    // Exemplo usando fetch:
+    loadTabContent(event.target)
+    // Esconda o conteúdo da aba Clientes
+    document.getElementById('tab1').classList.remove('show', 'active');
+    // Mostre o conteúdo da aba Fornecedores
+    const tabsFornecedor = document.getElementById('tab2')
+    tabsFornecedor.classList.add('show', 'active');
+    if (!document.getElementById('btnCadastrarFornecedor')) {
+      const container = document.createElement('div');
+      container.className = 'content-container p-3';
+
+      // Crie o botão
+      const button = document.createElement('button');
+      button.className = 'btn btn-primary';
+      button.dataset.toggle = 'modal';
+      button.dataset.target = 'addCliente';
+      button.id = 'btnCadastrarFornecedor';
+      button.textContent = 'Cadastrar +';
+      addClickEventToButton(button);
+      // Adicione o botão ao contêiner
+      container.appendChild(button);
+
+      tabsFornecedor.prepend(container)
+    }
+
+
+    buttonTabClient.classList.remove("active")
+    buttonTabSupplier.classList.add("active")
+  }
+
+
+  function selectTabGado(event){
+    document.getElementById('tab2').classList.remove('show', 'active');
+  // Mostre o conteúdo da aba Clientes
+    document.getElementById('tab1').classList.add('show', 'active');
+    buttonTabSupplier.classList.remove("active")
+    buttonTabClient.classList.add("active")
+  }
+
+  // Para cada tab, adicione o event listener correspondente
+  document.getElementById("tabGado-tab").addEventListener("click", (event) => selectTabGado(event));
+  document.getElementById("tabNatalidade-tab").addEventListener("click", (event) => selectTabNatalidade(event));
+
+});
 
 </script>
 @endsection

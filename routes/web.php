@@ -4,6 +4,7 @@ use App\Admin\Controllers\CaminhaoController;
 use App\Admin\Controllers\FornecedorController;
 use App\Admin\Controllers\GadoController;
 use App\Admin\Controllers\MadeirasController;
+use App\Admin\Controllers\NatalidadeController;
 use Illuminate\Support\Facades\Route;
 use App\Admin\Controllers\ClientController;
 
@@ -37,6 +38,7 @@ Route::delete('/admin/fornecedor/delete/{id}', [FornecedorController::class, 'de
 Route::put('/admin/fornecedor/update/{id}', [FornecedorController::class, 'updateFornecedor'])->name('updateFornecedor');
 
 
+Route::post('/admin/gado', [GadoController::class, 'listGados'])->name('listGados');
 Route::post('/admin/gado/save', [GadoController::class, 'save'])->name('save');
 Route::put('/admin/gado/update/{id}', [GadoController::class, 'updateReport'])->name('updateReport');
 Route::get('/admin/gado/detail/{id}', [GadoController::class, 'detail'])->name('detail');
@@ -53,6 +55,13 @@ Route::put('/admin/caminhaos/update/{id}', [CaminhaoController::class, 'updateRe
 Route::get('/admin/caminhaos/detail/{id}', [CaminhaoController::class, 'detail'])->name('detail');
 Route::delete('/admin/caminhaos/delete/{id}', [CaminhaoController::class, 'delete'])->name('delete');
 Route::get('/admin/listCaminhoes', [CaminhaoController::class, 'listCaminhoes'])->name('listCaminhoes');
+
+Route::get('/admin/natalidade', [NatalidadeController::class, 'listNatalidade'])->name('listNatalidade');
+Route::post('/admin/natalidade/save', [NatalidadeController::class, 'save'])->name('save');
+Route::get('/admin/natalidade/detail/{id}', [NatalidadeController::class, 'detail'])->name('detail');
+Route::delete('/admin/natalidade/delete/{id}', [NatalidadeController::class, 'delete'])->name('delete');
+Route::put('/admin/natalidade/update/{id}', [NatalidadeController::class, 'updateNatalidade'])->name('updateNatalidade');
+
 
 Route::get('/admin/download/{id}', [MadeirasController::class, 'generatePDF'])->name('generatePDF');
 
