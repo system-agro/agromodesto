@@ -19,7 +19,7 @@ class NatalidadeController extends AdminController
   protected $title = 'Natalidade';
   public function listNatalidade()
   {
-    $columns = ['Numeracao', 'Tipo', 'Condicao', 'Data inseminacao', 'Data Gestacao'];
+    $columns = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
     $data = Natalidade::all();
     $columnMapping = (new Natalidade())->columnMapping;
 
@@ -27,24 +27,6 @@ class NatalidadeController extends AdminController
     $tableComponentContent = view('components.table', compact('columns', 'columnMapping', 'data'))->render();
 
     return response()->json(['tableComponentContent' => $tableComponentContent]);
-  }
-
-  /**
-   * Make a form builder.
-   *
-   * @return Form
-   */
-  protected function form()
-  {
-    $form = new Form(new Gado());
-
-    $form->text('cliente', __('Cliente'));
-    $form->datetime('data_venda', __('Data venda'))->default(date('Y-m-d H:i:s'));
-    $form->text('valor_venda', __('Valor venda'));
-    $form->text('comissao', __('Comissao'));
-    $form->text('valor_frete', __('Valor frete'));
-
-    return $form;
   }
 
   public function save(Request $request)

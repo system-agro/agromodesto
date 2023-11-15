@@ -305,12 +305,12 @@ async function create() {
         const data = getModalInputValues();
         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
         const data_temp = await createItem(router, data); // usando a função createItem
-
+        console.log(data_temp)
         var columnsView;
         if (router === "gado") {
             columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'];
         } else if (router === "natalidade") {
-            columnsView = ['Numeração', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
+            columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
         }
 
         // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
