@@ -23,6 +23,10 @@ class NatalidadeController extends AdminController
     $data = Natalidade::all();
     $columnMapping = (new Natalidade())->columnMapping;
 
+    foreach ($data as $natalidade) {
+      $natalidade->gestante = $natalidade->gestante == 1 ? 'true' : 'false';
+    }
+
     // Carregue o conteúdo do arquivo table-component.blade.php
     $tableComponentContent = view('components.table', compact('columns', 'columnMapping', 'data'))->render();
 
