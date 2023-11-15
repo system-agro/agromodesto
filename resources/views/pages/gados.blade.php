@@ -267,7 +267,7 @@ function getModalInputValues() {
         var cliente = document.getElementById('inputNome').value;
         var date = formatDateToISO(document.getElementById('inputDataVenda').value);
         var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
-        var comissao = unmaskCurrencyValue(document.getElementById('inputComissão').value);
+        var comissao = unmaskCurrencyValue(document.getElementById('inputComissao').value);
         var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
 
         var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete));
