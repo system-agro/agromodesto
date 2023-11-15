@@ -349,12 +349,11 @@ async function update(relatorioId) {
   try {
     const data = getModalInputValues();
     var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
-    await updateItem(router, relatorioId, data); // usando a função updateItem
+    const response = await updateItem(router, relatorioId, data); // usando a função updateItem
     closeModal();
     modalSuccess("Relatorio atualizado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    updateRowInActiveTabTable(response?.data, response?.columnMapping)
+
     // Refresh the form or the table as needed
 
   } catch (error) {
