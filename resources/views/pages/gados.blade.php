@@ -292,7 +292,7 @@ function getModalInputValues() {
             tipo_animal: tipoAnimal,
             gestante: gestante,
             data_inseminacao: dataInseminacao,
-            data_gestaccao: dataGestacao
+            data_gestacao: dataGestacao
         };
     }
 
