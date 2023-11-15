@@ -97,9 +97,9 @@ function getModalContentForNatalidade(mode, data) {
                     [
                         "title" => "Detalhes da Natalidade",
                         "inputs" => [
-                            ["name" => "Numeração", "mask" => null],
-                            ["name" => "Tipo", "mask" => null],
-                            ["name" => "Condicao", "mask" => null],
+                            ["name" => "Numeracao Animal", "mask" => null],
+                            ["name" => "Tipo Animal", "mask" => null],
+                            ["name" => "Gestante", "mask" => null],
                             ["name" => "Data Inseminacao", "mask" => "datetime"],
                             ["name" => "Data Gestacao", "mask" => "datetime"]
                         ]
@@ -107,9 +107,9 @@ function getModalContentForNatalidade(mode, data) {
                 ],
                 "mode" => "view",
                 "data" => [
-                    "Numeracao" => "` + data.numeracao + `",
-                    "Tipo" => "` + data.tipo + `",
-                    "Condicao" => "` + data.condicao + `",
+                    "Numeracao Animal" => "` + data.numeracao_animal + `",
+                    "Tipo Animal" => "` + data.tipo_animal + `",
+                    "Gestante" => "` + data.gestante + `",
                     "Data Inseminacao" => "` + data.data_inseminacao + `",
                     "Data Gestacao" => "` + data.data_gestacao + `"
                 ]
@@ -121,9 +121,9 @@ function getModalContentForNatalidade(mode, data) {
                     [
                         "title" => "Detalhes da Natalidade",
                         "inputs" => [
-                            ["name" => "Numeração", "mask" => null],
-                            ["name" => "Tipo", "mask" => null],
-                            ["name" => "Condicao", "mask" => null],
+                            ["name" => "Numeracao Animal", "mask" => null],
+                            ["name" => "Tipo Animal", "mask" => null],
+                            ["name" => "Gestante", "mask" => null],
                             ["name" => "Data Inseminacao", "mask" => "datetime"],
                             ["name" => "Data Gestacao", "mask" => "datetime"]
                         ]
@@ -131,9 +131,9 @@ function getModalContentForNatalidade(mode, data) {
                 ],
                 "mode" => "edit",
                 "data" => [
-                    "Numeração" => "` + data.numeracao + `",
-                    "Tipo" => "` + data.tipo + `",
-                    "Condicao" => "` + data.condicao + `",
+                    "Numeracao Animal" => "` + data.numeracao_animal + `",
+                    "Tipo Animal" => "` + data.tipo_animal + `",
+                    "Gestante" => "` + data.gestante + `",
                     "Data Inseminacao" => "` + data.data_inseminacao + `",
                     "Data Gestacao" => "` + data.data_gestacao + `"
                 ]
@@ -332,7 +332,8 @@ async function create() {
 
 async function visualizarItem(id) {
   try {
-    const data = await retrieveItem('gado', id); // usando a função retrieveItem
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    const data = await retrieveItem(router, id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
       openModalAction('view', data, );
@@ -347,7 +348,8 @@ async function visualizarItem(id) {
 async function update(relatorioId) {
   try {
     const data = getModalInputValues();
-    await updateItem('gado', relatorioId, data); // usando a função updateItem
+    var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+    await updateItem(router, relatorioId, data); // usando a função updateItem
     closeModal();
     modalSuccess("Relatorio atualizado com sucesso");
     setTimeout(function() {

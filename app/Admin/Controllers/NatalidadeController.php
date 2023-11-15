@@ -55,6 +55,7 @@ class NatalidadeController extends AdminController
 
     $natalidade->save();
 
+    $natalidade->gestante = $natalidade-> gestante == 0 ? 'false' : 'true';
     $response = $natalidade;
 
     // Use o mapeamento de colunas se necessário, ou remova se não for usar
