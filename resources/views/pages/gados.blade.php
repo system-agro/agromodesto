@@ -10,7 +10,7 @@ $tabConfig = [
         'id' => 'tabGado',
         'routeName' => 'listGados',
         'onClickFunction' => 'selectTabGado()',
-        'content' => view('components.table', ['columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissão', 'Valor Frete', 'Lucro'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
+        'content' => view('components.table', ['columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
     ],
     [
         'title' => 'Controle de Natalidade',
@@ -51,7 +51,7 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissão', 'Valor Frete', 'Lucro'],
+        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'],
         'data' => $contacts,
         'columnMapping' => $columnMapping
         ])
@@ -99,9 +99,9 @@ function getModalContentForNatalidade(mode, data) {
                         "inputs" => [
                             ["name" => "Numeração", "mask" => null],
                             ["name" => "Tipo", "mask" => null],
-                            ["name" => "Condição", "mask" => null],
-                            ["name" => "Data da Inseminação", "mask" => "datetime"],
-                            ["name" => "Data da Gestação", "mask" => "datetime"]
+                            ["name" => "Condicao", "mask" => null],
+                            ["name" => "Data Inseminacao", "mask" => "datetime"],
+                            ["name" => "Data Gestacao", "mask" => "datetime"]
                         ]
                     ]
                 ],
@@ -123,9 +123,9 @@ function getModalContentForNatalidade(mode, data) {
                         "inputs" => [
                             ["name" => "Numeração", "mask" => null],
                             ["name" => "Tipo", "mask" => null],
-                            ["name" => "Condição", "mask" => null],
-                            ["name" => "Data da Inseminação", "mask" => "datetime"],
-                            ["name" => "Data da Gestação", "mask" => "datetime"]
+                            ["name" => "Condicao", "mask" => null],
+                            ["name" => "Data Inseminacao", "mask" => "datetime"],
+                            ["name" => "Data Gestacao", "mask" => "datetime"]
                         ]
                     ]
                 ],
@@ -133,7 +133,7 @@ function getModalContentForNatalidade(mode, data) {
                 "data" => [
                     "Numeração" => "` + data.numeracao + `",
                     "Tipo" => "` + data.tipo + `",
-                    "Condição" => "` + data.condicao + `",
+                    "Condicao" => "` + data.condicao + `",
                     "Data Inseminacao" => "` + data.data_inseminacao + `",
                     "Data Gestacao" => "` + data.data_gestacao + `"
                 ]
@@ -180,7 +180,7 @@ function getModalContentForGado(mode, data) {
                           "inputs" => [
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                               ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
-                              ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                              ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
                               ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
                           ]
                       ]
@@ -190,7 +190,7 @@ function getModalContentForGado(mode, data) {
                       "Nome" => "` + data.cliente + `",
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
-                      "Comissão" => "` + data.comissao + `",
+                      "Comissao" => "` + data.comissao + `",
                       "Valor Frete" => "` + data.valor_frete + `"
                   ]
               ])`;
@@ -210,7 +210,7 @@ function getModalContentForGado(mode, data) {
                           "inputs" => [
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                               ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
-                              ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                              ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
                               ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
                           ]
                       ]
@@ -220,7 +220,7 @@ function getModalContentForGado(mode, data) {
                       "Nome" => "` + data.cliente + `",
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
-                      "Comissão" => "` + data.comissao + `",
+                      "Comissao" => "` + data.comissao + `",
                       "Valor Frete" => "` + data.valor_frete + `"
                   ]
               ])`;
@@ -240,7 +240,7 @@ function getModalContentForGado(mode, data) {
                         "inputs" => [
                             ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                             ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
-                            ["name" => "Comissão", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
+                            ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
                             ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
                         ]
                     ]
@@ -308,9 +308,9 @@ async function create() {
 
         var columnsView;
         if (router === "gado") {
-            columnsView = ['Cliente', 'Data da Venda', 'Valor da Venda', 'Comissão', 'Valor do Frete', 'Lucro'];
+            columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'];
         } else if (router === "natalidade") {
-            columnsView = ['Numeração', 'Tipo', 'Condição', 'Data da Inseminação', 'Data da Gestação'];
+            columnsView = ['Numeração', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
         }
 
         // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
