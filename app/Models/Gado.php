@@ -15,7 +15,7 @@ class Gado extends Model
         'Cliente' => 'cliente',
         'Data Venda' => 'data_venda',
         'Valor Venda' => 'valor_venda',
-        'Comissão' => 'comissao',
+        'Comissao' => 'comissao',
         'Valor Frete' => 'valor_frete',
         'Lucro' => 'lucro'
 
