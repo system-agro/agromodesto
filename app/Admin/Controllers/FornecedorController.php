@@ -41,15 +41,23 @@ class FornecedorController extends AdminController
     }
     public function listFornecedor()
     {
-        $columns = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Cidade'];
+        $columns = [
+            ["name" => "Nome", "mask" => null],
+            ["name" => "Email", "mask" => null],
+            ["name" => "Telefone", "mask" => "phone"],
+            ["name" => "Documento", "mask" => "cpf_cnpj"],
+            ["name" => "Estado", "mask" => null],
+            ["name" => "Cidade", "mask" => null]
+        ];
         $data = Fornecedor::all();
         $columnMapping = (new Fornecedor())->columnMapping;
 
-        // Carregue o conteúdo do arquivo table-component.blade.php
+        // Carrega o conteúdo do arquivo table-component.blade.php
         $tableComponentContent = view('components.table', compact('columns', 'columnMapping', 'data'))->render();
 
         return response()->json(['tableComponentContent' => $tableComponentContent]);
     }
+
 
     public function save(Request $request)
     {
@@ -73,7 +81,7 @@ class FornecedorController extends AdminController
         $fornecedor->documento = $validatedData['documento'];
         $fornecedor->estado = $validatedData['estado'];
         $fornecedor->cidade = $validatedData['cidade'];
-        
+
         $fornecedor->save();
 
         $response = $fornecedor;
@@ -136,7 +144,7 @@ class FornecedorController extends AdminController
         $columnMapping = (new Fornecedor())->columnMapping;
 
 
-        return response()->json(['message' => 'Fornecedor atualizado com sucesso', 'data'=> $fornecedor, 'columnMapping'=> $columnMapping]);
+        return response()->json(['message' => 'Fornecedor atualizado com sucesso', 'data' => $fornecedor, 'columnMapping' => $columnMapping]);
     }
 
 

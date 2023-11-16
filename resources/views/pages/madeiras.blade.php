@@ -14,7 +14,7 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
-<script src="{{ asset('utils/mask.js') }}"></script>
+<!-- <script src="{{ asset('utils/mask.js') }}"></script> -->
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
@@ -45,7 +45,14 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Cliente', 'Tipo Madeira','Data Venda', 'Valor Venda', 'Quantidade Venda','Lucro'],
+          'columns' => [
+              ["name" => "Cliente", "mask" => null],
+              ["name" => "Tipo Madeira", "mask" => null],
+              ["name" => "Data Venda", "mask" => "date"],
+              ["name" => "Valor Venda", "mask" => "currency"],
+              ["name" => "Quantidade Venda", "mask" => null], // Supondo que esta seja uma quantidade simples sem máscara
+              ["name" => "Lucro", "mask" => "currency"]
+          ],
         'data' => $contacts,
         'columnMapping' => $columnMapping
         ])

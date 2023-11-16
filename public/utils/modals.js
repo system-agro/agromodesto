@@ -88,19 +88,20 @@ function adicionarConjunto() {
   elemntOriginal.removeChild(buttonChild)
   const elementAdd = containerForm.lastElementChild.cloneNode(true);
 
-  
+
 
   // var containerOriginal = document.querySelector('.containerForm');
   containerForm.appendChild(elementAdd);
   containerForm.lastElementChild.appendChild(buttonChild)
 
 
-  
+
 }
 
 function addEventButtonForm() {
+  if (!document.getElementById('addInput')) return;
   // document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('addInput').onclick = adicionarConjunto;
+  document.getElementById('addInput').onclick = adicionarConjunto;
   // })
 }
 

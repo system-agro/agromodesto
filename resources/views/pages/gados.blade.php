@@ -10,7 +10,14 @@ $tabConfig = [
         'id' => 'tabGado',
         'routeName' => 'listGados',
         'onClickFunction' => 'selectTabGado()',
-        'content' => view('components.table', ['columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
+        'content' => view('components.table', ['columns' => [
+              ["name" => "Cliente", "mask" => null],
+              ["name" => "Data Venda", "mask" => "date"],
+              ["name" => "Valor Venda", "mask" => "currency"],
+              ["name" => "Comissao", "mask" => "currency"],
+              ["name" => "Valor Frete", "mask" => "currency"],
+              ["name" => "Lucro", "mask" => "currency"]
+          ], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
     ],
     [
         'title' => 'Controle de Natalidade',
@@ -21,7 +28,7 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
-<script src="{{ asset('utils/mask.js') }}"></script>
+<!-- <script src="{{ asset('utils/mask.js') }}"></script> -->
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
@@ -50,11 +57,19 @@ $tabConfig = [
 
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
-        @include('components.table', [
-        'columns' => ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'],
-        'data' => $contacts,
-        'columnMapping' => $columnMapping
-        ])
+      @include('components.table', [
+          'columns' => [
+              ["name" => "Cliente", "mask" => null],
+              ["name" => "Data Venda", "mask" => "date"],
+              ["name" => "Valor Venda", "mask" => "currency"],
+              ["name" => "Comissao", "mask" => "currency"],
+              ["name" => "Valor Frete", "mask" => "currency"],
+              ["name" => "Lucro", "mask" => "currency"]
+          ],
+          'data' => $contacts,
+          'columnMapping' => $columnMapping
+      ])
+
       </div>
     </div>
 
@@ -423,7 +438,7 @@ function loadTabContent(selectedTabButton) {
       .then(data => {
         if (data.tableComponentContent) {
           const tableContainer = document.getElementById('tabs-fon');
-          tableContainer.innerHTML = data.tableComponentContent;
+          // tableContainer.innerHTML = data.tableComponentContent;
           // addCadastrarButton(selectedTabButton.id);
         }
       })

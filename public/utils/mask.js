@@ -1,8 +1,8 @@
-function maskCurrency(value) {
-  return value.replace(/\D/g, "") // Permite apenas dígitos, substituindo todos os caracteres não-dígitos
-    .replace(/(\d)(\d{2})$/, "$1,$2") // Coloca a vírgula antes dos últimos 2 dígitos
-    .replace(/(?=(\d{3})+(\D))\B/g, "."); // Adiciona o ponto a cada 3 dígitos
-}
+// function maskCurrency(value) {
+//   return value.replace(/\D/g, "") // Permite apenas dígitos, substituindo todos os caracteres não-dígitos
+//     .replace(/(\d)(\d{2})$/, "$1,$2") // Coloca a vírgula antes dos últimos 2 dígitos
+//     .replace(/(?=(\d{3})+(\D))\B/g, "."); // Adiciona o ponto a cada 3 dígitos
+// }
 
 function maskCPF(value) {
   return value.replace(/\D/g, "")
@@ -36,6 +36,8 @@ function formatDateToBR(dateTimeString) {
   // Retorna a data no formato dd/mm/yyyy
   return `${day}/${month}/${year}`;
 }
+
+
 
 // Exemplo de função que será chamada no evento onkeyup do input
 function onKeyUpCurrency(event) {
