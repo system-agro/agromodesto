@@ -79,6 +79,32 @@ function applyInputMasks() {
   });
 }
 
+
+function adicionarConjunto() {
+  // Encontra o containerForm original
+  const containerForm = document.querySelector('.containerForm');
+  const elemntOriginal = containerForm.lastElementChild;
+  const buttonChild = elemntOriginal.lastElementChild;
+  elemntOriginal.removeChild(buttonChild)
+  const elementAdd = containerForm.lastElementChild.cloneNode(true);
+
+  
+
+  // var containerOriginal = document.querySelector('.containerForm');
+  containerForm.appendChild(elementAdd);
+  containerForm.lastElementChild.appendChild(buttonChild)
+
+
+  
+}
+
+function addEventButtonForm() {
+  // document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('addInput').onclick = adicionarConjunto;
+  // })
+}
+
+
 function openModalAction(mode = "", data = {}) {
   const container = document.getElementById("tabs");
   const contentModal = createContentModalElement();
@@ -88,7 +114,8 @@ function openModalAction(mode = "", data = {}) {
   container.appendChild(contentModal);
   document.getElementById('customModal').style.display = 'block';
 
-  applyInputMasks()
+  addEventButtonForm();
+  applyInputMasks();
 }
 
 function createContentModalElement() {
