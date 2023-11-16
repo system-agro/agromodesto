@@ -109,9 +109,12 @@ function getModalContentForMode(mode, data) {
             let modalContent = `@include('components.modalCreate', [
               "sections" => [
                     [
-                        "title" => "Tipo de Madeira",
+                        "title" => "Informações da compra",
                         "inputs" => [
-                            ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                          [
+                              "name" => "Tipos madeira",
+                              "inputComponent" => "true"
+                          ]
                         ]
                     ],
                     [
@@ -148,9 +151,12 @@ function getModalContentForMode(mode, data) {
             return `@include('components.modalCreate', [
               "sections" => [
                       [
-                          "title" => "Tipo de Madeira",
+                          "title" => "Informações da compra",
                           "inputs" => [
-                              ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                            [
+                                "name" => "Tipos madeira",
+                                "inputComponent" => "true"
+                            ]
                           ]
                       ],
                       [

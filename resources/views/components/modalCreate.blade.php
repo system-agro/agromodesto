@@ -52,16 +52,23 @@
             <div class="row p-2">
                 <h4>{{ $section['title'] }}</h4>
                 @foreach ($section['inputs'] as $input)
-                <div class="col-md-3">
-                    {{-- 'mask' is fetched from the input array, so it's available here --}}
-                    @include('components.input-fileds', [
-                        'input' => $input,
-                        'mode' => $mode,
-                        'data' => $data[$input['name']] ?? '',
-                        'mask' => $input['mask'] ?? ''
-                    ])
-                </div>
+                  @if(isset($input['inputComponent']) && $input['inputComponent'] === "true")
+                    <div class="col-md-12">
+                      @component('components.input-text-multiple')@endcomponent
+                    </div> 
+                  @else
+                    <div class="col-md-3">
+                        {{-- 'mask' is fetched from the input array, so it's available here --}}
+                        @include('components.input-fileds', [
+                            'input' => $input,
+                            'mode' => $mode,
+                            'data' => $data[$input['name']] ?? '',
+                            'mask' => $input['mask'] ?? '',
+                        ])
+                    </div>
+                  @endif
                 @endforeach
+                
             </div>
         @endforeach
     @endif
