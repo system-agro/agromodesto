@@ -2,7 +2,7 @@
   <thead>
     <tr>
       @foreach ($columns as $column)
-        <th>{{ $column }}</th>
+        <th>{{ $column['name'] }}</th>
       @endforeach
       <th>Actions</th>
     </tr>
@@ -10,8 +10,12 @@
   <tbody>
     @foreach($data as $contact)
       <tr data-id="{{ $contact->id }}">
-        @foreach($columns as $column) 
-          <td data-column="{{$column}}">{{ $contact->{$columnMapping[$column]} }}</td>
+        @foreach($columns as $column)
+          @php
+            $maskType = $column['mask'] ?? '';
+            $columnName = $column['name'];
+          @endphp
+          <td data-column="{{$columnName}}" data-mask="{{ $maskType }}">{{ $contact->{$columnMapping[$columnName]} }}</td>
         @endforeach
         <td class="col-1">
           <button id="edit" class="btn btn-primary" onclick="onEditModal({{ $contact->id }})">Editar</button>
@@ -23,3 +27,5 @@
     @endforeach
   </tbody>
 </table>
+
+

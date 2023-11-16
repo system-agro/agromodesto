@@ -10,7 +10,11 @@ $tabConfig = [
         'id' => 'tabClient',
         'routeName' => 'testeClient',
         'onClickFunction' => 'selectTabClient()',
-        'content' => view('components.table', ['columns' => ['Nome', 'Email', 'Telefone'], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
+        'content' => view('components.table', ['columns' => [
+                ["name" => "Nome", "mask" => ""],
+                ["name" => "Email", "mask" => ""],
+                ["name" => "Telefone", "mask" => "phone"]
+            ], 'data' => $contacts, 'columnMapping' => $columnMapping])->render()
     ],
     [
         'title' => 'Fornecedores',
@@ -21,7 +25,6 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
-<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
@@ -52,9 +55,13 @@ $tabConfig = [
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
         @include('components.table', [
-        'columns' => ['Nome', 'Email', 'Telefone'],
-        'data' => $contacts,
-        'columnMapping' => $columnMapping
+            'columns' => [
+                ["name" => "Nome", "mask" => ""],
+                ["name" => "Email", "mask" => ""],
+                ["name" => "Telefone", "mask" => "phone"]
+            ],
+          'data' => $contacts,
+          'columnMapping' => $columnMapping
         ])
       </div>
     </div>

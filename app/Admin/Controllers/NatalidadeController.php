@@ -19,19 +19,26 @@ class NatalidadeController extends AdminController
   protected $title = 'Natalidade';
   public function listNatalidade()
   {
-    $columns = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
+    $columns = [
+      ["name" => "Numeracao Animal", "mask" => null],
+      ["name" => "Tipo", "mask" => null],
+      ["name" => "Condicao", "mask" => null],
+      ["name" => "Data Inseminacao", "mask" => "date"],
+      ["name" => "Data Gestacao", "mask" => "date"]
+    ];
     $data = Natalidade::all();
     $columnMapping = (new Natalidade())->columnMapping;
 
     foreach ($data as $natalidade) {
-      $natalidade->gestante = $natalidade->gestante == 1 ? 'true' : 'false';
+      $natalidade->gestante = $natalidade->gestante == 1 ? 'Sim' : 'Não';
     }
 
-    // Carregue o conteúdo do arquivo table-component.blade.php
+    // Carrega o conteúdo do arquivo table-component.blade.php
     $tableComponentContent = view('components.table', compact('columns', 'columnMapping', 'data'))->render();
 
     return response()->json(['tableComponentContent' => $tableComponentContent]);
   }
+
 
   public function save(Request $request)
   {
@@ -59,7 +66,7 @@ class NatalidadeController extends AdminController
 
     $natalidade->save();
 
-    $natalidade->gestante = $natalidade-> gestante == 0 ? 'false' : 'true';
+    $natalidade->gestante = $natalidade->gestante == 0 ? 'false' : 'true';
     $response = $natalidade;
 
     // Use o mapeamento de colunas se necessário, ou remova se não for usar

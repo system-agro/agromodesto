@@ -44,10 +44,15 @@ $tabConfig = [
 
       <!-- Container com fundo branco para a tabela e filtro -->
       <div class="content-container px-3 pb-3" id="containerTable" style="background-color: white;">
-        @include('components.table', [
-        'columns' => ['Placa', 'Data Frete', 'Valor Frete', 'Lucro'],
-        'data' => $contacts,
-        'columnMapping' => $columnMapping
+      @include('components.table', [
+            'columns' => [
+                ["name" => "Placa", "mask" => null],
+                ["name" => "Data Frete", "mask" => "date"],
+                ["name" => "Valor Frete", "mask" => "currency"],
+                ["name" => "Lucro", "mask" => "currency"]
+            ],
+            'data' => $contacts,
+            'columnMapping' => $columnMapping
         ])
       </div>
     </div>
