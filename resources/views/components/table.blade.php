@@ -28,4 +28,7 @@
   </tbody>
 </table>
 
+<script src="{{ asset('js/tableMask.js')}}"></script>
+
+
 

@@ -1,5 +1,3 @@
-const BASE_URL = '/'; // você pode ajustar essa URL base conforme sua necessidade
-
 async function fetchData(endpoint, method = 'GET', data = null) {
   let config = {
     method: method,
