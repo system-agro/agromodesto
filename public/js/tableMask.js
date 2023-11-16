@@ -8,10 +8,6 @@ function formatReal(value) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Adiciona ponto como separador de milhares
 }
 
-
-
-
-
 function maskCpfCnpj(value) {
   // Remove caracteres não numéricos
   value = value.replace(/\D/g, "");
@@ -97,6 +93,6 @@ function applyMasksToTable() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", applyMasksToTable)
-// applyMasksToTable(); // Chama a função para aplicar as máscaras
+applyMasksToTable()
+
 

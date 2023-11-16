@@ -28,7 +28,6 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
-<!-- <script src="{{ asset('utils/mask.js') }}"></script> -->
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
