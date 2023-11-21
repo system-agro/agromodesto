@@ -36,10 +36,10 @@
 <div class="row containerForm">
     <div class="row p-3 m-1">
         <div class="col-md-3">
-            <input type="text" id="inputTipoMadeira" class="form-control form-control-lg rounded" placeholder="Digite o tipo da madeira" >
+            <input type="text" class="form-control form-control-lg rounded inputTipoMadeira" data-mask=""  placeholder="Digite o tipo da madeira" >
         </div>
         <div class="col-md-3">
-            <input type="text" id="inputValorMadeira" class="form-control form-control-lg rounded" placeholder="Digite o valor comprado" >
+            <input type="text" class="form-control form-control-lg rounded inputValorMadeira" data-mask="" placeholder="Digite o valor comprado" >
         </div>
         <div class="col">
             <button id="addInput" class="btn btn-light" >Adicionar +</button>
