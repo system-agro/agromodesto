@@ -83,13 +83,31 @@ function unmaskCurrencyValue(value) {
   return parseFloat(value.replace(/[R$\.,]/g, '').replace(',', '.')) / 100;
 }
 
+// function unmaskValue(element) {
+//   if(element && element.dataset.mask) {
+//     return Inputmask.unmask(element.value, { alias: element.dataset.mask });
+//   } else {
+//     return element.value;
+//   }
+// }
+
 function unmaskValue(element) {
-  if(element && element.dataset.mask) {
+  // Primeiro, verifica se o elemento existe
+  if (!element) {
+    console.error('Elemento não encontrado');
+    return ''; // Retorna um valor padrão ou lança um erro, conforme sua lógica de negócio
+  }
+
+  // Em seguida, verifica se o atributo 'data-mask' existe e desmascara o valor, se necessário
+  if (element.dataset && element.dataset.mask) {
     return Inputmask.unmask(element.value, { alias: element.dataset.mask });
   } else {
     return element.value;
   }
 }
+
+// O resto do código permanece igual
+
 
 function removeSpecialCharacters(str) {
   return str.replace(/[^\w\s]/gi, '');

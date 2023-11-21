@@ -14,7 +14,7 @@ $tabConfig = [
 ];
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
-<!-- <script src="{{ asset('utils/mask.js') }}"></script> -->
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
@@ -194,30 +194,39 @@ function getModalContentForMode(mode, data) {
 
 
 function getModalInputValues() {
-    
-    var tipoMadeira = document.getElementById('inputTipoMadeira').value;
+    // var tipoMadeira = document.getElementById('inputTipoMadeira').value;
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
     var valorVenda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
     var icms = unmaskValue(document.getElementById('inputICMS'));
     var cliente = document.getElementById('inputCliente').value;
-    var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"))
-
+    var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"));
 
     var valorIcms = (parseFloat(icms) / 100) * parseFloat(valorVenda);
     var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
 
-    console.log(lucro)
+    var tiposMadeira = document.querySelectorAll('.inputTipoMadeira');
+    var valoresMadeira = document.querySelectorAll('.inputValorMadeira');
+    var comprasMadeira = [];
+
+    for (var i = 0; i < tiposMadeira.length; i++) {
+        var compra = {
+            tipo_madeira: tiposMadeira[i].value,
+            valo_compra: unmaskCurrencyValue(valoresMadeira[i].value)
+        };
+        comprasMadeira.push(compra);
+    }
 
     const data = {
-        tipo_madeira: tipoMadeira,
+        tipo_madeira: 'teste',
         data_venda: dataVenda,
         valor_venda: valorVenda,
         frete: frete,
         icms: icms,
         lucro: lucro,
         cliente: cliente,
-        quantidade_venda: quantidadeVenda
+        quantidade_venda: quantidadeVenda,
+        compras_madeira: comprasMadeira
     };
 
     return data;
@@ -228,12 +237,13 @@ function getModalInputValues() {
 async function create() {
   try {
     const data = getModalInputValues();
+    console.log(data)
     await createItem('madeira', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    // setTimeout(function() {
+    //     location.reload();
+    // }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {
