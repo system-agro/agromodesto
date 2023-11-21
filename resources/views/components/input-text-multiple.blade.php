@@ -39,7 +39,7 @@
             <input type="text" class="form-control form-control-lg rounded inputTipoMadeira" data-mask=""  placeholder="Digite o tipo da madeira" >
         </div>
         <div class="col-md-3">
-            <input type="text" class="form-control form-control-lg rounded inputValorMadeira" data-mask="" placeholder="Digite o valor comprado" >
+            <input type="text" class="form-control form-control-lg rounded inputValorMadeira" data-mask="currency" placeholder="Digite o valor comprado" >
         </div>
         <div class="col">
             <button id="addInput" class="btn btn-light" >Adicionar +</button>

@@ -88,6 +88,9 @@ function adicionarConjunto() {
   elemntOriginal.removeChild(buttonChild)
   const elementAdd = containerForm.lastElementChild.cloneNode(true);
 
+  const inputs = elementAdd.querySelectorAll('input');
+  inputs.forEach(input => input.value = ''); // Limpa cada input
+
 
 
   // var containerOriginal = document.querySelector('.containerForm');
