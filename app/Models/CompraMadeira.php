@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CompraMadeira;
+use App\Models\Madeiras;
 
 
-class Madeiras extends Model
+class CompraMadeira extends Model
 {
 
 
-    protected $table = 'Madeiras';
+    protected $table = 'compra_madeira';
 
     public $columnMapping = [
         'Tipo Madeira' => 'tipo_madeira',
@@ -28,23 +28,15 @@ class Madeiras extends Model
     ];
 
     protected $fillable = [
-        'tipo_madeira',
-        'data_venda',
-        'valor_venda',
-        'quantidade_venda',
-        'frete',
-        'icms',
-        'lucro',
-        'cliente',
-        // Outros campos conforme necessário
-    ];
-    // No modelo Madeira
-    public function comprasMadeira()
+      'tipo_madeira',
+      'valo_compra',
+      // Adicione todos os campos que você permite serem atribuídos em massa
+      // ...
+  ];
+
+    public function madeira()
     {
-        return $this->hasMany(CompraMadeira::class, 'id_relatorio_madeira_fk', 'id');
+        return $this->belongsTo(Madeiras::class, 'id_relatorio_madeira_fk', 'id');
     }
-
-
-
 
 }

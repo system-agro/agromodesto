@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use \App\Models\Madeiras;
+use \App\Models\CompraMadeira;
 use Barryvdh\DomPDF\Facade\Pdf;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
@@ -26,32 +27,51 @@ class MadeirasController extends AdminController
     }
     public function save(Request $request)
     {
-        // Valide os dados recebidos do formulário para madeira
-        $validatedData = $request->validate([
-            'tipo_madeira' => 'required',
-            'data_venda' => 'required',
-            'valor_venda' => 'required',
-            'quantidade_venda' => 'required',
-            'frete' => 'required',
-            'icms' => 'required',
-            'lucro' => 'required',
-            'cliente' => 'required',
-        ]);
+        // Inicia uma transação
+        \DB::beginTransaction();
+        try {
+            // Validação dos dados de madeira
+            $validatedData = $request->validate([
+                'tipo_madeira' => 'required',
+                'data_venda' => 'required',
+                'valor_venda' => 'required',
+                'quantidade_venda' => 'required',
+                'frete' => 'required',
+                'icms' => 'required',
+                'lucro' => 'required',
+                'cliente' => 'required',
+                // Assumindo que 'compras_madeira' é um array de compras
+                'compras_madeira' => 'required|array',
+                'compras_madeira.*.tipo_madeira' => 'required',
+                'compras_madeira.*.valo_compra' => 'required',
+                // Inclua outras validações necessárias para os itens de compra
+            ]);
 
-        // Crie um novo registro de venda de madeira com os dados validados
-        $madeira = new Madeiras(); // Substitua 'Madeira' pelo nome real do seu modelo
-        $madeira->tipo_madeira = $validatedData['tipo_madeira'];
-        $madeira->data_venda = $validatedData['data_venda'];
-        $madeira->valor_venda = $validatedData['valor_venda'];
-        $madeira->quantidade_venda = $validatedData['quantidade_venda'];
-        $madeira->frete = $validatedData['frete'];
-        $madeira->icms = $validatedData['icms'];
-        $madeira->lucro = $validatedData['lucro'];
-        $madeira->cliente = $validatedData['cliente'];
-        $madeira->save();
+            // Cria o registro de madeira
+            $madeira = new Madeiras($validatedData);
+            $madeira->save();
 
-        return response()->json(['message' => 'Registro de venda de madeira criado com sucesso']);
+            // Cria os registros de compra_madeira
+            foreach ($validatedData['compras_madeira'] as $compraData) {
+                $compra = new CompraMadeira($compraData);
+                $madeira->comprasMadeira()->save($compra);
+            }
+
+            // Se tudo estiver ok, confirma as operações no banco de dados
+            \DB::commit();
+
+            return response()->json(['message' => 'Registro de venda e compra de madeira criado com sucesso'], 200);
+        } catch (\Throwable $e) {
+            // Em caso de erro, desfaz as operações
+            \DB::rollback();
+
+            // Retorna uma resposta de erro
+            return response()->json(['message' => 'Erro ao registrar venda e compra de madeira', 'error' => $e->getMessage()], 500);
+        }
     }
+
+
+
 
     protected function detail($id)
     {
