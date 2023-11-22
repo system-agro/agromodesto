@@ -66,7 +66,8 @@ $tabConfig = [
               ["name" => "Lucro", "mask" => "currency"]
           ],
           'data' => $contacts,
-          'columnMapping' => $columnMapping
+          'columnMapping' => $columnMapping,
+          'temRelatorio' => true
       ])
 
       </div>

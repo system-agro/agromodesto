@@ -51,9 +51,10 @@ $tabConfig = [
               ["name" => "Valor Venda", "mask" => "currency"],
               ["name" => "Quantidade Venda", "mask" => null], // Supondo que esta seja uma quantidade simples sem máscara
               ["name" => "Lucro", "mask" => "currency"]
-          ],
-        'data' => $contacts,
-        'columnMapping' => $columnMapping
+            ],
+          'data' => $contacts,
+          'columnMapping' => $columnMapping,
+          'temRelatorio' => true
         ])
       </div>
     </div>
@@ -238,9 +239,9 @@ async function create() {
     await createItem('madeira', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    // setTimeout(function() {
-    //     location.reload();
-    // }, 1000);
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {

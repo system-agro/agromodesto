@@ -21,7 +21,9 @@
           <button id="edit" class="btn btn-primary" onclick="onEditModal({{ $contact->id }})">Editar</button>
           <button id="view" class="btn btn-success" onclick="visualizarItem({{ $contact->id }})">Visualizar</button>
           <button id="delete" class="btn btn-danger" onclick="deleteData({{ $contact->id }})">Excluir</button>
-          <button id="relatorio" class="btn btn-light" onclick="downloadPDF({{ $contact->id }})">Relatorio</button>
+          @if($temRelatorio ?? false)
+            <button id="relatorio" class="btn btn-light" onclick="downloadPDF({{ $contact->id }})">Relatorio</button>
+          @endif
         </td>
       </tr>
     @endforeach
@@ -29,6 +31,3 @@
 </table>
 
 <script src="{{ asset('js/tableMask.js')}}"></script>
-
-
-
