@@ -204,17 +204,22 @@ function getModalInputValues() {
     var valorIcms = parseFloat(icms)  + parseFloat(valorVenda);
     var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
 
+    var somaValoresCompra = 0;
     var tiposMadeira = document.querySelectorAll('.inputTipoMadeira');
     var valoresMadeira = document.querySelectorAll('.inputValorMadeira');
     var comprasMadeira = [];
 
     for (var i = 0; i < tiposMadeira.length; i++) {
+        var valorCompra = unmaskCurrencyValue(valoresMadeira[i].value);
         var compra = {
             tipo_madeira: tiposMadeira[i].value,
-            valo_compra: unmaskCurrencyValue(valoresMadeira[i].value)
+            valo_compra: valorCompra
         };
         comprasMadeira.push(compra);
+        somaValoresCompra += valorCompra; // Acumula o valor de compra
     }
+
+    var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete) + parseFloat(somaValoresCompra));
 
     const data = {
         data_venda: dataVenda,
