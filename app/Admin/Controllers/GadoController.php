@@ -87,7 +87,10 @@ class GadoController extends AdminController
         $gado->lucro = $validatedData['lucro'];
         $gado->save();
 
-        return response()->json(['message' => 'Registro de venda de gado criado com sucesso']);
+        $response = $gado;
+        $columnMapping = (new Gado())->columnMapping;
+        
+        return response()->json(compact('response', 'columnMapping'));
     }
 
     protected function detail($id)
