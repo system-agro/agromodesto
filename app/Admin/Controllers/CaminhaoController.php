@@ -8,6 +8,7 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 class CaminhaoController extends AdminController
@@ -144,4 +145,19 @@ class CaminhaoController extends AdminController
         $show = Caminhao::findOrFail($id);
         return response()->json($show, 200);
     }
+
+    public function lucroMensalCaminhao()
+    {
+        $inicioDoMes = Carbon::now()->startOfMonth();
+        $fimDoMes = Carbon::now()->endOfMonth();
+        $mesAtual = $inicioDoMes->locale('pt_BR')->isoFormat('MMMM');
+        $lucroTotal = Caminhao::whereBetween('data_frete', [$inicioDoMes, $fimDoMes])
+            ->sum('lucro');
+
+
+
+        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Caminhão"]);
+
+    }
+
 }

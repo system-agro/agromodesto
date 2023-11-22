@@ -8,6 +8,7 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
+use Carbon\Carbon;
 
 class GadoController extends AdminController
 {
@@ -137,6 +138,20 @@ class GadoController extends AdminController
         $gado->delete();
 
         return response()->json(['message' => 'Cliente excluído com sucesso']);
+    }
+
+    public function lucroMensalGado()
+    {
+        $inicioDoMes = Carbon::now()->startOfMonth();
+        $fimDoMes = Carbon::now()->endOfMonth();
+        $mesAtual = $inicioDoMes->locale('pt_BR')->isoFormat('MMMM');
+        $lucroTotal = Gado::whereBetween('data_venda', [$inicioDoMes, $fimDoMes])
+            ->sum('lucro');
+
+
+
+        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Gado"]);
+
     }
 
 }

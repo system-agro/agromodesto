@@ -47,7 +47,6 @@ $tabConfig = [
         @include('components.table', [
           'columns' => [
               ["name" => "Cliente", "mask" => null],
-              ["name" => "Tipo Madeira", "mask" => null],
               ["name" => "Data Venda", "mask" => "date"],
               ["name" => "Valor Venda", "mask" => "currency"],
               ["name" => "Quantidade Venda", "mask" => null], // Supondo que esta seja uma quantidade simples sem máscara
@@ -89,7 +88,7 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                             ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                            ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                            ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
@@ -130,7 +129,7 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                             ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                            ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                            ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
@@ -172,7 +171,7 @@ function getModalContentForMode(mode, data) {
                               ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                               ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                               ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                              ["name" => "ICMS", "mask" => "percentage"],  // Para porcentagens, se aplicável
+                              ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
                               ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                           ]
                       ],
@@ -194,7 +193,6 @@ function getModalContentForMode(mode, data) {
 
 
 function getModalInputValues() {
-    // var tipoMadeira = document.getElementById('inputTipoMadeira').value;
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
     var valorVenda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
@@ -202,7 +200,7 @@ function getModalInputValues() {
     var cliente = document.getElementById('inputCliente').value;
     var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"));
 
-    var valorIcms = (parseFloat(icms) / 100) * parseFloat(valorVenda);
+    var valorIcms = parseFloat(icms)  + parseFloat(valorVenda);
     var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
 
     var tiposMadeira = document.querySelectorAll('.inputTipoMadeira');
@@ -218,7 +216,6 @@ function getModalInputValues() {
     }
 
     const data = {
-        tipo_madeira: 'teste',
         data_venda: dataVenda,
         valor_venda: valorVenda,
         frete: frete,

@@ -142,5 +142,47 @@ class NatalidadeController extends AdminController
     }
   }
 
+  // public function listFilterNatalidade()
+  // {
+  //   $columns = [
+  //     // suas colunas aqui
+  //   ];
 
+  //   // Busca todos os registros e filtra com base na diferença de datas
+  //   $data = Natalidade::all()->filter(function ($natalidade) {
+  //     $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
+  //     $dataGestacao = new \DateTime($natalidade->data_gestacao);
+  //     $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
+
+  //     return $diferencaDias <= 30;
+  //   });
+
+  //   return view('components.card-gestao-natalidade', compact('data'));
+  //   // restante do seu código...
+  // }
+
+  public function listFilterNatalidade()
+  {
+      $filteredData = Natalidade::all()->filter(function ($natalidade) {
+          $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
+          $dataGestacao = new \DateTime($natalidade->data_gestacao);
+          $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
+  
+          return $diferencaDias <= 30;
+      })->map(function ($natalidade) {
+          $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
+          $dataGestacao = new \DateTime($natalidade->data_gestacao);
+  
+          // Calcula a diferença entre a data de inseminação e a data de gestação
+          $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
+  
+          return [
+              'natalidade' => $natalidade,
+              'dias_ate_gestacao' => $diferencaDias
+          ];
+      });
+  
+      return view('components.card-gestao-natalidade', ['data' => $filteredData]);
+  }
+  
 }
