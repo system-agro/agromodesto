@@ -141,26 +141,7 @@ class NatalidadeController extends AdminController
       return response()->json(['success' => false, 'message' => 'Erro ao excluir registro de natalidade.']);
     }
   }
-
-  // public function listFilterNatalidade()
-  // {
-  //   $columns = [
-  //     // suas colunas aqui
-  //   ];
-
-  //   // Busca todos os registros e filtra com base na diferença de datas
-  //   $data = Natalidade::all()->filter(function ($natalidade) {
-  //     $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
-  //     $dataGestacao = new \DateTime($natalidade->data_gestacao);
-  //     $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
-
-  //     return $diferencaDias <= 30;
-  //   });
-
-  //   return view('components.card-gestao-natalidade', compact('data'));
-  //   // restante do seu código...
-  // }
-
+  
   public function listFilterNatalidade()
   {
       $filteredData = Natalidade::all()->filter(function ($natalidade) {
