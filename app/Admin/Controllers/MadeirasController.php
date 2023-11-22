@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 class MadeirasController extends AdminController
@@ -32,7 +33,6 @@ class MadeirasController extends AdminController
         try {
             // Validação dos dados de madeira
             $validatedData = $request->validate([
-                'tipo_madeira' => 'required',
                 'data_venda' => 'required',
                 'valor_venda' => 'required',
                 'quantidade_venda' => 'required',
@@ -91,7 +91,6 @@ class MadeirasController extends AdminController
 
         // Validate the request data
         $validatedData = $request->validate([
-            'tipo_madeira' => 'required',
             'data_venda' => 'required',
             'valor_venda' => 'required',
             'quantidade_venda' => 'required',
@@ -102,7 +101,6 @@ class MadeirasController extends AdminController
         ]);
 
         // Update the madeira details with validated data
-        $madeira->tipo_madeira = $validatedData['tipo_madeira'];
         $madeira->data_venda = $validatedData['data_venda'];
         $madeira->valor_venda = $validatedData['valor_venda'];
         $madeira->quantidade_venda = $validatedData['quantidade_venda'];
@@ -132,7 +130,6 @@ class MadeirasController extends AdminController
     {
         $form = new Form(new Madeiras());
 
-        $form->text('tipo_madeira', __('Tipo madeira'));
         $form->date('data_venda', __('Data venda'))->default(date('Y-m-d'));
         $form->text('valor_venda', __('Valor venda'));
         $form->text('frete', __('Frete'));
@@ -149,4 +146,19 @@ class MadeirasController extends AdminController
         $pdf = PDF::loadView('templates.pdf', ['madeira' => $madeira]);
         return $pdf->download('your_pdf_file.pdf');
     }
+
+    public function lucroMensalMadeira()
+    {
+        $inicioDoMes = Carbon::now()->startOfMonth();
+        $fimDoMes = Carbon::now()->endOfMonth();
+        $mesAtual = $inicioDoMes->locale('pt_BR')->isoFormat('MMMM');
+        $lucroTotal = Madeiras::whereBetween('data_venda', [$inicioDoMes, $fimDoMes])
+            ->sum('lucro');
+
+
+
+        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Madeira"]);
+
+    }
+
 }
