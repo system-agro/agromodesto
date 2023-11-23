@@ -144,8 +144,11 @@ class MadeirasController extends AdminController
     {
         $madeira = Madeiras::findOrFail($id);
         $pdf = PDF::loadView('templates.pdf', ['madeira' => $madeira]);
-        return $pdf->download('your_pdf_file.pdf');
+    
+        // Para abrir o PDF no navegador em vez de baixar
+        return $pdf->stream('your_pdf_file.pdf', array("Attachment" => false));
     }
+    
 
     public function lucroMensalMadeira()
     {

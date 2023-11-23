@@ -502,7 +502,18 @@ function loadTabContent(selectedTabButton) {
   document.getElementById("tabNatalidade-tab").addEventListener("click", (event) => selectTabNatalidade(event));
 
 // });
+window.downloadPDF = function (id) {
+    // Abrir o PDF em uma nova aba
+    var pdfWindow = window.open(`gado/download/${id}`);
 
+    // Tenta acionar a impressão quando o PDF estiver carregado
+    pdfWindow.onload = function() {
+        // Verifica se o conteúdo é um PDF
+        if (pdfWindow.document.contentType === 'application/pdf') {
+            pdfWindow.print();
+        }
+    };
+}
 </script>
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
 @endsection

@@ -9,6 +9,8 @@ use OpenAdmin\Admin\Form;
 use OpenAdmin\Admin\Grid;
 use OpenAdmin\Admin\Show;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class GadoController extends AdminController
 {
@@ -154,6 +156,14 @@ class GadoController extends AdminController
 
 
         return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Gado"]);
+
+    }
+
+    public function generatePDF($id)
+    {
+        $gado = Gado::findOrFail($id);
+        $pdf = PDF::loadView('templates.gados', ['gado' => $gado]);
+        return $pdf->stream('relatorio_gado.pdf', array("Attachment" => false));
 
     }
 

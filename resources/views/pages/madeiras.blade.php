@@ -362,8 +362,19 @@ async function downloadInvoice() {
 }
 
 window.downloadPDF = function (id) {
-    window.location.href =  `download/${id}`; // Substitua pela URL completa se necessário
+    // Abrir o PDF em uma nova aba
+    var pdfWindow = window.open(`download/${id}`);
+
+    // Tenta acionar a impressão quando o PDF estiver carregado
+    pdfWindow.onload = function() {
+        // Verifica se o conteúdo é um PDF
+        if (pdfWindow.document.contentType === 'application/pdf') {
+            pdfWindow.print();
+        }
+    };
 }
+
+
 
 
 </script>
