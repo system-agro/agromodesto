@@ -92,7 +92,7 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                             ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                            ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
+                            ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
@@ -133,7 +133,7 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                             ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                            ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
+                            ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
@@ -175,7 +175,7 @@ function getModalContentForMode(mode, data) {
                               ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
                               ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                               ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
-                              ["name" => "ICMS", "mask" => "decimal"],  // Para porcentagens, se aplicável
+                              ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                               ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                           ]
                       ],
@@ -206,12 +206,9 @@ function getModalInputValues() {
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
     var valorVenda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
-    var icms = unmaskValue(document.getElementById('inputICMS'));
+    var icms = unmaskCurrencyValue(document.getElementById('inputICMS').value);
     var cliente = document.getElementById('inputCliente').value;
     var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"));
-
-    var valorIcms = parseFloat(icms)  + parseFloat(valorVenda);
-    var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete));
 
     var somaValoresCompra = 0;
     var tiposMadeira = document.querySelectorAll('.inputTipoMadeira');
@@ -225,10 +222,13 @@ function getModalInputValues() {
             valo_compra: valorCompra
         };
         comprasMadeira.push(compra);
+        console.log('valorCompra', valorCompra)
         somaValoresCompra += valorCompra; // Acumula o valor de compra
+        console.log('somaValoresCompra: ', somaValoresCompra)
+        
     }
 
-    var lucro = parseFloat(valorVenda) - (valorIcms + parseFloat(frete) + parseFloat(somaValoresCompra));
+    var lucro = parseFloat(valorVenda) - (parseFloat(icms) + parseFloat(frete) + parseFloat(somaValoresCompra));
 
     const data = {
         data_venda: dataVenda,
@@ -249,7 +249,6 @@ function getModalInputValues() {
 async function create() {
   try {
     const data = getModalInputValues();
-    console.log(data)
     await createItem('madeira', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
