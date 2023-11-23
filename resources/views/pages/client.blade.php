@@ -255,7 +255,7 @@ function getRouter () {
   return tabActive === "tabClient" ? "client" : "fornecedor";
 }
 
-async function create() {
+window.create = async function () {
     try {
         const data = getModalInputValues();
         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 })
 
 
-async function update(contactId) {
+window.update = async function (contactId) {
   try {
     const data = getModalInputValues();
     var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
