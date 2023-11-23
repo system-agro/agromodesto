@@ -381,7 +381,7 @@ function loadTabContent(selectedTabButton) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
 
   const buttonTabClient = document.getElementById('tabClient-tab');
   const buttonTabSupplier = document.getElementById('tabSupplier-tab');
@@ -430,9 +430,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Para cada tab, adicione o event listener correspondente
   document.getElementById("tabClient-tab").addEventListener("click", (event) => selectTabClient(event));
-  document.getElementById("tabSupplier-tab").addEventListener("click", (event) => selectTabSupplier(event));
 
-});
+// });
+
+document.getElementById("tabSupplier-tab").addEventListener("click", (event) => selectTabSupplier(event));
+
 // Adicione um event listener para a aba Clientes
 
 </script>

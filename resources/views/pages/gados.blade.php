@@ -443,14 +443,14 @@ function loadTabContent(selectedTabButton) {
       .then(data => {
         if (data.tableComponentContent) {
           const tableContainer = document.getElementById('tabs-fon');
-          // tableContainer.innerHTML = data.tableComponentContent;
+          tableContainer.innerHTML = data.tableComponentContent;
           // addCadastrarButton(selectedTabButton.id);
         }
       })
       .catch(error => console.error('Ocorreu um erro:', error));
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
 
   const buttonTabClient = document.getElementById('tabGado-tab');
   const buttonTabSupplier = document.getElementById('tabNatalidade-tab');
@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("tabGado-tab").addEventListener("click", (event) => selectTabGado(event));
   document.getElementById("tabNatalidade-tab").addEventListener("click", (event) => selectTabNatalidade(event));
 
-});
+// });
 
 </script>
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
