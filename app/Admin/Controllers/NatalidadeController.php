@@ -141,29 +141,37 @@ class NatalidadeController extends AdminController
       return response()->json(['success' => false, 'message' => 'Erro ao excluir registro de natalidade.']);
     }
   }
-  
+
   public function listFilterNatalidade()
   {
-      $filteredData = Natalidade::all()->filter(function ($natalidade) {
-          $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
-          $dataGestacao = new \DateTime($natalidade->data_gestacao);
-          $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
-  
-          return $diferencaDias <= 30;
-      })->map(function ($natalidade) {
-          $dataInseminacao = new \DateTime($natalidade->data_inseminacao);
-          $dataGestacao = new \DateTime($natalidade->data_gestacao);
-  
-          // Calcula a diferença entre a data de inseminação e a data de gestação
-          $diferencaDias = $dataInseminacao->diff($dataGestacao)->days;
-  
-          return [
-              'natalidade' => $natalidade,
-              'dias_ate_gestacao' => $diferencaDias
-          ];
-      });
-  
-      return view('components.card-gestao-natalidade', ['data' => $filteredData]);
+    $hoje = new \DateTime(); // Data atual
+
+    $filteredData = Natalidade::all()->filter(function ($natalidade) use ($hoje) {
+      $dataGestacao = new \DateTime($natalidade->data_gestacao);
+
+      // Verifica se a data de gestação ainda não passou
+      $gestacaoNaoPassou = $dataGestacao > $hoje;
+
+      // Calcula a diferença de dias entre hoje e a data de gestação
+      $diferencaDias = $hoje->diff($dataGestacao)->days;
+
+      // Retorna se a gestação não passou e faltam até 30 dias
+      return $gestacaoNaoPassou && $diferencaDias <= 30;
+    })->map(function ($natalidade) use ($hoje) {
+      $dataGestacao = new \DateTime($natalidade->data_gestacao);
+
+      // Calcula a diferença de dias entre hoje e a data de gestação
+      $diferencaDias = $hoje->diff($dataGestacao)->days;
+
+      return [
+        'natalidade' => $natalidade,
+        'dias_ate_gestacao' => $diferencaDias
+      ];
+    });
+
+    return view('components.card-gestao-natalidade', ['data' => $filteredData]);
   }
-  
+
+
+
 }
