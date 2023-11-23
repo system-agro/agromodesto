@@ -320,7 +320,7 @@ function getModalInputValues() {
 }
 
 
-async function create() {
+window.create = async function () {
     try {
         const data = getModalInputValues();
         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
@@ -365,7 +365,7 @@ window.visualizarItem = async function (id) {
   }
 }
 
-async function update(relatorioId) {
+window.update = async function (relatorioId) {
   try {
     const data = getModalInputValues();
     var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente

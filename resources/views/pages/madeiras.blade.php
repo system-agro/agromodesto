@@ -246,7 +246,7 @@ function getModalInputValues() {
 
 
 
-async function create() {
+window.create = async function () {
   try {
     const data = getModalInputValues();
     await createItem('madeira', data); // usando a função createItem
@@ -277,7 +277,7 @@ window.visualizarItem = async function (id) {
   }
 }
 
-async function update(relatorioId) {
+window.update = async function (relatorioId) {
   try {
     const data = getModalInputValues();
     await updateItem('madeira', relatorioId, data); // usando a função updateItem
