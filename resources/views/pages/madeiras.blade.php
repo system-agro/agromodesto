@@ -36,8 +36,9 @@ $tabConfig = [
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
       <!-- Botão "Cadastrar +" -->
       <div id="container-button-cadastrar" class="content-container p-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModalAction('new')">Cadastrar
-          +</button>
+        <!-- <button class="btn btn-primary btn-cadastrar" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModalAction('new')">Cadastrar +</button> -->
+        <button class="btn btn-primary btn-cadastrar" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente">Cadastrar +</button>
+
       </div>
 
       <!-- Modal -->
@@ -72,6 +73,8 @@ $tabConfig = [
 <script>
 // Função para abrir o modal
 // Adicione um event listener para a aba Clientes
+
+
 function getModalContentForMode(mode, data) {
     switch (mode) {
         case "view":
@@ -192,6 +195,12 @@ function getModalContentForMode(mode, data) {
     }
 }
 
+document.querySelectorAll('.btn-cadastrar').forEach(button => {
+    button.addEventListener('click', () => {
+      openModalAction('new', {}, getModalContentForMode);
+    });
+});
+
 
 function getModalInputValues() {
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
@@ -255,12 +264,12 @@ async function create() {
   }
 }
 
-async function visualizarItem(id) {
+window.visualizarItem = async function (id) {
   try {
     const data = await retrieveItem('madeira', id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
-      openModalAction('view', data, );
+      openModalAction('view', data, getModalContentForMode);
     } else {
       console.error('Error calling the API');
     }
@@ -286,12 +295,12 @@ async function update(relatorioId) {
   }
 }
 
-async function onEditModal(id) {
+window.onEditModal = async function (id) {
   try {
     const data = await retrieveItem('madeira', id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
-      openModalAction('edit', data);
+      openModalAction('edit', data, getModalContentForMode);
     } else {
       console.error('Error calling the API');
     }
@@ -300,7 +309,7 @@ async function onEditModal(id) {
   }
 }
 
-async function deleteData(clientId) {
+window.deleteData = async function(clientId) {
   try {
     await deleteItem('madeira', clientId); // usando a função deleteItem
 
@@ -353,10 +362,12 @@ async function downloadInvoice() {
     }
 }
 
-function downloadPDF(id) {
+window.downloadPDF = function (id) {
     window.location.href =  `download/${id}`; // Substitua pela URL completa se necessário
 }
 
 
 </script>
+<script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+
 @endsection

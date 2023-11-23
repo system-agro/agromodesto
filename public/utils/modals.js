@@ -109,10 +109,10 @@ function addEventButtonForm() {
 }
 
 
-function openModalAction(mode = "", data = {}) {
+function openModalAction(mode = "", data = {}, body = () => { }) {
   const container = document.getElementById("tabs");
   const contentModal = createContentModalElement();
-  const modalContent = getModalContentForMode(mode, data);
+  const modalContent = body(mode, data);
 
   contentModal.innerHTML += modalContent;
   container.appendChild(contentModal);
