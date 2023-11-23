@@ -72,13 +72,13 @@
 
         <div class="information">
             <div>
-                <p>Cliente: {{ $madeira->cliente }}</p>
+                <p>Cliente: {{ $gado->cliente }}</p>
                 <p>Endereço: [Endereço do cliente]</p>
                 <p>Cidade/UF: [Cidade/Estado do cliente]</p>
             </div>
             <div class="text-right">
-                <p>Nota: [Número da Nota]</p>
-                <p>Data: {{ $madeira->data_venda}}</p>
+                <!-- <p>Nota: [Número da Nota]</p> -->
+                <p>Data: {{ $gado->data_venda}}</p>
             </div>
         </div>
 
@@ -86,52 +86,24 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Quantidade</th>
-                        <th>Descrição</th>
-                        <th>Preço Unitário</th>
-                        <th>Valor Total</th>
+                        <th>Valor da Venda</th>
+                        <th>Valor do Frete</th>
+                        <th>Comissão</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $madeira->quantidade_venda }}</td>
-                        <td>{{ $madeira->tipo_madeira }}</td>
-                        <td>R$ {{ number_format($madeira->valor_venda, 2, ',', '.') }}</td>
-                        <td>R$ {{ number_format($madeira->quantidade_venda * $madeira->valor_venda, 2, ',', '.') }}</td>
+                        <td>R$ {{ number_format($gado->valor_venda, 2, ',', '.') }}</td>
+                        <td>R$ {{ number_format($gado->valor_frete, 2, ',', '.') }}</td>
+                        <td>R$ {{ number_format($gado->comissao, 2, ',', '.') }}</td>
+                        <td>R$ {{ number_format($gado->comissao + $gado->valor_frete + $gado-> valor_venda, 2, ',', '.') }}</td>
                     </tr>
                     <!-- Adicione mais linhas conforme necessário -->
                 </tbody>
             </table>
         </div>
-
-        <div class="footer">
-            <!-- <p>Comentários ou perguntas devem ser dirigidos para o endereço acima.</p> -->
-        </div>
-        <div class="section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Quantidade</th>
-                        <th>Descrição</th>
-                        <th>Preço Unitário</th>
-                        <th>Valor Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $madeira->quantidade_venda }}</td>
-                        <td>{{ $madeira->tipo_madeira }}</td>
-                        <td>R$ {{ number_format($madeira->valor_venda, 2, ',', '.') }}</td>
-                        <td>R$ {{ number_format($madeira->quantidade_venda * $madeira->valor_venda, 2, ',', '.') }}</td>
-                    </tr>
-                    <!-- Adicione mais linhas conforme necessário -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="footer">
-            <!-- <p>Comentários ou perguntas devem ser dirigidos para o endereço acima.</p> -->
-        </div>
+        <!-- <div class="page-break"></div> -->
     </div>
 </body>
 </html>

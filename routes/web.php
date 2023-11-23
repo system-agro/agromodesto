@@ -64,4 +64,5 @@ Route::put('/admin/natalidade/update/{id}', [NatalidadeController::class, 'updat
 
 
 Route::get('/admin/download/{id}', [MadeirasController::class, 'generatePDF'])->name('generatePDF');
+Route::get('/admin/gado/download/{id}', [GadoController::class, 'generatePDF'])->name('generatePDF');
 
