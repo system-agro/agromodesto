@@ -35,8 +35,7 @@ $tabConfig = [
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
       <!-- Botão "Cadastrar +" -->
       <div id="container-button-cadastrar" class="content-container p-3">
-        <button class="btn btn-primary" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente" onclick="openModalAction('new')">Cadastrar
-          +</button>
+        <button class="btn btn-primary btn-cadastrar" data-toggle="modal" data-target="addCliente" id="btnCadastrarCliente">Cadastrar +</button>
       </div>
 
       <!-- Modal -->
@@ -170,6 +169,11 @@ function getModalContentForMode(mode, data) {
     }
 }
 
+document.querySelectorAll('.btn-cadastrar').forEach(button => {
+    button.addEventListener('click', () => {
+      openModalAction('new', {}, getModalContentForMode);
+    });
+});
 
 function getModalInputValues() {
   var placa = unmaskValue(document.getElementById('inputPlaca'));
@@ -215,12 +219,12 @@ async function create() {
   }
 }
 
-async function visualizarItem(id) {
+window.visualizarItem = async function (id) {
   try {
     const data = await retrieveItem('caminhaos', id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
-      openModalAction('view', data, );
+      openModalAction('view', data, getModalContentForMode);
     } else {
       console.error('Error calling the API');
     }
@@ -246,12 +250,12 @@ async function update(relatorioId) {
   }
 }
 
-async function onEditModal(id) {
+window.onEditModal = async function (id) {
   try {
     const data = await retrieveItem('caminhaos', id); // usando a função retrieveItem
     if (data) {
       // Manipulate the API data here
-      openModalAction('edit', data);
+      openModalAction('edit', data, getModalContentForMode);
     } else {
       console.error('Error calling the API');
     }
@@ -260,7 +264,7 @@ async function onEditModal(id) {
   }
 }
 
-async function deleteData(clientId) {
+window.deleteData = async function (clientId) {
   try {
     await deleteItem('caminhaos', clientId); // usando a função deleteItem
 
@@ -276,4 +280,6 @@ async function deleteData(clientId) {
 }
 
 </script>
+<script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+
 @endsection
