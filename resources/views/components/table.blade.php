@@ -1,3 +1,5 @@
+<div class="table-responsive">
+
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -29,5 +31,6 @@
     @endforeach
   </tbody>
 </table>
+</div>
 
 <script src="{{ asset('js/tableMask.js')}}"></script>
