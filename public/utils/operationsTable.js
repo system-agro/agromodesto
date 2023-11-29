@@ -13,8 +13,7 @@ function addRowToActiveTabTable(data, columns, columnMapping) {
     return;
   }
 
-  var contact = data.response;
-  var columnMapping = data.columnMapping;
+  var contact = data.response; // Supondo que 'data.response' contenha os dados do contato
 
   // Crie a nova linha da tabela
   var row = document.createElement('tr');
@@ -23,27 +22,38 @@ function addRowToActiveTabTable(data, columns, columnMapping) {
   // Adicione as células (td) para cada coluna desejada
   columns.forEach(function(column) {
     var td = document.createElement('td');
-    // O columnMapping mapeia o título da coluna para a chave do objeto contact
-    td.textContent = contact[columnMapping[column]];
+    var columnInfo = columnMapping[column]; // Obtenha as informações da coluna do mapeamento
+
+    // Defina o valor da célula com base nas informações da coluna
+    var cellValue = contact[columnInfo.key]; // Use a chave para obter o valor do contato
+    td.textContent = cellValue;
+
+    // Adicione o atributo data-mask se necessário
+    if (columnInfo.mask) {
+      td.setAttribute('data-mask', columnInfo.mask);
+    }
+
     row.appendChild(td);
   });
 
   // Adicione as células para as ações
   var actionsTd = document.createElement('td');
   actionsTd.className = 'col-1';
-  // Atualize os IDs e os manipuladores de eventos conforme necessário
   actionsTd.innerHTML = `
     <button class="btn btn-primary" onclick="onEditModal(${contact.id})">Editar</button>
     <button class="btn btn-success" onclick="visualizarItem(${contact.id})">Visualizar</button>
     <button class="btn btn-danger" onclick="deleteData(${contact.id})">Excluir</button>
     <button class="btn btn-light" onclick="downloadPDF(${contact.id})">Relatorio</button>
   `;
-
   row.appendChild(actionsTd);
 
   // Adicione a nova linha ao corpo da tabela na aba ativa
   tableBody.appendChild(row);
+
+  // Aplica as máscaras de entrada nas novas células
+  applyMasksToTable(row);
 }
+
 
 function removeRowFromActiveTabTable(contactId) {
   // Primeiro, encontre a aba ativa

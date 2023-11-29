@@ -14,6 +14,7 @@ $tabConfig = [
               ["name" => "Cliente", "mask" => null],
               ["name" => "Data Venda", "mask" => "date"],
               ["name" => "Valor Venda", "mask" => "currency"],
+              ["name" => "Valor Compra", "mask" => "currency"],
               ["name" => "Comissao", "mask" => "currency"],
               ["name" => "Valor Frete", "mask" => "currency"],
               ["name" => "Lucro", "mask" => "currency"]
@@ -29,8 +30,8 @@ $tabConfig = [
 @endphp
 <script src="{{ asset('js/operationAjax.js')}}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
-<script src="{{ asset('utils/operationsTable.js')}}"></script>
 <script src="{{ asset('utils/mask.js') }}"></script>
+<script src="{{ asset('utils/operationsTable.js')}}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -60,6 +61,7 @@ $tabConfig = [
               ["name" => "Cliente", "mask" => null],
               ["name" => "Data Venda", "mask" => "date"],
               ["name" => "Valor Venda", "mask" => "currency"],
+              ["name" => "Valor Compra", "mask" => "currency"],
               ["name" => "Comissao", "mask" => "currency"],
               ["name" => "Valor Frete", "mask" => "currency"],
               ["name" => "Lucro", "mask" => "currency"]
@@ -195,7 +197,9 @@ function getModalContentForGado(mode, data) {
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                               ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
                               ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
-                              ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                              ["name" => "Valor Frete", "mask" => "currency"],  // Máscara para moeda
+                              ["name" => "Valor Compra", "mask" => "currency"]  // Máscara para moeda
+                              
                           ]
                       ]
                   ],
@@ -205,7 +209,8 @@ function getModalContentForGado(mode, data) {
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissao" => "` + data.comissao + `",
-                      "Valor Frete" => "` + data.valor_frete + `"
+                      "Valor Frete" => "` + data.valor_frete + `",
+                      "Valor Compra" => "` + data.valor_compra +`"
                   ]
               ])`;
 
@@ -225,7 +230,8 @@ function getModalContentForGado(mode, data) {
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                               ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
                               ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
-                              ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                              ["name" => "Valor Frete", "mask" => "currency"],  // Máscara para moeda
+                              ["name" => "Valor Compra", "mask" => "currency"]  // Máscara para moeda
                           ]
                       ]
                   ],
@@ -235,7 +241,9 @@ function getModalContentForGado(mode, data) {
                       "Data Venda" => "` + data.data_venda + `",
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissao" => "` + data.comissao + `",
-                      "Valor Frete" => "` + data.valor_frete + `"
+                      "Valor Frete" => "` + data.valor_frete + `",
+                      "Valor Compra" => "` + data.valor_compra +`"
+
                   ]
               ])`;
               return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');
@@ -255,7 +263,8 @@ function getModalContentForGado(mode, data) {
                             ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
                             ["name" => "Valor Venda", "mask" => "currency"],  // Máscara para moeda
                             ["name" => "Comissao", "mask" => "currency"],  // Máscara para porcentagem, se aplicável
-                            ["name" => "Valor Frete", "mask" => "currency"]  // Máscara para moeda
+                            ["name" => "Valor Frete", "mask" => "currency"],  // Máscara para moeda
+                            ["name" => "Valor Compra", "mask" => "currency"]  // Máscara para moeda
                         ]
                     ]
                 ],
@@ -289,8 +298,9 @@ function getModalInputValues() {
         var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
         var comissao = unmaskCurrencyValue(document.getElementById('inputComissao').value);
         var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
+        var valorCompra = unmaskCurrencyValue(document.getElementById('inputValorCompra').value);
 
-        var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete));
+        var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete) + parseFloat(valorCompra));
 
         data = {
             cliente: cliente,
@@ -298,7 +308,8 @@ function getModalInputValues() {
             valor_venda: venda,
             comissao: comissao,
             valor_frete: frete,
-            lucro: lucro
+            lucro: lucro,
+            valor_compra: valorCompra
         };
     } else if (tabActive === 'tabNatalidade') {
         var numeracaoAnimal = parseInt(document.getElementById('inputNumeracaoAnimal').value);
@@ -320,34 +331,79 @@ function getModalInputValues() {
 }
 
 
+// window.create = async function () {
+//     try {
+//         const data = getModalInputValues();
+//         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
+//         const data_temp = await createItem(router, data); // usando a função createItem
+//         console.log(data_temp)
+//         var columnsView;
+//         if (router === "gado") {
+//             columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Valor Compra','Lucro'];
+//         } else if (router === "natalidade") {
+//             columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
+//         }
+
+//         // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
+//         if (data_temp) {
+//             addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
+//             closeModal();
+
+//             modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
+//         } else {
+//             // Se data_temp for null ou undefined, algo deu errado com a criação do item
+//             throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
+//         }
+//     } catch (error) {
+//         console.error('Erro ao criar item:', error);
+//         // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
+//     }
+// }
+
 window.create = async function () {
     try {
         const data = getModalInputValues();
         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
         const data_temp = await createItem(router, data); // usando a função createItem
-        console.log(data_temp)
-        var columnsView;
+        console.log(data_temp);
+        var columnsView = [];
+        var columnMapping = {};
+
         if (router === "gado") {
-            columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Lucro'];
+            columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Valor Compra', 'Lucro'];
+            columnMapping = {
+                'Cliente': { key: 'cliente', mask: null },
+                'Data Venda': { key: 'data_venda', mask: 'date' },
+                'Valor Venda': { key: 'valor_venda', mask: 'currency' },
+                'Comissao': { key: 'comissao', mask: 'currency' },
+                'Valor Frete': { key: 'valor_frete', mask: 'currency' },
+                'Valor Compra': { key: 'valor_compra', mask: 'currency' },
+                'Lucro': { key: 'lucro', mask: 'currency' }
+            };
         } else if (router === "natalidade") {
             columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
+            columnMapping = {
+                'Numeracao Animal': { key: 'numeracao_animal', mask: null },
+                'Tipo': { key: 'tipo', mask: null },
+                'Condicao': { key: 'condicao', mask: null },
+                'Data Inseminacao': { key: 'data_inseminacao', mask: 'date' },
+                'Data Gestacao': { key: 'data_gestacao', mask: 'date' }
+            };
         }
 
-        // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
         if (data_temp) {
-            addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
+            addRowToActiveTabTable(data_temp, columnsView, columnMapping);
             closeModal();
 
-            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
+            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso");
         } else {
-            // Se data_temp for null ou undefined, algo deu errado com a criação do item
             throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
         }
     } catch (error) {
         console.error('Erro ao criar item:', error);
-        // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
     }
 }
+
 
 
 window.visualizarItem = async function (id) {

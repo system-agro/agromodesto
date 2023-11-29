@@ -64,15 +64,30 @@ function maskPhone(value) {
 }
 
 
-function applyMasksToTable() {
-  // Seleciona todas as células que precisam de máscaras
-  const cells = document.querySelectorAll('td[data-mask]');
+function applyMasksToTable(rowOrId = null) {
+  let cells;
+
+  // Se um ID de linha específico for fornecido, selecione a linha com base nesse ID
+  if (typeof rowOrId === 'string' || typeof rowOrId === 'number') {
+    const row = document.querySelector(`tr[data-id="${rowOrId}"]`);
+    if (!row) {
+      console.error('Linha não encontrada para o contato com ID:', rowOrId);
+      return;
+    }
+    cells = row.querySelectorAll('td[data-mask]');
+  }
+  // Se uma linha específica (elemento tr) for fornecida, use-a diretamente
+  else if (rowOrId instanceof Element) {
+    cells = rowOrId.querySelectorAll('td[data-mask]');
+  }
+  // Caso contrário, selecione todas as células que precisam de máscaras na tabela
+  else {
+    cells = document.querySelectorAll('td[data-mask]');
+  }
 
   cells.forEach(cell => {
     const maskType = cell.getAttribute('data-mask');
-    const value = cell.textContent;
-
-    console.log(value)
+    let value = cell.textContent;
 
     // Aplica a máscara com base no tipo especificado
     switch (maskType) {
@@ -92,6 +107,7 @@ function applyMasksToTable() {
     }
   });
 }
+
 
 applyMasksToTable()
 
