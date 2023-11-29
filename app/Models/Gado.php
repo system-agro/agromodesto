@@ -17,9 +17,22 @@ class Gado extends Model
         'Valor Venda' => 'valor_venda',
         'Comissao' => 'comissao',
         'Valor Frete' => 'valor_frete',
-        'Lucro' => 'lucro'
+        'Lucro' => 'lucro',
+        'Valor Compra' => 'valor_compra',
 
         // Adicione outros mapeamentos conforme necessário
+    ];
+
+    protected $fillable = [
+        'cliente',
+        'data_venda',
+        'valor_venda',
+        'comissao',
+        'valor_frete',
+        'lucro',
+        'valor_compra'
+        // Adicione todos os campos que você permite serem atribuídos em massa
+        // ...
     ];
     
 }

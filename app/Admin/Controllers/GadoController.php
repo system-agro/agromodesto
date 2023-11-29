@@ -76,7 +76,8 @@ class GadoController extends AdminController
             'valor_venda' => 'required',
             'comissao' => 'required',
             'valor_frete' => 'required',
-            "lucro" => "required"
+            "lucro" => "required",
+            "valor_compra" => "required"
         ]);
 
         // Crie um novo cliente com os dados validados
@@ -87,6 +88,7 @@ class GadoController extends AdminController
         $gado->comissao = $validatedData['comissao'];
         $gado->valor_frete = $validatedData['valor_frete'];
         $gado->lucro = $validatedData['lucro'];
+        $gado->valor_compra = $validatedData['valor_compra'];
         $gado->save();
 
         $response = $gado;
@@ -118,7 +120,8 @@ class GadoController extends AdminController
             'valor_venda' => 'required',
             'comissao' => 'required',
             'valor_frete' => 'required',
-            "lucro" => "required"
+            "lucro" => "required",
+            "valor_compra" => "required"
         ]);
 
         // Update the gado details with validated data
@@ -128,6 +131,8 @@ class GadoController extends AdminController
         $gado->comissao = $validatedData['comissao'];
         $gado->valor_frete = $validatedData['valor_frete'];
         $gado->lucro = $validatedData['lucro'];
+        $gado->valor_compra = $validatedData['valor_compra'];
+
         $gado->save();
 
         return response()->json(['message' => 'Gado atualizado com sucesso']);
