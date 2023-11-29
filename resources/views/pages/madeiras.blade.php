@@ -49,8 +49,7 @@ $tabConfig = [
           'columns' => [
               ["name" => "Cliente", "mask" => null],
               ["name" => "Data Venda", "mask" => "date"],
-              ["name" => "Valor Venda", "mask" => "currency"],
-              ["name" => "Quantidade Venda", "mask" => null], // Supondo que esta seja uma quantidade simples sem máscara
+              ["name" => "Valor Total Venda", "mask" => "currency"],
               ["name" => "Lucro", "mask" => "currency"]
             ],
           'data' => $contacts,
@@ -89,8 +88,6 @@ function getModalContentForMode(mode, data) {
                     [
                         "title" => "Informações da Venda",
                         "inputs" => [
-                            ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
-                            ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
                             ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
@@ -130,8 +127,6 @@ function getModalContentForMode(mode, data) {
                     [
                         "title" => "Informações da Venda",
                         "inputs" => [
-                            ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
-                            ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                             ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
                             ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
@@ -172,8 +167,6 @@ function getModalContentForMode(mode, data) {
                       [
                           "title" => "Informações da Venda",
                           "inputs" => [
-                              ["name" => "Quantidade Venda", "mask" => "decimal"],  // Para quantidades, poderia ser um número decimal
-                              ["name" => "Valor Venda", "mask" => "currency"],  // Para valores monetários
                               ["name" => "Frete", "mask" => "currency"],  // Para valores monetários
                               ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                               ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
@@ -195,6 +188,8 @@ function getModalContentForMode(mode, data) {
     }
 }
 
+
+
 document.querySelectorAll('.btn-cadastrar').forEach(button => {
     button.addEventListener('click', () => {
       openModalAction('new', {}, getModalContentForMode);
@@ -204,40 +199,48 @@ document.querySelectorAll('.btn-cadastrar').forEach(button => {
 
 function getModalInputValues() {
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
-    var valorVenda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
     var icms = unmaskCurrencyValue(document.getElementById('inputICMS').value);
     var cliente = document.getElementById('inputCliente').value;
-    var quantidadeVenda = unmaskValue(document.getElementById("inputQuantidadeVenda"));
 
     var somaValoresCompra = 0;
+    var somaValoresVenda = 0;
+
     var tiposMadeira = document.querySelectorAll('.inputTipoMadeira');
-    var valoresMadeira = document.querySelectorAll('.inputValorMadeira');
+    var valoresCompraMadeira = document.querySelectorAll('.inputValorMadeira');
+    var valoresVendaMadeira = document.querySelectorAll('.inputValorVenda');
+    var quantidadesVendaMadeira = document.querySelectorAll(".inputQuantidadeVenda");
+
+
     var comprasMadeira = [];
 
     for (var i = 0; i < tiposMadeira.length; i++) {
-        var valorCompra = unmaskCurrencyValue(valoresMadeira[i].value);
+        var valorCompra = unmaskCurrencyValue(valoresCompraMadeira[i].value);
+        var valorVenda = unmaskCurrencyValue(valoresVendaMadeira[i].value);
+        var quantidadeVenda = parseInt(quantidadesVendaMadeira[i].value);
+        
         var compra = {
             tipo_madeira: tiposMadeira[i].value,
-            valo_compra: valorCompra
+            valo_compra: valorCompra,
+            valor_venda: valorVenda,
+            quantidade_venda: quantidadeVenda,
         };
         comprasMadeira.push(compra);
-        console.log('valorCompra', valorCompra)
         somaValoresCompra += valorCompra; // Acumula o valor de compra
-        console.log('somaValoresCompra: ', somaValoresCompra)
+        somaValoresVenda += valorVenda;
+
         
     }
 
-    var lucro = parseFloat(valorVenda) - (parseFloat(icms) + parseFloat(frete) + parseFloat(somaValoresCompra));
+    var lucro = parseFloat(somaValoresVenda) - (parseFloat(icms) + parseFloat(frete) + parseFloat(somaValoresCompra));
 
     const data = {
         data_venda: dataVenda,
-        valor_venda: valorVenda,
         frete: frete,
         icms: icms,
         lucro: lucro,
         cliente: cliente,
-        quantidade_venda: quantidadeVenda,
+        valor_total_venda: parseFloat(somaValoresVenda),
         compras_madeira: comprasMadeira
     };
 
@@ -249,6 +252,7 @@ function getModalInputValues() {
 window.create = async function () {
   try {
     const data = getModalInputValues();
+    console.log(data)
     await createItem('madeira', data); // usando a função createItem
     closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
@@ -321,44 +325,6 @@ window.deleteData = async function(clientId) {
     console.error('An error occurred:', error);
     alert('Ocorreu um erro ao excluir o cliente');
   }
-}
-
-async function downloadInvoice() {
-    var invoiceId = '123'; // Substitua pelo ID real da fatura
-    var url = `/invoices/${invoiceId}/download`; // Substitua pela URL correta conforme definida em suas rotas do Laravel
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET', // ou 'POST' se for necessário
-            headers: {
-                // Se for um método POST, você precisa enviar CSRF token e definir o 'Content-Type'
-                'X-Requested-With': 'XMLHttpRequest',
-                // 'X-CSRF-TOKEN': csrfToken, // Descomente e defina isso se for necessário
-                // 'Content-Type': 'application/json', // Descomente e ajuste conforme necessário
-            },
-            // body: JSON.stringify(data), // Descomente e defina isso se for necessário enviar dados no corpo da requisição
-        });
-
-        if (response.ok) {
-            // Se o servidor responder com um arquivo para download,
-            // você pode pegar o blob e criar um link para download
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = downloadUrl;
-            a.download = `invoice-${invoiceId}.pdf`; // Nome do arquivo para download
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(downloadUrl);
-            a.remove();
-        } else {
-            // Trate erros de resposta, como exibir uma mensagem para o usuário
-            console.error('Download failed:', response.statusText);
-        }
-    } catch (error) {
-        console.error('There was an error with the fetch operation:', error);
-    }
 }
 
 window.downloadPDF = function (id) {

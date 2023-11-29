@@ -97,6 +97,8 @@ function adicionarConjunto() {
   containerForm.appendChild(elementAdd);
   containerForm.lastElementChild.appendChild(buttonChild)
 
+  applyInputMasks()
+
 
 
 }
