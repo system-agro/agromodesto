@@ -14,22 +14,17 @@ class Madeiras extends Model
 
     public $columnMapping = [
         'Data Venda' => 'data_venda',
-        'Valor Compra' => 'valor_compra',
-        'Quantidade Comprada' => 'quantida_compra',
-        'Valor Venda' => 'valor_venda',
+        'Valor Total Venda' => 'valor_total_venda',
         'Frete' => 'frete',
         'ICMS' => 'icms',
         'Lucro' => 'lucro',
         'Cliente' => 'cliente',
-        'Quantidade Venda' => 'quantidade_venda'
-
         // Adicione outros mapeamentos conforme necessário
     ];
 
     protected $fillable = [
         'data_venda',
-        'valor_venda',
-        'quantidade_venda',
+        'valor_total_venda',
         'frete',
         'icms',
         'lucro',

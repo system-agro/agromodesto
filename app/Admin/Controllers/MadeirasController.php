@@ -34,16 +34,17 @@ class MadeirasController extends AdminController
             // Validação dos dados de madeira
             $validatedData = $request->validate([
                 'data_venda' => 'required',
-                'valor_venda' => 'required',
-                'quantidade_venda' => 'required',
                 'frete' => 'required',
                 'icms' => 'required',
                 'lucro' => 'required',
                 'cliente' => 'required',
+                'valor_total_venda' => 'required',
                 // Assumindo que 'compras_madeira' é um array de compras
                 'compras_madeira' => 'required|array',
                 'compras_madeira.*.tipo_madeira' => 'required',
                 'compras_madeira.*.valo_compra' => 'required',
+                'compras_madeira.*.valor_venda' => 'required',
+                'compras_madeira.*.quantidade_venda' => 'required',
                 // Inclua outras validações necessárias para os itens de compra
             ]);
 
