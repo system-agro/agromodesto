@@ -43,7 +43,6 @@ function addRowToActiveTabTable(data, columns, columnMapping) {
     <button class="btn btn-primary" onclick="onEditModal(${contact.id})">Editar</button>
     <button class="btn btn-success" onclick="visualizarItem(${contact.id})">Visualizar</button>
     <button class="btn btn-danger" onclick="deleteData(${contact.id})">Excluir</button>
-    <button class="btn btn-light" onclick="downloadPDF(${contact.id})">Relatorio</button>
   `;
   row.appendChild(actionsTd);
 

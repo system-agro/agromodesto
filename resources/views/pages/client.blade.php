@@ -27,6 +27,7 @@ $tabConfig = [
 <script src="{{ asset('js/operationAjax.js')}}"></script>
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('utils/operationsTable.js')}}"></script>
+<script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('vendor/open-admin/inputmask/inputmask.min.js') }}"></script>
 <!-- Seu conteúdo aqui -->
 <style>
@@ -212,7 +213,7 @@ function addClickEventToButton(button) {
 
 function getModalInputValues() {
     var nome = document.getElementById('inputNome').value;
-    var email = unmaskValue(document.getElementById('inputEmail'));
+    var email = document.getElementById('inputEmail').value;
     var telefone = removeSpecialCharacters(document.getElementById('inputTelefone').value);
     var documento = removeSpecialCharacters(document.getElementById('inputCPF/CNPJ').value);
     var estado = document.getElementById('inputEstado').value;
@@ -261,21 +262,39 @@ window.create = async function () {
         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
         const data_temp = await createItem(router, data); // usando a função createItem
 
-        var columnsView = router === "client" ?  ['Nome', 'Email', 'Telefone'] : ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
+        var columnsView;
+        var columnMapping;
 
+        if (router === "client") {
+            columnsView = ['Nome', 'Email', 'Telefone'];
+            columnMapping = {
+                'Nome': { key: 'name', mask: null },
+                'Email': { key: 'email', mask: null },
+                'Telefone': { key: 'phone', mask: 'phone' }
+            };
+        } else {
+            columnsView = ['Nome', 'Email', 'Telefone', 'Documento', 'Estado', 'Bairro'];
+            columnMapping = {
+                'Nome': { key: 'name', mask: null },
+                'Email': { key: 'email', mask: null },
+                'Telefone': { key: 'phone', mask: 'phone' },
+                'Documento': { key: 'documento', mask: 'cpf_cnpj' },
+                'Estado': { key: 'estado', mask: null },
+                'Bairro': { key: 'cidade', mask: null }
+            };
+        }
         // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
         if (data_temp) {
-            addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
+            addRowToActiveTabTable(data_temp, columnsView, columnMapping); // Agora passando o columnMapping como argumento
             closeModal();
             
-            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
+            modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso");
         } else {
             // Se data_temp for null ou undefined, algo deu errado com a criação do item
             throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
         }
     } catch (error) {
         console.error('Erro ao criar item:', error);
-        // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
     }
 }
 
