@@ -41,13 +41,33 @@
   cursor: pointer;
 }
 
-</style>
+/* .list-group{
+  display:"flex";
+  position: absolute;
+} */
 
+</style>
+@php
+$disabled = $mode === 'new' ? '' : 'disabled';
+@endphp
 <div id="customModal" class="modal">
   <div class="modal-content"> <span class="close justify-content-end" id="closeModal"
       onclick="closeModal()">&times;</span> <!-- Conteúdo do modal -->
     <!-- Seção de Informação Pessoal -->
     @if(is_array($sections) || is_object($sections))
+        @if($searchClient === "true")
+          <div class="row p-2">
+            <h4>Informações do cliente</h4>
+            <div class="col-md-4 ">
+              <div class="form-group">
+                  <input type="text" id="searchClientInput" class="form-control  form-control-lg rounded" {{$disabled}} placeholder="Digite o nome do cliente..." oninput="searchClient()">
+              </div>
+              <div id="searchResults" class="list-group">
+                  <!-- Sugestões de pesquisa serão inseridas aqui -->
+              </div>
+            </div>
+          </div>
+        @endif
         @foreach ($sections as $section)
             <div class="row p-2">
                 <h4>{{ $section['title'] }}</h4>
@@ -58,6 +78,7 @@
                     </div> 
                   @else
                     <div class="col-md-3">
+
                         {{-- 'mask' is fetched from the input array, so it's available here --}}
                         @include('components.input-fileds', [
                             'input' => $input,
@@ -87,3 +108,5 @@
     @endif
   </div>
 </div>
+
+<!-- <script src="{{ asset('js/searchClient.js')}}"></script>; -->

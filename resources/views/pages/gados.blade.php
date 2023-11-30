@@ -121,6 +121,7 @@ function getModalContentForNatalidade(mode, data) {
                         ]
                     ]
                 ],
+                "searchClient" => "false",
                 "mode" => "view",
                 "data" => [
                     "Numeracao Animal" => "` + data.numeracao_animal + `",
@@ -145,6 +146,7 @@ function getModalContentForNatalidade(mode, data) {
                         ]
                     ]
                 ],
+                "searchClient" => "false",
                 "mode" => "edit",
                 "data" => [
                     "Numeracao Animal" => "` + data.numeracao_animal + `",
@@ -170,6 +172,7 @@ function getModalContentForNatalidade(mode, data) {
                         ]
                     ]
                 ],
+                "searchClient" => "false",
                 "mode" => "new",
                 "data" => []
             ])`;
@@ -186,12 +189,6 @@ function getModalContentForGado(mode, data) {
               return `@include('components.modalCreate', [
                 "sections" => [
                       [
-                          "title" => "Informações do cliente",
-                          "inputs" => [
-                              ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
-                          ]
-                      ],
-                      [
                           "title" => "Detalhes da Venda",
                           "inputs" => [
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
@@ -203,6 +200,7 @@ function getModalContentForGado(mode, data) {
                           ]
                       ]
                   ],
+                  "searchClient" => "true",
                   "mode" => "view",
                   "data" => [
                       "Nome" => "` + data.cliente + `",
@@ -219,12 +217,6 @@ function getModalContentForGado(mode, data) {
               let modalContent = `@include('components.modalCreate', [
                 "sections" => [
                       [
-                          "title" => "Informações do cliente",
-                          "inputs" => [
-                              ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
-                          ]
-                      ],
-                      [
                           "title" => "Detalhes da Venda",
                           "inputs" => [
                               ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
@@ -235,6 +227,7 @@ function getModalContentForGado(mode, data) {
                           ]
                       ]
                   ],
+                  "searchClient" => "true",
                   "mode" => "edit",
                   "data" => [
                       "Nome" => "` + data.cliente + `",
@@ -252,12 +245,6 @@ function getModalContentForGado(mode, data) {
             return `@include('components.modalCreate', [
               "sections" => [
                     [
-                        "title" => "Informações do cliente",
-                        "inputs" => [
-                            ["name" => "Nome", "mask" => null]  // Geralmente não é necessário máscara para nomes
-                        ]
-                    ],
-                    [
                         "title" => "Detalhes da Venda",
                         "inputs" => [
                             ["name" => "Data Venda", "mask" => "datetime"],  // Máscara para data
@@ -268,6 +255,7 @@ function getModalContentForGado(mode, data) {
                         ]
                     ]
                 ],
+                "searchClient" => "true",
                 "mode" =>  "new",
                 "data" => []
             ])`;
@@ -293,7 +281,7 @@ function getModalInputValues() {
     var data = {}
 
     if (tabActive === 'tabGado') {
-        var cliente = document.getElementById('inputNome').value;
+        var clienteId = parseInt(document.getElementById('searchClientInput').getAttribute('data-client-id'));
         var date = formatDateToISO(document.getElementById('inputDataVenda').value);
         var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
         var comissao = unmaskCurrencyValue(document.getElementById('inputComissao').value);
@@ -303,7 +291,7 @@ function getModalInputValues() {
         var lucro = parseFloat(venda) - (parseFloat(comissao) + parseFloat(frete) + parseFloat(valorCompra));
 
         data = {
-            cliente: cliente,
+            client_id: clienteId,
             data_venda: date,
             valor_venda: venda,
             comissao: comissao,
@@ -572,4 +560,6 @@ window.downloadPDF = function (id) {
 }
 </script>
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+<script src="{{ asset('js/searchClient.js')}}"></script>;
+
 @endsection
