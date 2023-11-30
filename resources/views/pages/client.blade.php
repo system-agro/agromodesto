@@ -459,5 +459,7 @@ document.getElementById("tabSupplier-tab").addEventListener("click", (event) => 
 </script>
 
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+<script src="{{ asset('js/searchClient.js')}}"></script>;
+
 
 @endsection

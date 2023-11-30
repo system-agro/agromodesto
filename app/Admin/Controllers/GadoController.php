@@ -41,13 +41,28 @@ class GadoController extends AdminController
 
         return $grid;
     }
+    // public function listGados()
+    // {
+    //     $contacts = Gado::all();
+    //     $columnMapping = (new Gado())->columnMapping;
+
+    //     return view('pages.gados', compact('contacts', 'columnMapping'));
+    // }
+
+    // No arquivo GadoController.php ou equivalente
     public function listGados()
     {
-        $contacts = Gado::all();
+        $gados = Gado::with('dataCliente:id,name')->get();
+        $gados->transform(function ($gado) {
+            $gado->cliente = $gado->dataCliente->name ?? 'Nome não disponível';
+            return $gado;
+        });
+        $contacts = $gados;
         $columnMapping = (new Gado())->columnMapping;
 
         return view('pages.gados', compact('contacts', 'columnMapping'));
     }
+
 
     /**
      * Make a form builder.
@@ -67,22 +82,52 @@ class GadoController extends AdminController
         return $form;
     }
 
+    // public function save(Request $request)
+    // {
+    //     // Valide os dados recebidos do formulário, por exemplo:
+    //     $validatedData = $request->validate([
+    //         'cliente' => 'required',
+    //         'data_venda' => 'required',
+    //         'valor_venda' => 'required',
+    //         'comissao' => 'required',
+    //         'valor_frete' => 'required',
+    //         "lucro" => "required",
+    //         "valor_compra" => "required"
+    //     ]);
+
+    //     // Crie um novo cliente com os dados validados
+    //     $gado = new Gado();
+    //     $gado->cliente = $validatedData['cliente'];
+    //     $gado->data_venda = $validatedData['data_venda'];
+    //     $gado->valor_venda = $validatedData['valor_venda'];
+    //     $gado->comissao = $validatedData['comissao'];
+    //     $gado->valor_frete = $validatedData['valor_frete'];
+    //     $gado->lucro = $validatedData['lucro'];
+    //     $gado->valor_compra = $validatedData['valor_compra'];
+    //     $gado->save();
+
+    //     $response = $gado;
+    //     $columnMapping = (new Gado())->columnMapping;
+
+    //     return response()->json(compact('response', 'columnMapping'));
+    // }
+
     public function save(Request $request)
     {
-        // Valide os dados recebidos do formulário, por exemplo:
+        // Valide os dados recebidos do formulário
         $validatedData = $request->validate([
-            'cliente' => 'required',
-            'data_venda' => 'required',
-            'valor_venda' => 'required',
-            'comissao' => 'required',
-            'valor_frete' => 'required',
-            "lucro" => "required",
-            "valor_compra" => "required"
+            'client_id' => 'required|exists:client,id', // Garanta que o cliente exista
+            'data_venda' => 'required|date', // Garanta que é uma data válida
+            'valor_venda' => 'required|numeric', // Garanta que é um valor numérico
+            'comissao' => 'required|numeric',
+            'valor_frete' => 'required|numeric',
+            "lucro" => "required|numeric", // Garanta que é um valor numérico
+            "valor_compra" => "required|numeric"
         ]);
 
-        // Crie um novo cliente com os dados validados
+        // Crie um novo registro de gado com os dados validados
         $gado = new Gado();
-        $gado->cliente = $validatedData['cliente'];
+        $gado->client_id = $validatedData['client_id']; // Use client_id, que é a chave estrangeira
         $gado->data_venda = $validatedData['data_venda'];
         $gado->valor_venda = $validatedData['valor_venda'];
         $gado->comissao = $validatedData['comissao'];
@@ -91,17 +136,35 @@ class GadoController extends AdminController
         $gado->valor_compra = $validatedData['valor_compra'];
         $gado->save();
 
-        $response = $gado;
+        // Você pode querer retornar mais informações sobre o cliente junto com o gado
+        $gado->load('dataCliente');
+        $response = $gado->toArray(); // Converte o modelo e suas relações para um array
+        $response['cliente'] = $gado->dataCliente->name; // Atribui apenas o nome do cliente ao 'client'
+
         $columnMapping = (new Gado())->columnMapping;
-        
+
         return response()->json(compact('response', 'columnMapping'));
     }
 
+
     protected function detail($id)
     {
-        $show = Gado::findOrFail($id);
-        return response()->json($show, 200);
+        // Busca o Gado pelo ID e falha se não encontrar
+        $gado = Gado::findOrFail($id);
+
+        // Carrega o relacionamento dataCliente com apenas o nome do cliente
+        $gado->load(['dataCliente:id,name']);
+
+        // Prepara a resposta com o nome do cliente
+        $gadoArray = $gado->toArray();
+        $gadoArray['cliente'] = $gado->dataCliente->name ?? 'Nome não disponível';
+
+        // Remove o objeto dataCliente completo, se não for mais necessário
+        unset($gadoArray['dataCliente']);
+
+        return response()->json($gadoArray, 200);
     }
+
 
     public function updateReport(Request $request, $id)
     {
@@ -115,7 +178,6 @@ class GadoController extends AdminController
 
         // Validate the request data
         $validatedData = $request->validate([
-            'cliente' => 'required',
             'data_venda' => 'required',
             'valor_venda' => 'required',
             'comissao' => 'required',
@@ -125,7 +187,6 @@ class GadoController extends AdminController
         ]);
 
         // Update the gado details with validated data
-        $gado->cliente = $validatedData['cliente'];
         $gado->data_venda = $validatedData['data_venda'];
         $gado->valor_venda = $validatedData['valor_venda'];
         $gado->comissao = $validatedData['comissao'];
@@ -160,7 +221,7 @@ class GadoController extends AdminController
 
 
 
-        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Gado"]);
+        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto" => "Gado"]);
 
     }
 

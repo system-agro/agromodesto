@@ -173,7 +173,18 @@ class ClientController extends AdminController
         $columnMapping = (new Client())->columnMapping;
 
 
-        return response()->json(['message' => 'Cliente atualizado com sucesso', 'data'=> $client, 'columnMapping'=> $columnMapping]);
+        return response()->json(['message' => 'Cliente atualizado com sucesso', 'data' => $client, 'columnMapping' => $columnMapping]);
     }
+
+    public function searchClient(Request $request)
+    {
+        $query = $request->input('q');
+
+        // Busca clientes com o nome semelhante à consulta
+        $clients = Client::where('name', 'LIKE', "%{$query}%")->get();
+
+        return response()->json($clients);
+    }
+
 
 }

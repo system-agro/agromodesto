@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Client;
 
 class Gado extends Model
 {
-    
+
 
     protected $table = 'Gado';
 
@@ -24,7 +24,7 @@ class Gado extends Model
     ];
 
     protected $fillable = [
-        'cliente',
+        'client_id',
         'data_venda',
         'valor_venda',
         'comissao',
@@ -34,5 +34,12 @@ class Gado extends Model
         // Adicione todos os campos que você permite serem atribuídos em massa
         // ...
     ];
-    
+
+    // No arquivo Gado.php
+    public function dataCliente()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+
 }

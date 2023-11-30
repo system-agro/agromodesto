@@ -30,6 +30,8 @@ Route::put('/admin/client/update/{id}', [ClientController::class, 'updateClient'
 Route::post('/admin/client/save', [ClientController::class, 'save'])->name('save');
 Route::delete('/admin/client/delete/{id}', [ClientController::class, 'delete'])->name('delete');
 Route::get('/admin/listClient', [ClientController::class, 'listClient'])->name('listClient');
+Route::get('admin/searchClient', [ClientController::class, 'searchClient'])->name('searchClient');
+
 
 Route::get('/admin/fornecedor', [FornecedorController::class, 'listFornecedor'])->name('listFornecedor');
 Route::post('/admin/fornecedor/save', [FornecedorController::class,  'save'])->name('save');

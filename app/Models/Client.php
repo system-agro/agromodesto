@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Gado;
 
 class Client extends Model
 {
-    
+
 
     protected $table = 'client';
 
@@ -21,7 +21,13 @@ class Client extends Model
         'Bairro' => 'bairro',
         // Adicione outros mapeamentos conforme necessário
     ];
-    
 
-    
+    // No arquivo Client.php
+    public function gados()
+    {
+        return $this->hasMany(Gado::class, 'client_id');
+    }
+
+
+
 }
