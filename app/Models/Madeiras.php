@@ -28,7 +28,7 @@ class Madeiras extends Model
         'frete',
         'icms',
         'lucro',
-        'cliente',
+        'client_id',
         // Outros campos conforme necessário
     ];
     // No modelo Madeira

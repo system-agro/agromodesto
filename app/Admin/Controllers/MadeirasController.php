@@ -29,7 +29,7 @@ class MadeirasController extends AdminController
         });
         $contacts = $madeiras;
 
-        return view('pages.gados', compact('contacts', 'columnMapping'));
+        return view('pages.madeiras', compact('contacts', 'columnMapping'));
     }
     public function save(Request $request)
     {
@@ -54,11 +54,14 @@ class MadeirasController extends AdminController
                 // Inclua outras validações necessárias para os itens de compra
             ]);
             $madeira = new Madeiras($validatedData);
+            $madeira->client_id = $validatedData['client_id'];
+
             $madeira->save();
 
             $madeira->load('dataCliente');
             $response = $madeira->toArray(); // Converte o modelo e suas relações para um array
             $response['cliente'] = $madeira->dataCliente->name; // Atribui apenas o nome do cliente ao 'client'
+            $columnMapping = (new Madeiras())->columnMapping;
     
 
             // Cria o registro de madeira
