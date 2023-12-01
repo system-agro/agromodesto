@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CompraMadeira;
-
+use App\Models\Client;
 
 class Madeiras extends Model
 {
@@ -35,6 +35,11 @@ class Madeiras extends Model
     public function comprasMadeira()
     {
         return $this->hasMany(CompraMadeira::class, 'id_relatorio_madeira_fk', 'id');
+    }
+
+    public function dataCliente()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
 

@@ -111,6 +111,7 @@ function getModalContentForMode(mode, data) {
                   ],
                 ],
                 "mode" =>  "view",
+                "searchClient" => "false",
                 "data" => [
                     "Nome" => "` + data.name + `",
                     "CPF/CNPJ" => "`+ data.documento +`",
@@ -148,6 +149,7 @@ function getModalContentForMode(mode, data) {
                       ]
                   ],
                 ],
+                "searchClient" => "false",
                 "mode" =>  "edit",
                 "data" => [
                     "Nome" => "` + data.name + `",
@@ -187,6 +189,7 @@ function getModalContentForMode(mode, data) {
                       ]
                   ],
                 ],
+                "searchClient" => "false",
                 "mode" =>  "new",
                 "data" => []
             ])`;

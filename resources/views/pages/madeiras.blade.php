@@ -93,13 +93,8 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
-                    [
-                        "title" => "Dados do Cliente",
-                        "inputs" => [
-                            ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
-                        ]
-                    ]
                 ],
+                "searchClient" => "true",
                 "mode" => "view",
                 "data" => [
                     "Tipo Madeira" => "` + data.tipo_madeira + `",
@@ -132,13 +127,8 @@ function getModalContentForMode(mode, data) {
                             ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                         ]
                     ],
-                    [
-                        "title" => "Dados do Cliente",
-                        "inputs" => [
-                            ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
-                        ]
-                    ]
                 ],
+                "searchClient" => "true",
                 "mode" => "edit",
                 "data" => [
                     "Tipo Madeira" => "` + data.tipo_madeira + `",
@@ -171,14 +161,9 @@ function getModalContentForMode(mode, data) {
                               ["name" => "ICMS", "mask" => "currency"],  // Para porcentagens, se aplicável
                               ["name" => "Data Venda", "mask" => "datetime"]  // Para datas
                           ]
-                      ],
-                      [
-                          "title" => "Dados do Cliente",
-                          "inputs" => [
-                              ["name" => "Cliente", "mask" => null]  // Assumindo que não é necessária uma máscara específica para nomes de clientes
-                          ]
                       ]
                   ],
+                "searchClient" => "true",
                 "mode" => "new",
                 "data" => []
             ])`;
@@ -198,10 +183,10 @@ document.querySelectorAll('.btn-cadastrar').forEach(button => {
 
 
 function getModalInputValues() {
+    var clienteId = parseInt(document.getElementById('searchClientInput').getAttribute('data-client-id'));
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
     var icms = unmaskCurrencyValue(document.getElementById('inputICMS').value);
-    var cliente = document.getElementById('inputCliente').value;
 
     var somaValoresCompra = 0;
     var somaValoresVenda = 0;
@@ -235,6 +220,7 @@ function getModalInputValues() {
     var lucro = parseFloat(somaValoresVenda) - (parseFloat(icms) + parseFloat(frete) + parseFloat(somaValoresCompra));
 
     const data = {
+        client_id: clienteId,
         data_venda: dataVenda,
         frete: frete,
         icms: icms,
