@@ -96,6 +96,7 @@ function getModalContentForMode(mode, data) {
                         ]
                     ]
                 ],
+            "searchClient" => "false",
             "mode" => "view",
             "data" => [
                 "Placa" => "` + data.placa + `",
@@ -128,6 +129,7 @@ function getModalContentForMode(mode, data) {
                             ]
                         ]
                     ],
+                  "searchClient" => "false",
                   "mode" => "edit",
                   "data" => [
                       "Placa" => "` + data.placa + `",
@@ -161,6 +163,7 @@ function getModalContentForMode(mode, data) {
                           ]
                       ]
                   ],
+                  "searchClient" => "false",
                   "mode" => "new",
                   "data" => []
               ])`;

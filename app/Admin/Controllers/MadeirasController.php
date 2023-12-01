@@ -21,23 +21,29 @@ class MadeirasController extends AdminController
     protected $title = 'Madeiras';
     public function listMadeira()
     {
-        $contacts = Madeiras::all();
         $columnMapping = (new Madeiras())->columnMapping;
+        $madeiras = Madeiras::with('dataCliente:id,name')->get();
+        $madeiras->transform(function ($madeira) {
+            $madeira->cliente = $madeira->dataCliente->name ?? 'Nome não disponível';
+            return $madeira;
+        });
+        $contacts = $madeiras;
 
-        return view('pages.madeiras', compact('contacts', 'columnMapping'));
+        return view('pages.gados', compact('contacts', 'columnMapping'));
     }
     public function save(Request $request)
     {
         // Inicia uma transação
         \DB::beginTransaction();
         try {
+            
             // Validação dos dados de madeira
             $validatedData = $request->validate([
+                'client_id' => 'required|exists:client,id', // Garanta que o cliente exista
                 'data_venda' => 'required',
                 'frete' => 'required',
                 'icms' => 'required',
                 'lucro' => 'required',
-                'cliente' => 'required',
                 'valor_total_venda' => 'required',
                 // Assumindo que 'compras_madeira' é um array de compras
                 'compras_madeira' => 'required|array',
@@ -47,10 +53,15 @@ class MadeirasController extends AdminController
                 'compras_madeira.*.quantidade_venda' => 'required',
                 // Inclua outras validações necessárias para os itens de compra
             ]);
-
-            // Cria o registro de madeira
             $madeira = new Madeiras($validatedData);
             $madeira->save();
+
+            $madeira->load('dataCliente');
+            $response = $madeira->toArray(); // Converte o modelo e suas relações para um array
+            $response['cliente'] = $madeira->dataCliente->name; // Atribui apenas o nome do cliente ao 'client'
+    
+
+            // Cria o registro de madeira
 
             // Cria os registros de compra_madeira
             foreach ($validatedData['compras_madeira'] as $compraData) {
@@ -61,7 +72,9 @@ class MadeirasController extends AdminController
             // Se tudo estiver ok, confirma as operações no banco de dados
             \DB::commit();
 
-            return response()->json(['message' => 'Registro de venda e compra de madeira criado com sucesso'], 200);
+            return response()->json(compact('response', 'columnMapping'));
+
+            // return response()->json(['message' => 'Registro de venda e compra de madeira criado com sucesso'], 200);
         } catch (\Throwable $e) {
             // Em caso de erro, desfaz as operações
             \DB::rollback();
@@ -76,8 +89,18 @@ class MadeirasController extends AdminController
 
     protected function detail($id)
     {
-        $show = Madeiras::findOrFail($id);
-        return response()->json($show, 200);
+        $madeira = Madeiras::findOrFail($id);
+
+        $madeira->load(['dataCliente:id,name']);
+
+        // Prepara a resposta com o nome do cliente
+        $madeiraArray = $madeira->toArray();
+        $madeiraArray['cliente'] = $madeira->dataCliente->name ?? 'Nome não disponível';
+
+        // Remove o objeto dataCliente completo, se não for mais necessário
+        unset($madeiraArray['dataCliente']);
+        return response()->json($madeiraArray, 200);
+
     }
 
     public function updateReport(Request $request, $id)
@@ -98,7 +121,6 @@ class MadeirasController extends AdminController
             'frete' => 'required',
             'icms' => 'required',
             'lucro' => 'required',
-            'cliente' => 'required',
         ]);
 
         // Update the madeira details with validated data
@@ -108,7 +130,6 @@ class MadeirasController extends AdminController
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
         $madeira->lucro = $validatedData['lucro'];
-        $madeira->cliente = $validatedData['cliente'];
         $madeira->save();
 
         return response()->json(['message' => 'Relatório de madeira atualizado com sucesso']);

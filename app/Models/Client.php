@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Gado;
+use App\Models\Madeiras;
 
 class Client extends Model
 {
@@ -26,6 +27,10 @@ class Client extends Model
     public function gados()
     {
         return $this->hasMany(Gado::class, 'client_id');
+    }
+    public function madeiras()
+    {
+        return $this->hasMany(Madeiras::class, 'client_id');
     }
 
 
