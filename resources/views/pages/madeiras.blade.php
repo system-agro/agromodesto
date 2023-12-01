@@ -225,7 +225,6 @@ function getModalInputValues() {
         frete: frete,
         icms: icms,
         lucro: lucro,
-        cliente: cliente,
         valor_total_venda: parseFloat(somaValoresVenda),
         compras_madeira: comprasMadeira
     };
@@ -331,5 +330,7 @@ window.downloadPDF = function (id) {
 
 </script>
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+<script src="{{ asset('js/searchClient.js')}}"></script>;
+
 
 @endsection
