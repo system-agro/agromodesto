@@ -208,7 +208,8 @@ function getModalContentForGado(mode, data) {
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissao" => "` + data.comissao + `",
                       "Valor Frete" => "` + data.valor_frete + `",
-                      "Valor Compra" => "` + data.valor_compra +`"
+                      "Valor Compra" => "` + data.valor_compra +`",
+                      "Cliente" => "` + data.data_cliente.name + `"
                   ]
               ])`;
 
@@ -235,8 +236,8 @@ function getModalContentForGado(mode, data) {
                       "Valor Venda" => "` + data.valor_venda + `",
                       "Comissao" => "` + data.comissao + `",
                       "Valor Frete" => "` + data.valor_frete + `",
-                      "Valor Compra" => "` + data.valor_compra +`"
-
+                      "Valor Compra" => "` + data.valor_compra +`",
+                      "Cliente" => "` + data.data_cliente.name + `"
                   ]
               ])`;
               return modalContent.replace('onclick="update()"', 'onclick="update(' + data.id + ')"');

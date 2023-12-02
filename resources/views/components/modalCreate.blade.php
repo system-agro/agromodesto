@@ -60,7 +60,15 @@ $disabled = $mode === 'new' ? '' : 'disabled';
             <h4>Informações do cliente</h4>
             <div class="col-md-4 ">
               <div class="form-group">
-                  <input type="text" id="searchClientInput" class="form-control  form-control-lg rounded" {{$disabled}} placeholder="Digite o nome do cliente..." oninput="searchClient()">
+                  <input 
+                    type="text" 
+                    id="searchClientInput" 
+                    class="form-control  form-control-lg rounded" 
+                    {{$disabled}} 
+                    placeholder="Digite o nome do cliente..." 
+                    oninput="searchClient()" 
+                    value="{{ isset($data['Cliente']) ? $data['Cliente'] : '' }}"
+                  >
               </div>
               <div id="searchResults" class="list-group">
                   <!-- Sugestões de pesquisa serão inseridas aqui -->
