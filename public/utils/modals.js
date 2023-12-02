@@ -104,7 +104,7 @@ function adicionarConjunto() {
 }
 
 
-function adicionarConjuntosComprasMadeira(comprasMadeira) {
+function adicionarConjuntosComprasMadeira(comprasMadeira, mode = "") {
   // Encontra o containerForm original
   const containerForm = document.querySelector('.containerForm');
   const elementOriginal = containerForm.firstElementChild;
@@ -127,12 +127,14 @@ function adicionarConjuntosComprasMadeira(comprasMadeira) {
     const elementAdd = elementOriginal.cloneNode(true);
     const inputs = elementAdd.querySelectorAll('input');
 
-    // Preenche os inputs com os dados da compra
+    // Preenche os inputs com os dados da compra e desabilita se o mode for "view"
     inputs.forEach(input => {
       const inputName = input.getAttribute('name');
-
       if (compra.hasOwnProperty(inputName)) {
         input.value = compra[inputName];
+        if (mode === 'view') {
+          input.disabled = true;
+        }
       } else {
         input.value = ''; // Limpa os demais inputs
       }
@@ -140,11 +142,21 @@ function adicionarConjuntosComprasMadeira(comprasMadeira) {
 
     // Adiciona o novo conjunto ao containerForm
     containerForm.appendChild(elementAdd);
-    containerForm.lastElementChild.appendChild(buttonChild);
+
+    // Adiciona o botão apenas se o mode não for "view"
+    if (mode !== 'view') {
+      containerForm.lastElementChild.appendChild(buttonChild);
+    }
   });
+
+  // Adiciona o botão no final apenas se o mode não for "view"
+  if (mode !== 'view') {
+    containerForm.lastElementChild.appendChild(buttonChild);
+  }
 
   applyInputMasks();
 }
+
 
 
 

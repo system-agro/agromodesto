@@ -264,7 +264,7 @@ window.visualizarItem = async function (id) {
     if (data) {
       // Manipulate the API data here
       openModalAction('view', data, getModalContentForMode);
-      adicionarConjuntosComprasMadeira(data?.compras_madeira);
+      adicionarConjuntosComprasMadeira(data?.compras_madeira, "view");
 
     } else {
       console.error('Error calling the API');
