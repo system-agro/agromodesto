@@ -203,16 +203,18 @@ function getModalInputValues() {
         var valorCompra = unmaskCurrencyValue(valoresCompraMadeira[i].value);
         var valorVenda = unmaskCurrencyValue(valoresVendaMadeira[i].value);
         var quantidadeVenda = parseInt(quantidadesVendaMadeira[i].value);
-        
-        var compra = {
-            tipo_madeira: tiposMadeira[i].value,
-            valo_compra: valorCompra,
-            valor_venda: valorVenda,
-            quantidade_venda: quantidadeVenda,
-        };
-        comprasMadeira.push(compra);
-        somaValoresCompra += valorCompra; // Acumula o valor de compra
-        somaValoresVenda += valorVenda;
+
+        if (tiposMadeira[i].value !== "" && valorCompra !== null && valorVenda !== null && quantidadeVenda !== null) {
+            var compra = {
+                tipo_madeira: tiposMadeira[i].value,
+                valo_compra: valorCompra,
+                valor_venda: valorVenda,
+                quantidade_venda: quantidadeVenda,
+            };
+            comprasMadeira.push(compra);
+            somaValoresCompra += valorCompra; // Acumula o valor de compra
+            somaValoresVenda += valorVenda;
+        }
 
         
     }
@@ -238,12 +240,12 @@ window.create = async function () {
   try {
     const data = getModalInputValues();
     console.log(data)
-    await createItem('madeira', data); // usando a função createItem
-    closeModal();
+    //await createItem('madeira', data); // usando a função createItem
+    // closeModal();
     modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    // setTimeout(function() {
+    //     location.reload();
+    // }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {
