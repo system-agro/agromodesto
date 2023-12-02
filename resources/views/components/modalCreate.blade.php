@@ -82,7 +82,11 @@ $disabled = $mode === 'new' ? '' : 'disabled';
                 @foreach ($section['inputs'] as $input)
                   @if(isset($input['inputComponent']) && $input['inputComponent'] === "true")
                     <div class="col-md-12">
-                      @component('components.input-text-multiple')@endcomponent
+                      @component('components.input-text-multiple', 
+                        [
+                          'data' => isset($data['Compra Madeira']) ? $data['Compra Madeira'] : '' 
+                        ])
+                      @endcomponent
                     </div> 
                   @else
                     <div class="col-md-3">

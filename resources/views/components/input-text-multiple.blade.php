@@ -42,21 +42,21 @@
     <div class="row p-3 m-1">
         <div class="col-md-2">
             <label for="inputTipoMadeira">Tipo da madeira</label>
-            <input type="text" class="form-control form-control-lg rounded inputTipoMadeira" data-mask=""  placeholder="Digite o tipo da madeira" >
+            <input type="text" name="tipo_madeira" class="form-control form-control-lg rounded inputTipoMadeira" data-mask=""  placeholder="Digite o tipo da madeira" >
         </div>
         <div class="col-md-2">
             <label for="inputValorMadeira">Valor Comprado</label>
-            <input type="text" class="form-control form-control-lg rounded inputValorMadeira" data-mask="currency" placeholder="Digite o valor comprado" >
+            <input type="text" name="valo_compra" class="form-control form-control-lg rounded inputValorMadeira" data-mask="currency" placeholder="Digite o valor comprado" >
         </div>
         
         <div class="col-md-2">
             <label for="inputQuantidadeVenda">Quantidade Madeira Vendida</label>
-            <input type="text" class="form-control form-control-lg rounded inputQuantidadeVenda" id="inputQuantidadeVenda" data-mask="decimal" placeholder="Digite a quantidade comprada" >
+            <input type="text" name="quantidade_venda" class="form-control form-control-lg rounded inputQuantidadeVenda" id="inputQuantidadeVenda" data-mask="decimal" placeholder="Digite a quantidade comprada" >
         </div>
         
         <div class="col-md-2">
             <label for="inputValorVenda">Valor da Venda</label>
-            <input type="text" class="form-control form-control-lg rounded inputValorVenda" id="inputValorVenda" data-mask="currency" placeholder="Digite o valor da venda" >
+            <input type="text"name="valor_venda" class="form-control form-control-lg rounded inputValorVenda" id="inputValorVenda" data-mask="currency" placeholder="Digite o valor da venda" >
         </div>
         
         <div class="col btt" style="

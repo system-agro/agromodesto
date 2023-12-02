@@ -108,7 +108,8 @@ function getModalContentForMode(mode, data) {
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
                     "Cliente" => "` + data.data_cliente.name + `",
-                    "Quantidade Venda" => "`+ data.quantidade_venda +`"
+                    "Quantidade Venda" => "`+ data.quantidade_venda +`",
+                    "Compra Madeira" => " `+data.compras_madeira+`"
                 ]
             ])`;
 
@@ -177,8 +178,6 @@ function getModalContentForMode(mode, data) {
             return "";
     }
 }
-
-
 
 document.querySelectorAll('.btn-cadastrar').forEach(button => {
     button.addEventListener('click', () => {
@@ -265,6 +264,8 @@ window.visualizarItem = async function (id) {
     if (data) {
       // Manipulate the API data here
       openModalAction('view', data, getModalContentForMode);
+      adicionarConjuntosComprasMadeira(data?.compras_madeira);
+
     } else {
       console.error('Error calling the API');
     }
@@ -296,6 +297,8 @@ window.onEditModal = async function (id) {
     if (data) {
       // Manipulate the API data here
       openModalAction('edit', data, getModalContentForMode);
+      adicionarConjuntosComprasMadeira(data.compras_madeira);
+
     } else {
       console.error('Error calling the API');
     }
