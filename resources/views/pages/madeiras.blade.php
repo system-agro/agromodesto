@@ -75,14 +75,19 @@ $tabConfig = [
 
 
 function getModalContentForMode(mode, data) {
+
+  console.log("data", data)
     switch (mode) {
         case "view":
             return `@include('components.modalCreate', [
               "sections" => [
                     [
-                        "title" => "Tipo de Madeira",
+                        "title" => "Informações da compra",
                         "inputs" => [
-                            ["name" => "Tipo Madeira", "mask" => null]  // Assumindo que não é necessária uma máscara específica para tipos de madeira
+                          [
+                              "name" => "Tipos madeira",
+                              "inputComponent" => "true"
+                          ]
                         ]
                     ],
                     [
@@ -102,7 +107,7 @@ function getModalContentForMode(mode, data) {
                     "Valor Venda" => "` + data.valor_venda + `",
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
-                    "Cliente" => "` + data.cliente + `",
+                    "Cliente" => "` + data.data_cliente.name + `",
                     "Quantidade Venda" => "`+ data.quantidade_venda +`"
                 ]
             ])`;
