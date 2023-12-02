@@ -95,6 +95,7 @@ class MadeirasController extends AdminController
         $madeira = Madeiras::findOrFail($id);
 
         $madeira->load(['dataCliente:id,name']);
+        $madeira->load(['comprasMadeira']);
 
         // Prepara a resposta com o nome do cliente
         $madeiraArray = $madeira->toArray();

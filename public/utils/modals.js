@@ -103,6 +103,53 @@ function adicionarConjunto() {
 
 }
 
+
+function adicionarConjuntosComprasMadeira(comprasMadeira) {
+  // Encontra o containerForm original
+  const containerForm = document.querySelector('.containerForm');
+  const elementOriginal = containerForm.firstElementChild;
+
+  if (containerForm.children.length > 0) {
+    console.log(containerForm.children.length);
+
+    // Remove o último filho
+    containerForm.removeChild(containerForm.firstElementChild);
+  } else {
+    console.log('O container está vazio. Nenhum elemento foi removido.');
+  }
+
+  // Obtém o modelo de input original
+  const buttonChild = elementOriginal.lastElementChild;
+  elementOriginal.removeChild(buttonChild);
+
+  // Para cada compra_madeira, adiciona um novo conjunto de inputs
+  comprasMadeira.forEach(compra => {
+    const elementAdd = elementOriginal.cloneNode(true);
+    const inputs = elementAdd.querySelectorAll('input');
+
+    // Preenche os inputs com os dados da compra
+    inputs.forEach(input => {
+      const inputName = input.getAttribute('name');
+
+      if (compra.hasOwnProperty(inputName)) {
+        input.value = compra[inputName];
+      } else {
+        input.value = ''; // Limpa os demais inputs
+      }
+    });
+
+    // Adiciona o novo conjunto ao containerForm
+    containerForm.appendChild(elementAdd);
+    containerForm.lastElementChild.appendChild(buttonChild);
+  });
+
+  applyInputMasks();
+}
+
+
+
+
+
 function addEventButtonForm() {
   if (!document.getElementById('addInput')) return;
   // document.addEventListener("DOMContentLoaded", () => {
