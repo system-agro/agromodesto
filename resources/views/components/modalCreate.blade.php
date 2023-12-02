@@ -45,6 +45,23 @@
   display:"flex";
   position: absolute;
 } */
+  .list-group {
+    /* position: absolute; */
+    background-color: rgba(0, 0, 0, 0.8); /* Cor de fundo escura */
+    width: 100%; /* Largura total */
+    z-index: 1; /* Garante que a lista de resultados esteja sobreposta a outros elementos */
+  }
+
+  .list-group-item {
+    color: black; /* Cor do texto branco */
+    padding:10px;
+    font-size:14px;
+    cursor:pointer;
+  }
+
+  .form-client {
+    margin: 14px;
+  }
 
 </style>
 @php
@@ -56,9 +73,9 @@ $disabled = $mode === 'new' ? '' : 'disabled';
     <!-- Seção de Informação Pessoal -->
     @if(is_array($sections) || is_object($sections))
         @if($searchClient === "true")
-          <div class="row p-2">
+          <div class="row p-2 " >
             <h4>Informações do cliente</h4>
-            <div class="col-md-4 ">
+            <div class="col-md-4 form-client ">
               <div class="form-group">
                   <input 
                     type="text" 
