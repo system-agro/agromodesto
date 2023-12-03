@@ -276,11 +276,11 @@ window.create = async function () {
     const data = getModalInputValues();
     console.log(data)
     await createItem('madeira', data); // usando a função createItem
-    // closeModal();
-    // modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    // setTimeout(function() {
-    //     location.reload();
-    // }, 1000);
+    closeModal();
+    modalSuccess("Relatorio de venda de gado gerado com sucesso");
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {
