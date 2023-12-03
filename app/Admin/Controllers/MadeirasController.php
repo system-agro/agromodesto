@@ -9,6 +9,7 @@ use OpenAdmin\Admin\Controllers\AdminController;
 use OpenAdmin\Admin\Form;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 
 class MadeirasController extends AdminController
@@ -36,7 +37,7 @@ class MadeirasController extends AdminController
         // Inicia uma transação
         \DB::beginTransaction();
         try {
-            
+
             // Validação dos dados de madeira
             $validatedData = $request->validate([
                 'client_id' => 'required|exists:client,id', // Garanta que o cliente exista
@@ -62,7 +63,7 @@ class MadeirasController extends AdminController
             $response = $madeira->toArray(); // Converte o modelo e suas relações para um array
             $response['cliente'] = $madeira->dataCliente->name; // Atribui apenas o nome do cliente ao 'client'
             $columnMapping = (new Madeiras())->columnMapping;
-    
+
 
             // Cria o registro de madeira
 
@@ -168,13 +169,34 @@ class MadeirasController extends AdminController
 
     public function generatePDF($id)
     {
-        $madeira = Madeiras::findOrFail($id);
-        $pdf = PDF::loadView('templates.pdf', ['madeira' => $madeira]);
-    
-        // Para abrir o PDF no navegador em vez de baixar
-        return $pdf->stream('your_pdf_file.pdf', array("Attachment" => false));
+        try {
+            // Busca a madeira pelo ID
+            $madeira = Madeiras::findOrFail($id);
+
+            // Carrega as relações necessárias
+            $madeira->load(['dataCliente:id,name,estado,cidade,bairro', 'comprasMadeira']);
+
+            // Prepara os dados para a visão
+            $madeiraArray = $madeira->toArray();
+            $madeiraArray['cliente'] = $madeira->dataCliente->name ?? 'Nome não disponível';
+            unset($madeiraArray['dataCliente']);
+
+            // Gera um nome de arquivo único com base no nome do cliente e data atual
+            $fileName = 'fatura_' . Str::slug($madeira->dataCliente->name) . '_' . now()->format('YmdHis') . '.pdf';
+
+            // Carrega a visão PDF com os dados
+            $pdf = PDF::loadView('templates.pdf', ['madeira' => $madeiraArray]);
+
+            // Retorna o PDF para ser exibido no navegador
+            return $pdf->stream($fileName, ['Attachment' => false]);
+
+        } catch (\Exception $e) {
+            // Lida com exceções, por exemplo, se o registro não for encontrado
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
-    
+
+
 
     public function lucroMensalMadeira()
     {
@@ -186,7 +208,7 @@ class MadeirasController extends AdminController
 
 
 
-        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto"=>"Madeira"]);
+        return view('components.card-gestao-lucro', ['lucroTotal' => $lucroTotal, "mesAtual" => $mesAtual, "produto" => "Madeira"]);
 
     }
 

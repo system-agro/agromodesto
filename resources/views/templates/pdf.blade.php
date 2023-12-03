@@ -72,13 +72,11 @@
 
         <div class="information">
             <div>
-                <p>Cliente: {{ $madeira->cliente }}</p>
-                <p>Endereço: [Endereço do cliente]</p>
-                <p>Cidade/UF: [Cidade/Estado do cliente]</p>
+                <p>Cliente: {{ $madeira['data_cliente']['name'] }}</p>
+                <p>Endereço: {{ $madeira['data_cliente']['cidade'] . ', ' . $madeira['data_cliente']['bairro'] . ', ' . $madeira['data_cliente']['estado'] }}</p>
             </div>
             <div class="text-right">
-                <p>Nota: [Número da Nota]</p>
-                <p>Data: {{ $madeira->data_venda}}</p>
+                <p>Nota: {{$madeira['id']}}</p>
             </div>
         </div>
 
@@ -86,52 +84,33 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Tipo da madeira</th>
                         <th>Quantidade</th>
-                        <th>Descrição</th>
-                        <th>Preço Unitário</th>
-                        <th>Valor Total</th>
+                        <th>Preço da venda</th>
+
                     </tr>
                 </thead>
                 <tbody>
+                @foreach ($madeira['compras_madeira'] as $compra)
                     <tr>
-                        <td>{{ $madeira->quantidade_venda }}</td>
-                        <td>{{ $madeira->tipo_madeira }}</td>
-                        <td>R$ {{ number_format($madeira->valor_venda, 2, ',', '.') }}</td>
-                        <td>R$ {{ number_format($madeira->quantidade_venda * $madeira->valor_venda, 2, ',', '.') }}</td>
+                        <td>{{ $compra['tipo_madeira'] }}</td>
+                        <td>{{ $compra['quantidade_venda'] }}</td>
+                        <td>R$ {{ number_format($compra['valor_venda'], 2, ',', '.') }}</td>
                     </tr>
+                @endforeach
                     <!-- Adicione mais linhas conforme necessário -->
                 </tbody>
             </table>
-        </div>
-
-        <div class="footer">
-            <!-- <p>Comentários ou perguntas devem ser dirigidos para o endereço acima.</p> -->
         </div>
         <div class="section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Quantidade</th>
-                        <th>Descrição</th>
-                        <th>Preço Unitário</th>
-                        <th>Valor Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $madeira->quantidade_venda }}</td>
-                        <td>{{ $madeira->tipo_madeira }}</td>
-                        <td>R$ {{ number_format($madeira->valor_venda, 2, ',', '.') }}</td>
-                        <td>R$ {{ number_format($madeira->quantidade_venda * $madeira->valor_venda, 2, ',', '.') }}</td>
-                    </tr>
-                    <!-- Adicione mais linhas conforme necessário -->
-                </tbody>
-            </table>
+            <p>Data da Venda: {{ \Carbon\Carbon::parse($madeira['data_venda'])->format('d/m/Y') }}</p>
+            <p>Valor Total da Venda: R$ {{ number_format($madeira['valor_total_venda'], 2, ',', '.') }}</p>
         </div>
 
         <div class="footer">
             <!-- <p>Comentários ou perguntas devem ser dirigidos para o endereço acima.</p> -->
         </div>
+
     </div>
 </body>
 </html>
