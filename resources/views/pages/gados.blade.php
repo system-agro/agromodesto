@@ -32,6 +32,8 @@ $tabConfig = [
 <script src="{{ asset('utils/modals.js')}}"></script>
 <script src="{{ asset('utils/mask.js') }}"></script>
 <script src="{{ asset('utils/operationsTable.js')}}"></script>
+<script src="{{ asset('utils/eventButtonTable.js')}}"></script>
+
 <!-- Seu conteúdo aqui -->
 <style>
 /* Estilos para o modal */
@@ -481,6 +483,42 @@ function addClickEventToButton(button) {
   });
 }
 
+function onLoadButton() {
+  // document.addEventListener('DOMContentLoaded', () => {
+  // Adiciona eventos de clique para cada botão de edição
+  document.querySelectorAll('.btn-edit').forEach(button => {
+    button.addEventListener('click', () => {
+      const contactId = button.getAttribute('data-contact-id');
+      onEditModal(contactId);
+    });
+  });
+
+  // Adiciona eventos de clique para cada botão de visualização
+  document.querySelectorAll('.btn-view').forEach(button => {
+    button.addEventListener('click', () => {
+      const contactId = button.getAttribute('data-contact-id');
+      visualizarItem(contactId);
+    });
+  });
+
+  // Adiciona eventos de clique para cada botão de exclusão
+  document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', () => {
+      const contactId = button.getAttribute('data-contact-id');
+      deleteData(contactId);
+    });
+  });
+
+  // Adiciona eventos de clique para cada botão de relatório, se existir
+  document.querySelectorAll('.btn-relatorio').forEach(button => {
+    button.addEventListener('click', () => {
+      const contactId = button.getAttribute('data-contact-id');
+      downloadPDF(contactId);
+    });
+  });
+  // });
+}
+
 function loadTabContent(selectedTabButton) {
     const route = selectedTabButton.getAttribute('data-route');
     fetch(route)
@@ -489,11 +527,14 @@ function loadTabContent(selectedTabButton) {
         if (data.tableComponentContent) {
           const tableContainer = document.getElementById('tabs-fon');
           tableContainer.innerHTML = data.tableComponentContent;
+          onLoadButton()
           // addCadastrarButton(selectedTabButton.id);
         }
       })
       .catch(error => console.error('Ocorreu um erro:', error));
 }
+
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 
@@ -531,6 +572,7 @@ function loadTabContent(selectedTabButton) {
 
     buttonTabClient.classList.remove("active")
     buttonTabSupplier.classList.add("active")
+
   }
 
 
@@ -546,6 +588,8 @@ function loadTabContent(selectedTabButton) {
   document.getElementById("tabGado-tab").addEventListener("click", (event) => selectTabGado(event));
   document.getElementById("tabNatalidade-tab").addEventListener("click", (event) => selectTabNatalidade(event));
 
+
+
 // });
 window.downloadPDF = function (id) {
     // Abrir o PDF em uma nova aba
@@ -559,8 +603,12 @@ window.downloadPDF = function (id) {
         }
     };
 }
+
+if(buttonTabSupplier.classList === 'active'){
+  console.log("ativo")
+}
+
 </script>
-<script src="{{ asset('utils/eventButtonTable.js')}}"></script>
 <script src="{{ asset('js/searchClient.js')}}"></script>;
 
 @endsection
