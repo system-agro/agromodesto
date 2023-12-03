@@ -22,6 +22,8 @@ use OpenAdmin\Admin\Admin;
 
 Admin::js('https://code.jquery.com/jquery-3.6.0.min.js');
 Admin::js('https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js');
+Admin::js('utils/eventButtonTable.js');
+
 
 
 use OpenAdmin\Admin\Grid;
