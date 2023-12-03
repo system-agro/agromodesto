@@ -50,7 +50,7 @@
         </div>
         
         <div class="col-md-2">
-            <label for="inputQuantidadeVenda">Quantidade Madeira Vendida</label>
+            <label for="inputQuantidadeVenda">Quantidade Madeira</label>
             <input type="text" name="quantidade_venda" class="form-control form-control-lg rounded inputQuantidadeVenda" id="inputQuantidadeVenda" data-mask="decimal" placeholder="Digite a quantidade comprada" >
         </div>
         
