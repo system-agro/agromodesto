@@ -15,7 +15,10 @@
   background-color: #fefefe;
   padding: 10px;
   border: 1px solid #888;
-  width: 65%; /* Adjust as per requirement */
+  max-height: 100vh; /* Defina um valor máximo adequado para a altura (80% da altura da viewport) */
+  height: auto; 
+  
+  width: 90%; /* Adjust as per requirement */
   font-size: 10px;
   box-sizing: border-box;
 
