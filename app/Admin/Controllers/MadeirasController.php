@@ -46,6 +46,8 @@ class MadeirasController extends AdminController
                 'icms' => 'required',
                 'lucro' => 'required',
                 'valor_total_venda' => 'required',
+                'tipo_pagamento' => 'required',
+                'total_parcela' => 'required',
                 // Assumindo que 'compras_madeira' é um array de compras
                 'compras_madeira' => 'required|array',
                 'compras_madeira.*.tipo_madeira' => 'required',
@@ -126,6 +128,8 @@ class MadeirasController extends AdminController
             'frete' => 'required',
             'icms' => 'required',
             'lucro' => 'required',
+            'tipo_pagamento' => 'required',
+            'total_parcela' => 'required',
         ]);
 
         // Update the madeira details with validated data
@@ -135,6 +139,8 @@ class MadeirasController extends AdminController
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
         $madeira->lucro = $validatedData['lucro'];
+        $madeira->tipo_pagamento = $validatedData['tipo_pagamento'];
+        $madeira->total_parcela = $validatedData['total_parcela'];
         $madeira->save();
 
         return response()->json(['message' => 'Relatório de madeira atualizado com sucesso']);

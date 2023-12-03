@@ -179,9 +179,33 @@ function getModalContentForMode(mode, data) {
     }
 }
 
+function actionTypePayment() {
+  if (!document.getElementById('customModal')) {
+    console.log("Modal não encontrado");
+    return;
+  } else {
+    const containerTypeForm = document.getElementById('containerTypePayment');
+    const inputTypePayment = document.getElementById('tipo_pagamento');
+    containerTypeForm.style.display = "block";
+    inputTypePayment.addEventListener('change', function (e) {
+      var tipoPagamento = e.target.value;
+      var parcelasContainer = document.getElementById('parcelas_container');
+      console.log(tipoPagamento)
+      // Exibir o campo de quantidade de parcelas apenas se for selecionado "Cheque Parcelado"
+      if (tipoPagamento === 'cheque_parcelado') {
+        parcelasContainer.style.display = 'block';
+      } else {
+        parcelasContainer.style.display = 'none';
+      }
+    });
+  }
+}
+
 document.querySelectorAll('.btn-cadastrar').forEach(button => {
     button.addEventListener('click', () => {
       openModalAction('new', {}, getModalContentForMode);
+      actionTypePayment()
+
     });
 });
 
@@ -191,6 +215,11 @@ function getModalInputValues() {
     var dataVenda = formatDateToISO(document.getElementById('inputDataVenda').value);
     var frete = unmaskCurrencyValue(document.getElementById('inputFrete').value);
     var icms = unmaskCurrencyValue(document.getElementById('inputICMS').value);
+
+    var totalParcela = parseInt(document.getElementById('quantidade_parcelas').value);
+    var typePayment = document.getElementById('tipo_pagamento').value;
+
+
 
     var somaValoresCompra = 0;
     var somaValoresVenda = 0;
@@ -232,7 +261,9 @@ function getModalInputValues() {
         icms: icms,
         lucro: lucro,
         valor_total_venda: parseFloat(somaValoresVenda),
-        compras_madeira: comprasMadeira
+        compras_madeira: comprasMadeira,
+        total_parcela:totalParcela,
+        tipo_pagamento : typePayment
     };
 
     return data;
@@ -245,11 +276,11 @@ window.create = async function () {
     const data = getModalInputValues();
     console.log(data)
     await createItem('madeira', data); // usando a função createItem
-    closeModal();
-    modalSuccess("Relatorio de venda de gado gerado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    // closeModal();
+    // modalSuccess("Relatorio de venda de gado gerado com sucesso");
+    // setTimeout(function() {
+    //     location.reload();
+    // }, 1000);
     // Limpe o formulário ou atualize a tabela, conforme necessário
 
   } catch (error) {
@@ -341,6 +372,8 @@ window.downloadPDF = function (id) {
 </script>
 <script src="{{ asset('utils/eventButtonTable.js')}}"></script>
 <script src="{{ asset('js/searchClient.js')}}"></script>;
+<!-- <script src="{{ asset('js/selectAction.js')}}"></script> -->
+
 
 
 @endsection

@@ -29,6 +29,8 @@ class Madeiras extends Model
         'icms',
         'lucro',
         'client_id',
+        'tipo_pagamento',
+        'total_parcela'
         // Outros campos conforme necessário
     ];
     // No modelo Madeira

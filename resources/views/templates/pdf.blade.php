@@ -58,8 +58,15 @@
         .page-break {
             page-break-after: always;
         }
+
     </style>
 </head>
+@php
+
+$tipoPayment = $madeira['tipo_pagamento'] === 'cheque_parcelado' ? "cheque parcelado" : $madeira['tipo_pagamento'];
+$valorParcela = number_format($madeira['valor_total_venda'] / $madeira['total_parcela'], 2, ',', '.');
+
+@endphp
 <body>
     <div class="invoice-container">
         <div class="text-center">
@@ -102,11 +109,15 @@
                 </tbody>
             </table>
         </div>
-        <div class="section">
+        <div>
             <p>Data da Venda: {{ \Carbon\Carbon::parse($madeira['data_venda'])->format('d/m/Y') }}</p>
+            <div class="tipoPagamento" style="display: flex; justify-content: space-between;">
+                <div>
+                    <p>Tipo Pagamento: {{$tipoPayment}}, {{$madeira['total_parcela']}} x R$ {{$valorParcela}}</p>
+                </div>
+            </div>
             <p>Valor Total da Venda: R$ {{ number_format($madeira['valor_total_venda'], 2, ',', '.') }}</p>
         </div>
-
         <div class="footer">
             <!-- <p>Comentários ou perguntas devem ser dirigidos para o endereço acima.</p> -->
         </div>

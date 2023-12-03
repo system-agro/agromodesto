@@ -121,6 +121,7 @@ $disabled = $mode === 'new' ? '' : 'disabled';
                 
             </div>
         @endforeach
+        @include('components.input-type-payment')
     @endif
     <!-- Seção de Contato -->
     @if ($mode !== 'view')
