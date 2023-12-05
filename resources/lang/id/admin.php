@@ -6,7 +6,7 @@ return [
     'logout'                => 'Keluar',
     'setting'               => 'Pengaturan',
     'name'                  => 'Nama',
-    'username'              => 'Username',
+    'username'              => 'usuario',
     'password'              => 'Sandi',
     'password_confirmation' => 'Konfirmasi Sandi',
     'remember_me'           => 'Ingatkan saya',
