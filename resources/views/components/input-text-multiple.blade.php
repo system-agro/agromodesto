@@ -39,12 +39,12 @@
 
 </style>
 <div class="row containerForm">
-    <div class="row p-3 m-1">
-        <div class="col-md-2">
+    <div class="row pl-3 mb-2">
+        <div class="col-md-3">
             <label for="inputTipoMadeira">Tipo da madeira</label>
             <input type="text" name="tipo_madeira" class="form-control form-control-lg rounded inputTipoMadeira" data-mask=""  placeholder="Digite o tipo da madeira" >
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <label for="inputValorMadeira">Valor Comprado</label>
             <input type="text" name="valo_compra" class="form-control form-control-lg rounded inputValorMadeira" data-mask="currency" placeholder="Digite o valor comprado" >
         </div>

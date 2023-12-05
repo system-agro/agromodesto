@@ -18,7 +18,7 @@
   max-height: 100vh; /* Defina um valor máximo adequado para a altura (80% da altura da viewport) */
   height: auto; 
   
-  width: 90%; /* Adjust as per requirement */
+  width: 40%; /* Adjust as per requirement */
   font-size: 10px;
   box-sizing: border-box;
 
@@ -63,8 +63,14 @@
   }
 
   .form-client {
-    margin: 14px;
+    margin: 6px 10px;
   }
+
+  /* .modal-content input {
+    width: 150px;
+  } */
+
+
 
 </style>
 @php
@@ -76,9 +82,9 @@ $disabled = $mode === 'new' ? '' : 'disabled';
     <!-- Seção de Informação Pessoal -->
     @if(is_array($sections) || is_object($sections))
         @if($searchClient === "true")
-          <div class="row p-2 " >
+          <div class="row " >
             <h4>Informações do cliente</h4>
-            <div class="col-md-4 form-client ">
+            <div class="col-md-3 form-client ">
               <div class="form-group">
                   <input 
                     type="text" 

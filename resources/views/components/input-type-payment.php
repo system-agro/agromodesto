@@ -6,8 +6,8 @@
   }
 </style>
 <div id="containerTypePayment" class="row containerTypePayment" style="display: none;">
-    <div class="row p-3 m-1">
-        <div class="col-md-2">
+    <div class="row p-1 m-1">
+        <div class="col-md-3">
           <label for="tipo_pagamento">Tipo de Pagamento:</label>
           <select id="tipo_pagamento" name="tipo_pagamento" class="form-control form-control-lg rounded">
             <option value="dinheiro">Dinheiro</option>

@@ -179,18 +179,46 @@ function getModalContentForMode(mode, data) {
     }
 }
 
-function actionTypePayment() {
+function actionTypePayment(mode, data) {
   if (!document.getElementById('customModal')) {
     console.log("Modal não encontrado");
     return;
   } else {
     const containerTypeForm = document.getElementById('containerTypePayment');
     const inputTypePayment = document.getElementById('tipo_pagamento');
+    const parcelasContainer = document.getElementById('parcelas_container');
+    
     containerTypeForm.style.display = "block";
+
+    // Adiciona um listener para o evento change no input 'tipo_pagamento'
+    const inputParcelas = document.getElementById('quantidade_parcelas');
+
+
+    // Modificar o input com base no modo 'view'
+    if (mode === 'view') {
+      // Desabilitar o input
+      inputTypePayment.disabled = true;
+      inputTypePayment.value = data.tipo_pagamento;
+      if (data.tipo_pagamento === 'cheque_parcelado') {
+        parcelasContainer.style.display = 'block';
+        inputParcelas.disabled = true;
+        inputParcelas.value = data.total_parcela;
+      }
+    }else if(mode === 'edit'){
+      // parcelasContainer.style.display = 'block';
+      if(data.tipo_pagamento === 'cheque_parcelado'){
+        parcelasContainer.style.display = 'block';
+        inputParcelas.value = data.total_parcela;
+
+      }
+
+      inputTypePayment.value = data.tipo_pagamento;
+    }
+
     inputTypePayment.addEventListener('change', function (e) {
       var tipoPagamento = e.target.value;
-      var parcelasContainer = document.getElementById('parcelas_container');
-      console.log(tipoPagamento)
+      console.log(tipoPagamento);
+
       // Exibir o campo de quantidade de parcelas apenas se for selecionado "Cheque Parcelado"
       if (tipoPagamento === 'cheque_parcelado') {
         parcelasContainer.style.display = 'block';
@@ -201,10 +229,11 @@ function actionTypePayment() {
   }
 }
 
+
 document.querySelectorAll('.btn-cadastrar').forEach(button => {
     button.addEventListener('click', () => {
       openModalAction('new', {}, getModalContentForMode);
-      actionTypePayment()
+      actionTypePayment('new')
 
     });
 });
@@ -296,6 +325,8 @@ window.visualizarItem = async function (id) {
       // Manipulate the API data here
       openModalAction('view', data, getModalContentForMode);
       adicionarConjuntosComprasMadeira(data?.compras_madeira, "view");
+      actionTypePayment('view', data)
+
 
     } else {
       console.error('Error calling the API');
@@ -329,6 +360,8 @@ window.onEditModal = async function (id) {
       // Manipulate the API data here
       openModalAction('edit', data, getModalContentForMode);
       adicionarConjuntosComprasMadeira(data.compras_madeira);
+      actionTypePayment('edit', data)
+
 
     } else {
       console.error('Error calling the API');

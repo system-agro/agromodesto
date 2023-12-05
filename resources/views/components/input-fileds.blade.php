@@ -10,7 +10,7 @@ $inputId = str_replace(' ', '', $inputName);
 @endphp
 
 
-<div class="p-3">
+<div class="pl-2">
   <label for="input{{ $inputId }}">{{ $inputName }}</label>
   <input type="text" name="{{ $inputName }}" id="input{{ $inputId }}" class="form-control form-control-lg rounded"
     value="{{ $value }}" {{ $disabled }} @if($inputMask) data-mask="{{ $inputMask }}" @endif>
