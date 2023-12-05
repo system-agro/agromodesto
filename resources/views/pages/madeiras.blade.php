@@ -306,7 +306,7 @@ window.create = async function () {
     console.log(data)
     await createItem('madeira', data); // usando a função createItem
     closeModal();
-    modalSuccess("Relatorio de venda de gado gerado com sucesso");
+    modalSuccess("Relatorio de venda de madeira gerado com sucesso");
     setTimeout(function() {
         location.reload();
     }, 1000);
