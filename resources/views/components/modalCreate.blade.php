@@ -18,7 +18,7 @@
   max-height: 100vh; /* Defina um valor máximo adequado para a altura (80% da altura da viewport) */
   height: auto; 
   
-  width: 40%; /* Adjust as per requirement */
+  width: 60%; /* Adjust as per requirement */
   font-size: 10px;
   box-sizing: border-box;
 
@@ -27,6 +27,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  overflow: auto;
 }
 
 .close {
