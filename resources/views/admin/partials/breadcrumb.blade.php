@@ -2,7 +2,7 @@
 <nav aria-label="breadcrumb" class="breadcrumb-nav">
 @if ($breadcrumb)
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ admin_url('/') }}"><i class="icon-home"></i> {{__('Home')}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ admin_url('/') }}"><i class="icon-home"></i> {{__('Inicio')}}</a></li>
     @foreach($breadcrumb as $item)
         @if($loop->last)
         <li class="breadcrumb-item active">
@@ -32,7 +32,7 @@
 </ol>
 @elseif(config('admin.enable_default_breadcrumb'))
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ admin_url('/') }}"><i class="icon-home"></i>Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ admin_url('/') }}"><i class="icon-home"></i>Inicio</a></li>
     @for($i = 2; $i <= count(Request::segments()); $i++)
     <li class="breadcrumb-item">
             <a href="{{ admin_url(implode('/',array_slice(Request::segments(),1,$i-1))) }}">
