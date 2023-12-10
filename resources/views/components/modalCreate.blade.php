@@ -67,6 +67,16 @@
     margin: 6px 10px;
   }
 
+  select {
+    appearance: auto;
+  }
+
+  /* Estilo padrão para o elemento select */
+  select {
+      -webkit-appearance: menulist-button;
+      appearance: menulist-button;
+  }
+
   /* .modal-content input {
     width: 150px;
   } */

@@ -50,9 +50,9 @@ class NatalidadeController extends AdminController
       // campo para o tipo de animal
       'gestante' => 'required',
       // campo para a condição gestante
-      'data_inseminacao' => 'required|date',
+      'data_inseminacao' => 'date',
       // campo para a data de inseminação
-      'data_gestacao' => 'required|date',
+      'data_gestacao' => 'date',
       // campo para a data de gestação
     ]);
 
@@ -91,8 +91,8 @@ class NatalidadeController extends AdminController
       'numeracao_animal' => 'required',
       'tipo_animal' => 'required',
       'gestante' => 'required',
-      'data_inseminacao' => 'required|date',
-      'data_gestacao' => 'required|date',
+      'data_inseminacao' => 'date',
+      'data_gestacao' => 'date',
     ]);
 
     // Atualize os detalhes do registro de natalidade com os dados validados
