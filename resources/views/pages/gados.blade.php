@@ -315,7 +315,7 @@ function getModalInputValues() {
         data = {
             numeracao_animal: numeracaoAnimal,
             tipo_animal: tipoAnimal,
-            gestante: gestante,
+            gestante: isGestante,
             data_inseminacao: dataInseminacao,
             data_gestacao: dataGestacao
         };
@@ -348,8 +348,8 @@ window.create = async function () {
             columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
             columnMapping = {
                 'Numeracao Animal': { key: 'numeracao_animal', mask: null },
-                'Tipo': { key: 'tipo', mask: null },
-                'Condicao': { key: 'condicao', mask: null },
+                'Tipo': { key: 'tipo_animal', mask: null },
+                'Condicao': { key: 'gestante', mask: null },
                 'Data Inseminacao': { key: 'data_inseminacao', mask: 'date' },
                 'Data Gestacao': { key: 'data_gestacao', mask: 'date' }
             };
