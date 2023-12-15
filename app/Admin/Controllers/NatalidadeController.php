@@ -50,9 +50,9 @@ class NatalidadeController extends AdminController
       // campo para o tipo de animal
       'gestante' => 'required',
       // campo para a condição gestante
-      'data_inseminacao' => 'required|date',
+      'data_inseminacao' => 'date',
       // campo para a data de inseminação
-      'data_gestacao' => 'required|date',
+      'data_gestacao' => 'date',
       // campo para a data de gestação
     ]);
 
@@ -66,7 +66,7 @@ class NatalidadeController extends AdminController
 
     $natalidade->save();
 
-    $natalidade->gestante = $natalidade->gestante == 0 ? 'false' : 'true';
+    $natalidade->gestante = $natalidade->gestante == 0 ? 'Não' : 'Sim';
     $response = $natalidade;
 
     // Use o mapeamento de colunas se necessário, ou remova se não for usar
@@ -91,8 +91,8 @@ class NatalidadeController extends AdminController
       'numeracao_animal' => 'required',
       'tipo_animal' => 'required',
       'gestante' => 'required',
-      'data_inseminacao' => 'required|date',
-      'data_gestacao' => 'required|date',
+      'data_inseminacao' => 'date',
+      'data_gestacao' => 'date',
     ]);
 
     // Atualize os detalhes do registro de natalidade com os dados validados
@@ -119,6 +119,8 @@ class NatalidadeController extends AdminController
     try {
       // Tente encontrar o registro de natalidade pelo ID fornecido
       $natalidade = Natalidade::findOrFail($id);
+      $natalidade->gestante = $natalidade->gestante == 0 ? 'Não' : 'Sim';
+
       // Se encontrado, retorne o registro com status HTTP 200
       return response()->json($natalidade, 200);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

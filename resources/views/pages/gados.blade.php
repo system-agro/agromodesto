@@ -168,7 +168,7 @@ function getModalContentForNatalidade(mode, data) {
                         "inputs" => [
                             ["name" => "Numeracao Animal", "mask" => null],
                             ["name" => "Tipo Animal", "mask" => null],
-                            ["name" => "Gestante", "mask" => null],
+                            ["name" => "Gestante", "mask" => null, "type" => 'select'],
                             ["name" => "Data Inseminacao", "mask" => "datetime"],
                             ["name" => "Data Gestacao", "mask" => "datetime"]
                         ]
@@ -305,14 +305,17 @@ function getModalInputValues() {
     } else if (tabActive === 'tabNatalidade') {
         var numeracaoAnimal = parseInt(document.getElementById('inputNumeracaoAnimal').value);
         var tipoAnimal = document.getElementById('inputTipoAnimal').value;
-        var gestante = false;
+        var selectGestante = document.getElementById('inputGestante').value;
         var dataInseminacao = formatDateToISO(document.getElementById('inputDataInseminacao').value);
         var dataGestacao = formatDateToISO(document.getElementById('inputDataGestacao').value);
+
+
+        var isGestante =  selectGestante === "nao" ? false : true ;
 
         data = {
             numeracao_animal: numeracaoAnimal,
             tipo_animal: tipoAnimal,
-            gestante: gestante,
+            gestante: isGestante,
             data_inseminacao: dataInseminacao,
             data_gestacao: dataGestacao
         };
@@ -320,36 +323,6 @@ function getModalInputValues() {
 
     return data;
 }
-
-
-// window.create = async function () {
-//     try {
-//         const data = getModalInputValues();
-//         var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
-//         const data_temp = await createItem(router, data); // usando a função createItem
-//         console.log(data_temp)
-//         var columnsView;
-//         if (router === "gado") {
-//             columnsView = ['Cliente', 'Data Venda', 'Valor Venda', 'Comissao', 'Valor Frete', 'Valor Compra','Lucro'];
-//         } else if (router === "natalidade") {
-//             columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
-//         }
-
-//         // Verifica se o contato foi criado com sucesso antes de tentar adicioná-lo à tabela
-//         if (data_temp) {
-//             addRowToActiveTabTable(data_temp, columnsView); // Supondo que a função foi renomeada para corresponder à lógica de aba ativa
-//             closeModal();
-
-//             modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " cadastrado com sucesso"); // Torna a primeira letra maiúscula
-//         } else {
-//             // Se data_temp for null ou undefined, algo deu errado com a criação do item
-//             throw new Error(router + " não pôde ser criado. A resposta não contém dados.");
-//         }
-//     } catch (error) {
-//         console.error('Erro ao criar item:', error);
-//         // Aqui você pode fechar o modal, notificar o usuário, logar o erro, etc.
-//     }
-// }
 
 window.create = async function () {
     try {
@@ -375,8 +348,8 @@ window.create = async function () {
             columnsView = ['Numeracao Animal', 'Tipo', 'Condicao', 'Data Inseminacao', 'Data Gestacao'];
             columnMapping = {
                 'Numeracao Animal': { key: 'numeracao_animal', mask: null },
-                'Tipo': { key: 'tipo', mask: null },
-                'Condicao': { key: 'condicao', mask: null },
+                'Tipo': { key: 'tipo_animal', mask: null },
+                'Condicao': { key: 'gestante', mask: null },
                 'Data Inseminacao': { key: 'data_inseminacao', mask: 'date' },
                 'Data Gestacao': { key: 'data_gestacao', mask: 'date' }
             };
