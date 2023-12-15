@@ -119,6 +119,8 @@ class NatalidadeController extends AdminController
     try {
       // Tente encontrar o registro de natalidade pelo ID fornecido
       $natalidade = Natalidade::findOrFail($id);
+      $natalidade->gestante = $natalidade->gestante == 0 ? 'Não' : 'Sim';
+
       // Se encontrado, retorne o registro com status HTTP 200
       return response()->json($natalidade, 200);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
