@@ -1,27 +1,27 @@
+function modalSuccess(message) {
+  Swal.fire({
+      title: 'Sucesso!',
+      text: message,
+      icon: 'success',
+      timer: 2000,
+      showConfirmButton: false
+  });
+}
 
-
-function modalSuccess(title) {
-  const modalElement = document.getElementById('successModal');
-
-  if (modalElement) {
-    // Atualize o título ou qualquer outro conteúdo conforme necessário
-    const titleElement = modalElement.querySelector('.modal-title'); // ajuste o seletor conforme necessário
-    if (titleElement) {
-      titleElement.textContent = title;
-    }
-
-    // Exiba o modal
-    modalElement.style.display = 'block';
-    modalElement.classList.add('show');
-
-    // Esconda o modal depois de algum tempo
-    setTimeout(function () {
-      modalElement.style.display = 'none';
-      modalElement.classList.remove('show');
-    }, 2000);
-  } else {
-    console.error('Modal element not found!');
-  }
+async function confirmDeleteModal() {
+  return new Promise((resolve) => {
+      Swal.fire({
+          title: 'Confirmar Exclusão',
+          text: 'Tem certeza que deseja excluir este item?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sim, excluir!'
+      }).then((result) => {
+          resolve(result.isConfirmed);
+      });
+  });
 }
 
 function formatDateToBR(dateTimeString) {
