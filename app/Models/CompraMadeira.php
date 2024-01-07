@@ -27,4 +27,15 @@ class CompraMadeira extends Model
         return $this->belongsTo(Madeiras::class, 'id_relatorio_madeira_fk', 'id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($compraMadeira) {
+            // Exclui a instância de CompraMadeira associada quando a instância de Madeiras é excluída
+            $compraMadeira->delete();
+        });
+    }
+
+
 }
