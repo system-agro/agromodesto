@@ -371,19 +371,46 @@ window.onEditModal = async function (id) {
   }
 }
 
+// window.deleteData = async function(clientId) {
+//   try {
+
+//     var confirmed = await confirmDeleteModal();
+
+
+//     await deleteItem('madeira', clientId); // usando a função deleteItem
+
+//     modalSuccess("Relatorio excluido com sucesso");
+//     setTimeout(function() {
+//         location.reload();
+//     }, 1000);
+
+//   } catch (error) {
+//     console.error('An error occurred:', error);
+//     alert('Ocorreu um erro ao excluir o cliente');
+//   }
+// }
+
 window.deleteData = async function(clientId) {
-  try {
-    await deleteItem('madeira', clientId); // usando a função deleteItem
+    try {
+        // Exibir modal de confirmação
+        var confirmed = await confirmDeleteModal();
 
-    modalSuccess("Relatorio excluido com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+        if (confirmed) {
+            // Se confirmado, prosseguir com a exclusão
+            await deleteItem('madeira', clientId);
 
-  } catch (error) {
-    console.error('An error occurred:', error);
-    alert('Ocorreu um erro ao excluir o cliente');
-  }
+            // Exibir modal de sucesso
+            modalSuccess("Relatório excluído com sucesso");
+
+            // Recarregar a página após um segundo
+            setTimeout(function() {
+                location.reload();
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Ocorreu um erro:', error);
+        alert('Ocorreu um erro ao excluir o relatório');
+    }
 }
 
 window.downloadPDF = function (id) {

@@ -420,9 +420,13 @@ window.onEditModal = async function (id) {
 window.deleteData = async function (contactId) {
   try {
     var router = getRouter(); // Certifique-se de que getRouter() está implementado corretamente
-    await deleteItem(router, contactId); // usando a função deleteItem
-    modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " excluido com sucesso"); // Torna a primeira letra maiúscula
-    removeRowFromActiveTabTable(contactId)
+    var confirmed = await confirmDeleteModal();
+    if (confirmed) {
+      await deleteItem(router, contactId); // usando a função deleteItem
+      modalSuccess(router.charAt(0).toUpperCase() + router.slice(1) + " excluido com sucesso"); // Torna a primeira letra maiúscula
+      removeRowFromActiveTabTable(contactId)
+    }
+
   } catch (error) {
     console.error('An error occurred:', error);
     alert('Ocorreu um erro ao excluir o cliente');

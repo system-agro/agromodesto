@@ -269,9 +269,12 @@ window.onEditModal = async function (id) {
 
 window.deleteData = async function (clientId) {
   try {
-    await deleteItem('caminhaos', clientId); // usando a função deleteItem
+    var confirmed = await confirmDeleteModal();
+    if (confirmed) {
+      await deleteItem('caminhaos', clientId); // usando a função deleteItem
+      modalSuccess("Relatorio excluido com sucesso");
 
-    modalSuccess("Relatorio excluido com sucesso");
+    }
     setTimeout(function() {
         location.reload();
     }, 1000);
