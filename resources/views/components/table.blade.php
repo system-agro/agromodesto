@@ -16,8 +16,11 @@
           @php
             $maskType = $column['mask'] ?? '';
             $columnName = $column['name'];
+            $columnValue = $contact ? $contact->{$columnMapping[$columnName]} : null;
           @endphp
-          <td data-column="{{$columnName}}" data-mask="{{ $maskType }}">{{ $contact->{$columnMapping[$columnName]} }}</td>
+          <td data-column="{{$columnName}}" data-mask="{{ $maskType }}">
+                            {{ $columnValue ?? "Não informado" }}
+                        </td>
         @endforeach
         <td class="col-1">
           <button class="btn btn-primary btn-edit" data-contact-id="{{ $contact->id }}">Editar</button>

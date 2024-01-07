@@ -16,10 +16,10 @@ function searchClient() {
     return
   } else {
     const input = document.getElementById("searchClientInput");
+    
     const query = input.value;
     const resultsContainer = document.getElementById("searchResults");
-
-    if (query.length >= 2) {
+    if (query.length >= 1) {
       fetch(`searchClient?q=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(clients => {
@@ -28,6 +28,21 @@ function searchClient() {
             const div = document.createElement('div');
             div.className = 'list-group-item list-group-item-action';
             div.textContent = client.name;
+            div.style.color = 'black'
+            div.style.backgroundColor = '#E1E1E1'
+
+
+            div.addEventListener('mouseover', function () {
+              div.style.backgroundColor = '#FFF';  // Cor quando o mouse está sobre o elemento
+            });
+
+            
+            div.addEventListener('mouseout', function () {
+              div.style.backgroundColor = '#E1E1E1';  // Cor quando o mouse está sobre o elemento
+            });
+
+
+
             div.onclick = function () {
               selectClient(client); // Implemente esta função conforme necessário
             };

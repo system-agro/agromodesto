@@ -77,6 +77,11 @@ class ClientController extends AdminController
     protected function detail($id)
     {
         $show = Client::findOrFail($id);
+        $show->email = $show->email ?? "";
+        $show->documento = $show->documento ?? "";
+        $show->estado = $show->estado ?? "";
+        $show->cidade = $show->cidade ?? "";
+        $show->bairro = $show->bairro ?? "";
         return response()->json($show, 200);
     }
 
@@ -114,12 +119,12 @@ class ClientController extends AdminController
         // Valide os dados recebidos do formulário, por exemplo:
         $validatedData = $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'nullable',
             'phone' => 'required',
-            'documento' => 'required',
-            'estado' => 'required',
-            'cidade' => 'required',
-            'bairro' => 'required',
+            'documento' => 'nullable', // Tornando o campo 'documento' opcional
+            'estado' => 'nullable',    // Tornando o campo 'estado' opcional
+            'cidade' => 'nullable',    // Tornando o campo 'cidade' opcional
+            'bairro' => 'nullable',    // Tornando o campo 'bairro' opcional
         ]);
 
         // Crie um novo cliente com os dados validados
@@ -152,12 +157,12 @@ class ClientController extends AdminController
         // Validate the request data
         $validatedData = $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'nullable',
             'phone' => 'required',
-            'documento' => 'required',
-            'estado' => 'required',
-            'cidade' => 'required',
-            'bairro' => 'required',
+            'documento' => 'nullable', // Tornando o campo 'documento' opcional
+            'estado' => 'nullable',    // Tornando o campo 'estado' opcional
+            'cidade' => 'nullable',    // Tornando o campo 'cidade' opcional
+            'bairro' => 'nullable',    // Tornando o campo 'bairro' opcional
         ]);
 
         // Update the client details with validated data
