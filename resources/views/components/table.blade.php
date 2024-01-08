@@ -19,7 +19,7 @@
             $columnValue = $contact ? $contact->{$columnMapping[$columnName]} : null;
           @endphp
           <td data-column="{{$columnName}}" data-mask="{{ $maskType }}">
-                            {{ $columnValue ?? "Não informado" }}
+                            {{ $columnValue ?? "- - -" }}
                         </td>
         @endforeach
         <td class="col-1">

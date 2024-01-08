@@ -80,7 +80,13 @@ $valorParcela = number_format($madeira['valor_total_venda'] / $madeira['total_pa
         <div class="information">
             <div>
                 <p>Cliente: {{ $madeira['data_cliente']['name'] }}</p>
-                <p>Endereço: {{ $madeira['data_cliente']['cidade'] . ', ' . $madeira['data_cliente']['bairro'] . ', ' . $madeira['data_cliente']['estado'] }}</p>
+
+                @php
+                    $cidade = $madeira['data_cliente']['cidade'] ?? '--';
+                    $bairro = $madeira['data_cliente']['bairro'] ?? '--';
+                    $estado = $madeira['data_cliente']['estado'] ?? '--';
+                    echo "<p>Endereço: {$estado}, {$cidade}, {$bairro} </p>";
+                @endphp
             </div>
             <div class="text-right">
                 <p>Nota: {{$madeira['id']}}</p>
@@ -113,7 +119,23 @@ $valorParcela = number_format($madeira['valor_total_venda'] / $madeira['total_pa
             <p>Data da Venda: {{ \Carbon\Carbon::parse($madeira['data_venda'])->format('d/m/Y') }}</p>
             <div class="tipoPagamento" style="display: flex; justify-content: space-between;">
                 <div>
-                    <p>Tipo Pagamento: {{$tipoPayment}}, {{$madeira['total_parcela']}} x R$ {{$valorParcela}}</p>
+                    <p>Tipo Pagamento: {{$tipoPayment}}</p>
+                </div>
+                <div style="display: flex;">
+                    <p>{{$madeira['total_parcela']}} X R$ {{$valorParcela}}</p>
+                    @if($tipoPayment === 'cheque parcelado')
+                        <div>
+                            <p>Datas de Vencimento:</p>
+                            @php
+                                $dataVenda = \Carbon\Carbon::parse($madeira['data_venda']);
+
+                                for ($i = 1; $i <= $madeira['total_parcela']; $i++) {
+                                    $dataVencimento = $dataVenda->copy()->addMonths($i);
+                                    echo "<p>{$dataVencimento->format('d/m/Y')} - R$ {$valorParcela}</p>";
+                                }
+                            @endphp
+                        </div>
+                    @endif
                 </div>
             </div>
             <p>Valor Total da Venda: R$ {{ number_format($madeira['valor_total_venda'], 2, ',', '.') }}</p>
