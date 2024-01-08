@@ -122,26 +122,61 @@ class MadeirasController extends AdminController
 
         // Validate the request data
         $validatedData = $request->validate([
+            'client_id' => 'required|exists:client,id', // Garanta que o cliente exista
             'data_venda' => 'required',
-            'valor_venda' => 'required',
-            'quantidade_venda' => 'required',
             'frete' => 'required',
             'icms' => 'required',
             'lucro' => 'required',
+            'valor_total_venda' => 'required',
             'tipo_pagamento' => 'required',
             'total_parcela' => 'required',
         ]);
 
         // Update the madeira details with validated data
         $madeira->data_venda = $validatedData['data_venda'];
-        $madeira->valor_venda = $validatedData['valor_venda'];
-        $madeira->quantidade_venda = $validatedData['quantidade_venda'];
         $madeira->frete = $validatedData['frete'];
         $madeira->icms = $validatedData['icms'];
         $madeira->lucro = $validatedData['lucro'];
         $madeira->tipo_pagamento = $validatedData['tipo_pagamento'];
         $madeira->total_parcela = $validatedData['total_parcela'];
-        $madeira->save();
+        $madeira->update($validatedData);
+
+        // Check if there are purchases in the request
+        // if ($request->has('compras_madeira')) {
+        //     foreach ($request->input('compras_madeira') as $compraData) {
+        //         // If the purchase has an ID, update it; otherwise, create a new one
+        //         if (isset($compraData['id'])) {
+        //             $compra = CompraMadeira::findOrFail($compraData['id']);
+        //             $compra->update($compraData);
+        //         } else {
+        //             $novaCompra = new CompraMadeira($compraData);
+        //             $madeira->comprasMadeira()->save($novaCompra);
+        //         }
+        //     }
+        // }
+
+        if ($request->has('compras_madeira')) {
+            foreach ($request->input('compras_madeira') as $compraData) {
+                // If the purchase has an ID, update it; otherwise, check if it already exists before adding
+                if (isset($compraData['id'])) {
+                    $compra = CompraMadeira::findOrFail($compraData['id']);
+                    $compra->update($compraData);
+                } else {
+                    // Check if the compra madeira already exists before adding
+                    $existente = $madeira->comprasMadeira()
+                        ->where('tipo_madeira', $compraData['tipo_madeira'])
+                        ->where('valo_compra', $compraData['valo_compra'])
+                        ->where('valor_venda', $compraData['valor_venda'])
+                        ->where('quantidade_venda', $compraData['quantidade_venda'])
+                        ->first();
+
+                    if (!$existente) {
+                        $novaCompra = new CompraMadeira($compraData);
+                        $madeira->comprasMadeira()->save($novaCompra);
+                    }
+                }
+            }
+        }
 
         return response()->json(['message' => 'Relatório de madeira atualizado com sucesso']);
     }

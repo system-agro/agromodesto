@@ -108,6 +108,7 @@ function getModalContentForMode(mode, data) {
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
                     "Cliente" => "` + data.data_cliente.name + `",
+                    "ClienteId" => "` + data.data_cliente.id + `",
                     "Quantidade Venda" => "`+ data.quantidade_venda +`",
                     "Compra Madeira" => " `+data.compras_madeira+`"
                 ]
@@ -142,6 +143,7 @@ function getModalContentForMode(mode, data) {
                     "Valor Venda" => "` + data.valor_venda + `",
                     "Frete" => "` + data.frete + `",
                     "ICMS" => "` + data.icms + `",
+                    "ClienteId" => "` + data.data_cliente.id + `",
                     "Cliente" => "` + data.cliente + `",
                     "Quantidade Venda" => "`+ data.quantidade_venda +`"
                 ]
@@ -341,10 +343,10 @@ window.update = async function (relatorioId) {
     const data = getModalInputValues();
     await updateItem('madeira', relatorioId, data); // usando a função updateItem
     closeModal();
-    modalSuccess("Relatorio atualizado com sucesso");
-    setTimeout(function() {
-        location.reload();
-    }, 1000);
+    // modalSuccess("Relatorio atualizado com sucesso");
+    // setTimeout(function() {
+    //     location.reload();
+    // }, 1000);
     // Refresh the form or the table as needed
 
   } catch (error) {
