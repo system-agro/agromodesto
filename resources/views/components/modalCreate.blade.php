@@ -100,7 +100,8 @@ $disabled = $mode === 'new' ? '' : 'disabled';
                   <input 
                     type="text" 
                     id="searchClientInput" 
-                    class="form-control  form-control-lg rounded" 
+                    class="form-control  form-control-lg rounded"
+                    data-client-id = "{{ isset($data['ClienteId']) ? $data['ClienteId'] : '' }}"
                     {{$disabled}} 
                     placeholder="Digite o nome do cliente..." 
                     oninput="searchClient()" 
