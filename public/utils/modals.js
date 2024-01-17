@@ -34,11 +34,14 @@ function formatDateToBR(dateTimeString) {
 }
 
 
-function applyInputMasks() {
+function applyInputMasks(mode = "") {
   const masks = document.querySelectorAll('input[data-mask]');
   masks.forEach(input => {
     const mask = input.getAttribute('data-mask');
     // Verifique se a máscara é 'currency' e aplique a configuração de moeda
+    if (input.value.trim() !== '' && mode !== 'view' && mode !== 'edit') {
+      return;
+    }
     if (mask === 'currency') {
       Inputmask('currency', {
         radixPoint: ",",
@@ -154,7 +157,7 @@ function adicionarConjuntosComprasMadeira(comprasMadeira, mode = "") {
     containerForm.lastElementChild.appendChild(buttonChild);
   }
 
-  applyInputMasks();
+  applyInputMasks(mode);
 }
 
 
@@ -180,7 +183,7 @@ function openModalAction(mode = "", data = {}, body = () => { }) {
   document.getElementById('customModal').style.display = 'block';
 
   addEventButtonForm();
-  applyInputMasks();
+  applyInputMasks(mode);
 }
 
 function createContentModalElement() {

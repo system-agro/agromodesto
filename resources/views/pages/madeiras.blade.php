@@ -361,7 +361,7 @@ window.onEditModal = async function (id) {
     if (data) {
       // Manipulate the API data here
       openModalAction('edit', data, getModalContentForMode);
-      adicionarConjuntosComprasMadeira(data.compras_madeira);
+      adicionarConjuntosComprasMadeira(data.compras_madeira, 'edit');
       actionTypePayment('edit', data)
 
 
