@@ -287,7 +287,7 @@ function getModalInputValues() {
         var clienteId = parseInt(document.getElementById('searchClientInput').getAttribute('data-client-id'));
         var date = formatDateToISO(document.getElementById('inputDataVenda').value);
         var venda = unmaskCurrencyValue(document.getElementById('inputValorVenda').value);
-        var comissao = unmaskCurrencyValue(document.getElementById('inputComissao').value);
+        var comissao = document.getElementById('inputComissao').value == " " ? unmaskCurrencyValue(document.getElementById('inputComissao').value) : 0;
         var frete = unmaskCurrencyValue(document.getElementById('inputValorFrete').value);
         var valorCompra = unmaskCurrencyValue(document.getElementById('inputValorCompra').value);
 
