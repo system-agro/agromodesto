@@ -119,7 +119,7 @@ class GadoController extends AdminController
             'client_id' => 'required|exists:client,id', // Garanta que o cliente exista
             'data_venda' => 'required|date', // Garanta que é uma data válida
             'valor_venda' => 'required|numeric', // Garanta que é um valor numérico
-            'comissao' => 'required|numeric',
+            'comissao' => 'nullable|numeric',
             'valor_frete' => 'required|numeric',
             "lucro" => "required|numeric", // Garanta que é um valor numérico
             "valor_compra" => "required|numeric"
